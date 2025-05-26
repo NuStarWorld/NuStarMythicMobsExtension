@@ -1,0 +1,16 @@
+# noinspection YAMLSchemaValidation
+name: NuStarMythicMobsExtension
+version: '${version}'
+main: top.nustar.nustarmythicmobsextension.NuStarMythicMobsExtension
+load: STARTUP
+authors:
+- NuStar
+- ketikai
+depend:
+  - 'minecraft-next'
+  - 'MythicMobs'
+softdepend:
+  - 'AttributePlus'
+  - 'SX-Attribute'
+commands:
+  nsme:
