@@ -20,6 +20,7 @@ public class DamageUtil {
         LivingEntity source = (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
         LivingEntity target = (LivingEntity) abstractEntity.getBukkitEntity();
         skillMetadata.getCaster().setUsingDamageSkill(true);
+        skillMetadata.getCaster().getEntity().setMetadata("doing-skill-damage", true);
         try {
             if (preventsKnockback) {
                 target.damage(0.01);
@@ -32,11 +33,12 @@ public class DamageUtil {
             } else {
                 target.damage(0.01, source);
             }
-            if (preventImmunity) {
-                target.setNoDamageTicks(0);
-            }
         } finally {
+            skillMetadata.getCaster().getEntity().removeMetadata("doing-skill-damage");
             skillMetadata.getCaster().setUsingDamageSkill(false);
+        }
+        if (preventImmunity) {
+            target.setNoDamageTicks(0);
         }
     }
 }

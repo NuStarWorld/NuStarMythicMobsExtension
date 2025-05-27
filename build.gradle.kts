@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarmythicmobsextension"
-version = "2.0.0"
+version = "2.0.1"
 
 allprojects {
     if (!project.buildFile.exists()) {

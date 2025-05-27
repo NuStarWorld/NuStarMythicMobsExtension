@@ -13,4 +13,14 @@ public class AbstractEntityAdapterImpl extends AbstractEntityAdapter<AbstractEnt
     public Entity getBukkitEntity() {
         return getActualObject().getBukkitEntity();
     }
+
+    @Override
+    public void setMetadata(String key, Object value) {
+        getActualObject().setMetadata(key, value);
+    }
+
+    @Override
+    public void removeMetadata(String key) {
+        getActualObject().removeMetadata(key);
+    }
 }

@@ -9,4 +9,6 @@ public abstract class AbstractEntityAdapter<T> extends AbstractAdapter<T> {
     }
 
     public abstract Entity getBukkitEntity();
+    public abstract void setMetadata(String key, Object value);
+    public abstract void removeMetadata(String key);
 }
