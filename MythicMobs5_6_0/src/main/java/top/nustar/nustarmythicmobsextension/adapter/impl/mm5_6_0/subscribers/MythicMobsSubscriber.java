@@ -1,3 +1,21 @@
+/*
+ *    NuStarMythicMobsExtension
+ *    Copyright (C) 2025  NuStar
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.subscribers;
 
 import io.lumine.mythic.api.skills.targeters.ISkillTargeter;
@@ -6,6 +24,11 @@ import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent;
 import io.lumine.mythic.bukkit.events.MythicTargeterLoadEvent;
 import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.core.skills.SkillMechanic;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
@@ -21,12 +44,6 @@ import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.MythicMobsVersion;
 import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 @Subscriber
 @DependsOn(classes = "io.lumine.mythic.core.config.MythicConfigImpl")
 @SuppressWarnings({"unused"})
@@ -40,7 +57,8 @@ public class MythicMobsSubscriber implements Listener {
         TargetSelectorType targetSelectorType = TargetSelectorType.of(event.getTargeterName());
         if (targetSelectorType == null) return;
         SkillExecutor executor = MythicBukkit.inst().getSkillManager();
-        event.register((ISkillTargeter) targetSelectorHelperServiceMap.get(targetSelectorType).findSelector(executor, event.getConfig()));
+        event.register((ISkillTargeter)
+                targetSelectorHelperServiceMap.get(targetSelectorType).findSelector(executor, event.getConfig()));
     }
 
     @EventHandler
@@ -48,7 +66,9 @@ public class MythicMobsSubscriber implements Listener {
         MechanicType mechanicType = MechanicType.of(event.getMechanicName());
         if (mechanicType == null) return;
         SkillExecutor executor = MythicBukkit.inst().getSkillManager();
-        event.register((SkillMechanic) mechanicHelperServiceMap.get(mechanicType).findMechanic(executor, event.getConfig(), configService.getMainConfiguration()));
+        event.register((SkillMechanic) mechanicHelperServiceMap
+                .get(mechanicType)
+                .findMechanic(executor, event.getConfig(), configService.getMainConfiguration()));
     }
 
     @Autowired
@@ -61,10 +81,13 @@ public class MythicMobsSubscriber implements Listener {
         this.mechanicHelperServiceMap = mechanicHelperServices.stream()
                 .filter(mechanicHelperService ->
                         mechanicHelperService.getClass().isAnnotationPresent(SupportMechanicType.class)
-                                && mechanicHelperService.findMythicMobsVersionFromService(mechanicHelperService).equals(MythicMobsVersion.MM5_6_0)
-                )
-                .collect(Collectors.toMap(mechanicHelperService -> mechanicHelperService.findMechanicTypeFromService(mechanicHelperService), Function.identity())
-                );
+                                && mechanicHelperService
+                                        .findMythicMobsVersionFromService(mechanicHelperService)
+                                        .equals(MythicMobsVersion.MM5_6_0))
+                .collect(Collectors.toMap(
+                        mechanicHelperService ->
+                                mechanicHelperService.findMechanicTypeFromService(mechanicHelperService),
+                        Function.identity()));
         List<MechanicType> missingTypes = Arrays.stream(MechanicType.values())
                 .filter(type -> !mechanicHelperServiceMap.containsKey(type))
                 .collect(Collectors.toList());
@@ -78,11 +101,13 @@ public class MythicMobsSubscriber implements Listener {
         this.targetSelectorHelperServiceMap = targetSelectorHelperServices.stream()
                 .filter(targetSelectorHelperService ->
                         targetSelectorHelperService.getClass().isAnnotationPresent(SupportTargetSelectorType.class)
-                                && targetSelectorHelperService.findMythicMobsVersionFromService(targetSelectorHelperService).equals(MythicMobsVersion.MM4_9_0)
-                )
-                .collect(Collectors.toMap(targetSelectorHelperService ->
-                        targetSelectorHelperService.findSelectorTypeFromService(targetSelectorHelperService), Function.identity())
-                );
+                                && targetSelectorHelperService
+                                        .findMythicMobsVersionFromService(targetSelectorHelperService)
+                                        .equals(MythicMobsVersion.MM4_9_0))
+                .collect(Collectors.toMap(
+                        targetSelectorHelperService ->
+                                targetSelectorHelperService.findSelectorTypeFromService(targetSelectorHelperService),
+                        Function.identity()));
         List<TargetSelectorType> missingTypes = Arrays.stream(TargetSelectorType.values())
                 .filter(type -> !targetSelectorHelperServiceMap.containsKey(type))
                 .collect(Collectors.toList());
