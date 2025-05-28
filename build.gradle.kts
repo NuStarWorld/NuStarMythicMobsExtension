@@ -109,6 +109,7 @@ allprojects {
 dependencies {
     implementation("com.alibaba:fastjson:2.0.0")
     implementation("com.konghq:unirest-java:3.14.1")
+    internal("org.bstats:bstats-bukkit:3.0.2")
     shadow(rootProject.project("${rootProject.name}-MyAuth"))
     subprojects {
         if (name.startsWith("NuStarMythicMobsExtension-MythicMobs")) {
