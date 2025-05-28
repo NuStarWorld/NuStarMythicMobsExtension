@@ -103,7 +103,7 @@ public class MythicMobsSubscriber implements Listener {
                         targetSelectorHelperService.getClass().isAnnotationPresent(SupportTargetSelectorType.class)
                                 && targetSelectorHelperService
                                         .findMythicMobsVersionFromService(targetSelectorHelperService)
-                                        .equals(MythicMobsVersion.MM4_9_0))
+                                        .equals(MythicMobsVersion.MM5_6_0))
                 .collect(Collectors.toMap(
                         targetSelectorHelperService ->
                                 targetSelectorHelperService.findSelectorTypeFromService(targetSelectorHelperService),
