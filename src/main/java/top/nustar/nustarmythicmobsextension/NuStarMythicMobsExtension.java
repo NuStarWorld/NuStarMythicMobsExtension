@@ -33,24 +33,19 @@ import top.nustar.nustarmythicmobsextension.utils.UpdateUtil;
 @EnableJacksonYaml
 public class NuStarMythicMobsExtension extends SpigotPlugin {
     @Override
-    public void onInitialize(@NotNull Context context) {
-    }
+    public void onInitialize(@NotNull Context context) {}
 
     @Override
-    public void onInitialized(@NotNull Context context) {
-    }
+    public void onInitialized(@NotNull Context context) {}
 
     @Override
-    public void onLoad(@NotNull Context context) {
-    }
+    public void onLoad(@NotNull Context context) {}
 
     @Override
-    public void onLoaded(@NotNull Context context) {
-    }
+    public void onLoaded(@NotNull Context context) {}
 
     @Override
-    public void onEnable(@NotNull Context context) {
-    }
+    public void onEnable(@NotNull Context context) {}
 
     @Override
     public void onEnabled(@NotNull Context context) {
@@ -66,18 +61,14 @@ public class NuStarMythicMobsExtension extends SpigotPlugin {
     }
 
     @Override
-    public void onDisable(@NotNull Context context) {
-    }
+    public void onDisable(@NotNull Context context) {}
 
     @Override
-    public void onDisabled(@NotNull Context context) {
-    }
+    public void onDisabled(@NotNull Context context) {}
 
     @Override
-    public void onDestroy(@NotNull Context context) {
-    }
+    public void onDestroy(@NotNull Context context) {}
 
     @Override
-    public void onDestroyed(@NotNull Context context) {
-    }
+    public void onDestroyed(@NotNull Context context) {}
 }

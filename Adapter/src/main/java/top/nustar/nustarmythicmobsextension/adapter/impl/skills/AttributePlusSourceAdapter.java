@@ -66,7 +66,8 @@ public class AttributePlusSourceAdapter {
                 public void run() {
                     AttributeAPI.takeSourceAttribute(data, source);
                 }
-            }.runTaskLaterAsynchronously(InstanceUtil.getInstance(Plugin.class), (long) (time.get(skillMetadata, abstractEntity) * 20));
+            }.runTaskLaterAsynchronously(
+                    InstanceUtil.getInstance(Plugin.class), (long) (time.get(skillMetadata, abstractEntity) * 20));
         }
         return true;
     }

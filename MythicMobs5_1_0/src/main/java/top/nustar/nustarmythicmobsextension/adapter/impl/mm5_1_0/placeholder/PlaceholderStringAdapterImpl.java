@@ -23,8 +23,8 @@ import io.lumine.mythic.api.skills.SkillMetadata;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import lombok.NonNull;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
-import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
 
 public class PlaceholderStringAdapterImpl extends PlaceholderStringAdapter<PlaceholderString> {
     public PlaceholderStringAdapterImpl(@NonNull PlaceholderString actualObject) {
