@@ -28,7 +28,7 @@ import io.lumine.mythic.core.skills.SkillMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.AbstractEntityAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.MythicLineConfigAdapterImpl;
-import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.PlaceholderStringHelperImpl;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.placeholder.helper.PlaceholderStringHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.SkillMetadataAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.SXAttributeMMAdapter;
 

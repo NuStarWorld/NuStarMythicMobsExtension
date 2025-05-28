@@ -16,24 +16,25 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.helper;
+package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.skills.helper;
 
 import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.core.skills.SkillExecutor;
 import team.idealstate.sugar.next.context.annotation.component.Component;
-import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
-import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.skills.SXAttributeMM;
-import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
-import top.nustar.nustarmythicmobsextension.service.annotations.SupportMechanicType;
-import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
+import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarTargerSelector;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.targets.EntitiesInTargetsSelector;
+import top.nustar.nustarmythicmobsextension.service.TargetSelectorHelperService;
+import top.nustar.nustarmythicmobsextension.service.annotations.SupportTargetSelectorType;
 import top.nustar.nustarmythicmobsextension.service.enums.MythicMobsVersion;
+import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 
 @Component
-@SupportMechanicType(type = MechanicType.SX_ATTRIBUTE_MM, version = MythicMobsVersion.MM5_1_0)
+@SupportTargetSelectorType(type = TargetSelectorType.ENTITIES_IN_TARGETS, version = MythicMobsVersion.MM5_1_0)
 @SuppressWarnings({"unused"})
-public class SXAttributeMMHelper implements MechanicHelperService {
+public class EntitiesInTargetsSelectorHelper implements TargetSelectorHelperService {
+
     @Override
-    public NuStarMechanic findMechanic(Object... objects) {
-        return new SXAttributeMM("sxmm", (SkillExecutor) objects[0], (MythicLineConfig) objects[1]);
+    public NuStarTargerSelector findSelector(Object... objects) {
+        return new EntitiesInTargetsSelector((SkillExecutor) objects[0], (MythicLineConfig) objects[1]);
     }
 }

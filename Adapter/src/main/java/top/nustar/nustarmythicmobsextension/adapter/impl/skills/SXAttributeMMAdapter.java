@@ -26,6 +26,8 @@ import org.bukkit.entity.LivingEntity;
 import team.idealstate.sugar.logging.Log;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.nustarmythicmobsextension.adapter.*;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
 
 @NativeObfuscation

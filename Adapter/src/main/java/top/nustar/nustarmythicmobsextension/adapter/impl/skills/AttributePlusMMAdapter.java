@@ -28,6 +28,8 @@ import org.serverct.ersha.attribute.data.AttributeData;
 import team.idealstate.sugar.logging.Log;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.nustarmythicmobsextension.adapter.*;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;

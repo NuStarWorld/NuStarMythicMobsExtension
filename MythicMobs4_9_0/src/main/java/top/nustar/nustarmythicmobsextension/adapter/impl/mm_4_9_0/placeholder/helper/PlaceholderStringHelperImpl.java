@@ -16,14 +16,16 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarmythicmobsextension.adapter;
+package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.helper;
 
-import lombok.NonNull;
+import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderString;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.PlaceholderStringAdapterImpl;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
 
-public abstract class PlaceholderStringAdapter<T> extends AbstractAdapter<T> {
-    public PlaceholderStringAdapter(@NonNull T actualObject) {
-        super(actualObject);
+public class PlaceholderStringHelperImpl implements PlaceholderStringHelper<PlaceholderString> {
+    @Override
+    public PlaceholderStringAdapter<PlaceholderString> of(String string) {
+        return new PlaceholderStringAdapterImpl(PlaceholderString.of(string));
     }
-
-    public abstract String get(SkillMetadataAdapter<?> data, AbstractEntityAdapter<?> target);
 }

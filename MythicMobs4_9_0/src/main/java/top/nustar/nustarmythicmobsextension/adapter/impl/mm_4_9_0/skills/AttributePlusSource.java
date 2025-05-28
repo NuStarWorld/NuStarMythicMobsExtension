@@ -26,7 +26,8 @@ import io.lumine.xikage.mythicmobs.skills.SkillMetadata;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.AbstractEntityAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.MythicLineConfigAdapterImpl;
-import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.PlaceholderStringHelperImpl;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.helper.PlaceholderDoubleHelperImpl;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.helper.PlaceholderStringHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.SkillMetadataAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.AttributePlusSourceAdapter;
 
@@ -36,7 +37,7 @@ public class AttributePlusSource extends SkillMechanic implements ITargetedEntit
     public AttributePlusSource(String skill, MythicLineConfig mlc) {
         super(skill, mlc);
         this.attributePlusSourceAdapter =
-                new AttributePlusSourceAdapter(new PlaceholderStringHelperImpl(), new MythicLineConfigAdapterImpl(mlc));
+                new AttributePlusSourceAdapter(new PlaceholderStringHelperImpl(),new PlaceholderDoubleHelperImpl(), new MythicLineConfigAdapterImpl(mlc));
     }
 
     @Override

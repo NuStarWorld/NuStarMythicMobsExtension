@@ -16,23 +16,17 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0;
+package top.nustar.nustarmythicmobsextension.adapter.placeholder;
 
-import io.lumine.mythic.api.adapters.AbstractEntity;
-import io.lumine.mythic.api.skills.SkillMetadata;
-import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import lombok.NonNull;
+import top.nustar.nustarmythicmobsextension.adapter.AbstractAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
-import top.nustar.nustarmythicmobsextension.adapter.PlaceholderStringAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 
-public class PlaceholderStringAdapterImpl extends PlaceholderStringAdapter<PlaceholderString> {
-    public PlaceholderStringAdapterImpl(@NonNull PlaceholderString actualObject) {
+public abstract class PlaceholderStringAdapter<T> extends AbstractAdapter<T> {
+    public PlaceholderStringAdapter(@NonNull T actualObject) {
         super(actualObject);
     }
 
-    @Override
-    public String get(SkillMetadataAdapter<?> data, AbstractEntityAdapter<?> target) {
-        return getActualObject().get((SkillMetadata) data.getActualObject(), (AbstractEntity) target.getActualObject());
-    }
+    public abstract String get(SkillMetadataAdapter<?> data, AbstractEntityAdapter<?> target);
 }

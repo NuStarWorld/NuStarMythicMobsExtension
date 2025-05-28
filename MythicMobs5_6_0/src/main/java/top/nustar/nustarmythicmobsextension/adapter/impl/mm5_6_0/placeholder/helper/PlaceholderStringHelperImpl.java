@@ -16,8 +16,16 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarmythicmobsextension.adapter;
+package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.placeholder.helper;
 
-public interface PlaceholderStringHelper<T> {
-    PlaceholderStringAdapter<T> of(String string);
+import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.placeholder.PlaceholderStringAdapterImpl;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
+
+public class PlaceholderStringHelperImpl implements PlaceholderStringHelper<PlaceholderString> {
+    @Override
+    public PlaceholderStringAdapter<PlaceholderString> of(String string) {
+        return new PlaceholderStringAdapterImpl(PlaceholderString.of(string));
+    }
 }
