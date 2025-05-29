@@ -41,4 +41,14 @@ public class MythicLineConfigAdapterImpl extends MythicLineConfigAdapter<MythicL
     public double getDouble(String[] key) {
         return getActualObject().getDouble(key, 1.0);
     }
+
+    @Override
+    public String getString(String[] key, String def) {
+        return getActualObject().getString(key, def);
+    }
+
+    @Override
+    public double getDouble(String[] key, double def) {
+        return getActualObject().getDouble(key, def);
+    }
 }
