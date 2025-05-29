@@ -18,22 +18,22 @@
 
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.serverct.ersha.AttributePlus;
 import org.serverct.ersha.api.AttributeAPI;
 import org.serverct.ersha.attribute.data.AttributeData;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
-import top.nustar.nustarmythicmobsextension.adapter.*;
+import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.MythicLineConfigAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderDoubleAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderDoubleHelper;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
-import top.nustar.nustarmythicmobsextension.utils.InstanceUtil;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 @NativeObfuscation
 public class AttributePlusSourceAdapter {
