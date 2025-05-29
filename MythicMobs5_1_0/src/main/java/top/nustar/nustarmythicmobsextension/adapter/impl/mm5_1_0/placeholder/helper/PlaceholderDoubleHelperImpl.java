@@ -26,6 +26,10 @@ import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.Placehold
 public class PlaceholderDoubleHelperImpl implements PlaceholderDoubleHelper<PlaceholderDouble> {
     @Override
     public PlaceholderDoubleAdapter<PlaceholderDouble> of(String string) {
-        return new PlaceholderDoubleAdapterImpl(PlaceholderDouble.of(string));
+        PlaceholderDoubleAdapter<PlaceholderDouble> placeholderDoubleAdapter = new PlaceholderDoubleAdapterImpl(PlaceholderDouble.of(string));
+        if (placeholderDoubleAdapter.getActualObject() == null) {
+            return null;
+        }
+        return placeholderDoubleAdapter;
     }
 }

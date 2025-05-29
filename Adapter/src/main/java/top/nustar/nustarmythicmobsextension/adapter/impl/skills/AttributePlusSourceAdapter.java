@@ -39,6 +39,7 @@ import top.nustar.nustarmythicmobsextension.utils.InstanceUtil;
 public class AttributePlusSourceAdapter {
     protected final PlaceholderStringAdapter<?> attrName;
     protected final boolean persistent;
+    protected final PlaceholderStringAdapter<?> sourceName;
     protected final PlaceholderDoubleAdapter<?> time;
 
     public AttributePlusSourceAdapter(
@@ -48,6 +49,7 @@ public class AttributePlusSourceAdapter {
         this.attrName = placeholderStringHelper.of(mlc.getString(new String[] {"attr", "a"}));
         this.persistent = mlc.getBoolean(new String[] {"persistent", "p"}, false);
         this.time = placeholderDoubleHelper.of(mlc.getString(new String[] {"time", "t"}));
+        this.sourceName = placeholderStringHelper.of(mlc.getString(new String[] {"sourceName", "s"}));
     }
 
     @NativeObfuscation
@@ -57,18 +59,13 @@ public class AttributePlusSourceAdapter {
         List<String> attr =
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
-        String source = "APSource" + UUID.randomUUID();
-        AttributeAPI.addSourceAttribute(data, source, attr);
-        AttributeAPI.updateAttribute(entity);
+        String source = sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null ? "APSource" + UUID.randomUUID() : sourceName.get(skillMetadata, abstractEntity);
         if (persistent) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    AttributeAPI.takeSourceAttribute(data, source);
-                }
-            }.runTaskLaterAsynchronously(
-                    InstanceUtil.getInstance(Plugin.class), (long) (time.get(skillMetadata, abstractEntity) * 20));
+            AttributeAPI.addPersistentSourceAttribute(data, source, attr, time.get(skillMetadata, abstractEntity));
+        } else {
+            AttributeAPI.addSourceAttribute(data, source, attr);
         }
+        AttributeAPI.updateAttribute(entity);
         return true;
     }
 }

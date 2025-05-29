@@ -18,10 +18,10 @@
 
 package top.nustar.nustarmythicmobsextension.adapter;
 
-import team.idealstate.sugar.validate.annotation.NotNull;
+
+import org.jetbrains.annotations.Nullable;
 
 public interface Adapter<T> {
-
-    @NotNull
+    @Nullable
     T getActualObject();
 }

@@ -21,18 +21,18 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.placeholder;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.skills.SkillMetadata;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
-import lombok.NonNull;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
 
 public class PlaceholderStringAdapterImpl extends PlaceholderStringAdapter<PlaceholderString> {
-    public PlaceholderStringAdapterImpl(@NonNull PlaceholderString actualObject) {
+    public PlaceholderStringAdapterImpl(PlaceholderString actualObject) {
         super(actualObject);
     }
 
     @Override
     public String get(SkillMetadataAdapter<?> data, AbstractEntityAdapter<?> target) {
+        assert getActualObject() != null;
         return getActualObject().get((SkillMetadata) data.getActualObject(), (AbstractEntity) target.getActualObject());
     }
 }

@@ -19,11 +19,11 @@
 package top.nustar.nustarmythicmobsextension.adapter;
 
 import lombok.Data;
-import lombok.NonNull;
+import org.jetbrains.annotations.Nullable;
 
 @Data
 public abstract class AbstractAdapter<T> implements Adapter<T> {
 
-    @NonNull
+    @Nullable
     private final T actualObject;
 }

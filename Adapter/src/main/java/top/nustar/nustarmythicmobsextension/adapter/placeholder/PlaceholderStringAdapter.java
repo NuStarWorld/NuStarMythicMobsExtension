@@ -18,13 +18,12 @@
 
 package top.nustar.nustarmythicmobsextension.adapter.placeholder;
 
-import lombok.NonNull;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 
 public abstract class PlaceholderStringAdapter<T> extends AbstractAdapter<T> {
-    public PlaceholderStringAdapter(@NonNull T actualObject) {
+    public PlaceholderStringAdapter(T actualObject) {
         super(actualObject);
     }
 
