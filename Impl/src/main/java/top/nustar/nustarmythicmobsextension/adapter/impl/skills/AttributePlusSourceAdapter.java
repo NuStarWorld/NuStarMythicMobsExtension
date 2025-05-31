@@ -19,9 +19,12 @@
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.serverct.ersha.AttributePlus;
 import org.serverct.ersha.api.AttributeAPI;
 import org.serverct.ersha.attribute.data.AttributeData;
+import org.serverct.ersha.manager.AttributeManager;
+import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicLineConfigAdapter;
@@ -65,7 +68,7 @@ public class AttributePlusSourceAdapter {
         } else {
             AttributeAPI.addSourceAttribute(data, source, attr);
         }
-        AttributeAPI.updateAttribute(entity);
+        AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity).updateAttribute(true);
         return true;
     }
 }
