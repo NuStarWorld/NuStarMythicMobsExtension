@@ -21,20 +21,17 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.subscribers;
 import io.lumine.mythic.api.skills.targeters.ISkillTargeter;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent;
+import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.bukkit.events.MythicTargeterLoadEvent;
 import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.core.skills.SkillMechanic;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.service.ConfigService;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
 import top.nustar.nustarmythicmobsextension.service.TargetSelectorHelperService;
@@ -44,6 +41,12 @@ import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.MythicMobsVersion;
 import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 @Subscriber
 @DependsOn(classes = "io.lumine.mythic.bukkit.utils.config.file.YamlConfiguration")
 @SuppressWarnings({"unused"})
@@ -51,6 +54,12 @@ public class MythicMobsSubscriber implements Listener {
     private volatile ConfigService configService;
     private volatile Map<MechanicType, MechanicHelperService> mechanicHelperServiceMap;
     private volatile Map<TargetSelectorType, TargetSelectorHelperService> targetSelectorHelperServiceMap;
+    private final AttributeSourceManager attributeSourceManager = AttributeSourceManager.getAttributeSourceManager();
+
+    @EventHandler
+    public void onMobDeath(MythicMobDeathEvent event) {
+        attributeSourceManager.removeAttributeSourceInstance(event.getEntity().getUniqueId());
+    }
 
     @EventHandler
     public void onTargetLoad(MythicTargeterLoadEvent event) {
@@ -82,8 +91,8 @@ public class MythicMobsSubscriber implements Listener {
                 .filter(mechanicHelperService ->
                         mechanicHelperService.getClass().isAnnotationPresent(SupportMechanicType.class)
                                 && mechanicHelperService
-                                        .findMythicMobsVersionFromService(mechanicHelperService)
-                                        .equals(MythicMobsVersion.MM5_1_0))
+                                .findMythicMobsVersionFromService(mechanicHelperService)
+                                .equals(MythicMobsVersion.MM5_1_0))
                 .collect(Collectors.toMap(
                         mechanicHelperService ->
                                 mechanicHelperService.findMechanicTypeFromService(mechanicHelperService),
@@ -102,8 +111,8 @@ public class MythicMobsSubscriber implements Listener {
                 .filter(targetSelectorHelperService ->
                         targetSelectorHelperService.getClass().isAnnotationPresent(SupportTargetSelectorType.class)
                                 && targetSelectorHelperService
-                                        .findMythicMobsVersionFromService(targetSelectorHelperService)
-                                        .equals(MythicMobsVersion.MM5_1_0))
+                                .findMythicMobsVersionFromService(targetSelectorHelperService)
+                                .equals(MythicMobsVersion.MM5_1_0))
                 .collect(Collectors.toMap(
                         targetSelectorHelperService ->
                                 targetSelectorHelperService.findSelectorTypeFromService(targetSelectorHelperService),

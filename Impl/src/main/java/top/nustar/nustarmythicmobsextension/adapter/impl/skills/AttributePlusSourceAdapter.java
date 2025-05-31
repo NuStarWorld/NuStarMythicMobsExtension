@@ -23,8 +23,6 @@ import org.bukkit.entity.Player;
 import org.serverct.ersha.AttributePlus;
 import org.serverct.ersha.api.AttributeAPI;
 import org.serverct.ersha.attribute.data.AttributeData;
-import org.serverct.ersha.manager.AttributeManager;
-import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicLineConfigAdapter;
@@ -33,6 +31,7 @@ import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderDoubl
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderDoubleHelper;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
+import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,15 +43,16 @@ public class AttributePlusSourceAdapter {
     protected final boolean persistent;
     protected final PlaceholderStringAdapter<?> sourceName;
     protected final PlaceholderDoubleAdapter<?> time;
+    private final AttributeSourceManager attributeSourceManager = AttributeSourceManager.getAttributeSourceManager();
 
     public AttributePlusSourceAdapter(
             PlaceholderStringHelper<?> placeholderStringHelper,
             PlaceholderDoubleHelper<?> placeholderDoubleHelper,
             MythicLineConfigAdapter<?> mlc) {
-        this.attrName = placeholderStringHelper.of(mlc.getString(new String[] {"attr", "a"}));
-        this.persistent = mlc.getBoolean(new String[] {"persistent", "p"}, false);
-        this.time = placeholderDoubleHelper.of(mlc.getString(new String[] {"time", "t"}));
-        this.sourceName = placeholderStringHelper.of(mlc.getString(new String[] {"sourceName", "s"}));
+        this.attrName = placeholderStringHelper.of(mlc.getString(new String[]{"attr", "a"}));
+        this.persistent = mlc.getBoolean(new String[]{"persistent", "p"}, false);
+        this.time = placeholderDoubleHelper.of(mlc.getString(new String[]{"time", "t"}));
+        this.sourceName = placeholderStringHelper.of(mlc.getString(new String[]{"sourceName", "s"}));
     }
 
     @NativeObfuscation
@@ -63,12 +63,13 @@ public class AttributePlusSourceAdapter {
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
         String source = sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null ? "APSource" + UUID.randomUUID() : sourceName.get(skillMetadata, abstractEntity);
+        AttributeAPI.addSourceAttribute(data, source, attr);
         if (persistent) {
-            AttributeAPI.addPersistentSourceAttribute(data, source, attr, time.get(skillMetadata, abstractEntity));
-        } else {
-            AttributeAPI.addSourceAttribute(data, source, attr);
+            attributeSourceManager.addAttributeSourceInstance(entity, source, (int) time.get(skillMetadata, abstractEntity));
         }
-        AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity).updateAttribute(true);
+        if (entity instanceof Player) {
+            AttributeAPI.updateAttribute(entity);
+        }
         return true;
     }
 }

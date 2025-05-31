@@ -19,20 +19,24 @@
 package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.subscribers;
 
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent;
+import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicTargeterLoadEvent;
 import io.lumine.xikage.mythicmobs.skills.SkillMechanic;
 import io.lumine.xikage.mythicmobs.skills.SkillTargeter;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.service.ConfigService;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
 import top.nustar.nustarmythicmobsextension.service.TargetSelectorHelperService;
@@ -50,6 +54,12 @@ public class MythicMobsSubscriber implements Listener {
     private volatile ConfigService configService;
     private volatile Map<MechanicType, MechanicHelperService> mechanicHelperServiceMap;
     private volatile Map<TargetSelectorType, TargetSelectorHelperService> targetSelectorHelperServiceMap;
+    private final AttributeSourceManager attributeSourceManager = AttributeSourceManager.getAttributeSourceManager();
+
+    @EventHandler
+    public void onMobDeath(MythicMobDeathEvent event) {
+        attributeSourceManager.removeAttributeSourceInstance(event.getMob().getUniqueId());
+    }
 
     @EventHandler
     public void onTargetLoad(MythicTargeterLoadEvent event) {
@@ -79,8 +89,8 @@ public class MythicMobsSubscriber implements Listener {
                 .filter(mechanicHelperService ->
                         mechanicHelperService.getClass().isAnnotationPresent(SupportMechanicType.class)
                                 && mechanicHelperService
-                                        .findMythicMobsVersionFromService(mechanicHelperService)
-                                        .equals(MythicMobsVersion.MM4_9_0))
+                                .findMythicMobsVersionFromService(mechanicHelperService)
+                                .equals(MythicMobsVersion.MM4_9_0))
                 .collect(Collectors.toMap(
                         mechanicHelperService ->
                                 mechanicHelperService.findMechanicTypeFromService(mechanicHelperService),
@@ -99,8 +109,8 @@ public class MythicMobsSubscriber implements Listener {
                 .filter(targetSelectorHelperService ->
                         targetSelectorHelperService.getClass().isAnnotationPresent(SupportTargetSelectorType.class)
                                 && targetSelectorHelperService
-                                        .findMythicMobsVersionFromService(targetSelectorHelperService)
-                                        .equals(MythicMobsVersion.MM4_9_0))
+                                .findMythicMobsVersionFromService(targetSelectorHelperService)
+                                .equals(MythicMobsVersion.MM4_9_0))
                 .collect(Collectors.toMap(
                         targetSelectorHelperService ->
                                 targetSelectorHelperService.findSelectorTypeFromService(targetSelectorHelperService),

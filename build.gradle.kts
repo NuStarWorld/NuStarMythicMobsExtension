@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarmythicmobsextension"
-version = "2.0.4"
+version = "2.0.5"
 
 allprojects {
     if (!project.buildFile.exists()) {
@@ -70,11 +70,12 @@ allprojects {
     }
 
     dependencies {
-        if (!project.name.startsWith("NuStarMythicMobsExtension-Adapter")) {
-            implementation(rootProject.project(":${rootProject.name}-Adapter"))
-        }
         if (project.name.startsWith("NuStarMythicMobsExtension-MythicMobs")) {
             implementation(rootProject.project(":${rootProject.name}-Impl"))
+            implementation(rootProject.project(":${rootProject.name}-Adapter"))
+        }
+        if (project.name.startsWith("NuStarMythicMobsExtension-Impl")) {
+            implementation(rootProject.project(":${rootProject.name}-Adapter"))
         }
         @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
         compileOnly(rootProject.libs.spigot.api)
@@ -113,11 +114,7 @@ dependencies {
     implementation("com.alibaba:fastjson:2.0.0")
     implementation("com.konghq:unirest-java:3.14.1")
     internal("org.bstats:bstats-bukkit:3.0.2")
-    shadow(rootProject.project("${rootProject.name}-MyAuth"))
-    shadow(rootProject.project("${rootProject.name}-Impl"))
     subprojects {
-        if (name.startsWith("NuStarMythicMobsExtension-MythicMobs")) {
-            shadow(rootProject.project(name))
-        }
+        shadow(rootProject.project(name))
     }
 }
