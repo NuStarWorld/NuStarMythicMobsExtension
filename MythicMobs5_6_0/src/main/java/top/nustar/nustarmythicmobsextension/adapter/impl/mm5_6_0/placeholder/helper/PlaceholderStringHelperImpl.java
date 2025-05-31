@@ -26,7 +26,8 @@ import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.Placehold
 public class PlaceholderStringHelperImpl implements PlaceholderStringHelper<PlaceholderString> {
     @Override
     public PlaceholderStringAdapter<PlaceholderString> of(String string) {
-        PlaceholderStringAdapter<PlaceholderString> placeholderStringAdapter =  new PlaceholderStringAdapterImpl(PlaceholderString.of(string));
+        PlaceholderStringAdapter<PlaceholderString> placeholderStringAdapter =
+                new PlaceholderStringAdapterImpl(PlaceholderString.of(string));
         if (placeholderStringAdapter.getActualObject() == null) {
             return null;
         }

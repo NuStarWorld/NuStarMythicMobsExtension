@@ -26,10 +26,12 @@ public abstract class MythicLineConfigAdapter<T> extends AbstractAdapter<T> {
     }
 
     public abstract String getString(String[] key);
+
     public abstract String getString(String[] key, String def);
 
     public abstract boolean getBoolean(String[] key, boolean def);
 
     public abstract double getDouble(String[] key);
+
     public abstract double getDouble(String[] key, double def);
 }

@@ -18,6 +18,9 @@
 
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.serverct.ersha.AttributePlus;
@@ -33,10 +36,6 @@ import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.Placehold
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
 import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
 @NativeObfuscation
 public class AttributePlusSourceAdapter {
     protected final PlaceholderStringAdapter<?> attrName;
@@ -49,10 +48,10 @@ public class AttributePlusSourceAdapter {
             PlaceholderStringHelper<?> placeholderStringHelper,
             PlaceholderDoubleHelper<?> placeholderDoubleHelper,
             MythicLineConfigAdapter<?> mlc) {
-        this.attrName = placeholderStringHelper.of(mlc.getString(new String[]{"attr", "a"}));
-        this.persistent = mlc.getBoolean(new String[]{"persistent", "p"}, false);
-        this.time = placeholderDoubleHelper.of(mlc.getString(new String[]{"time", "t"}));
-        this.sourceName = placeholderStringHelper.of(mlc.getString(new String[]{"sourceName", "s"}));
+        this.attrName = placeholderStringHelper.of(mlc.getString(new String[] {"attr", "a"}));
+        this.persistent = mlc.getBoolean(new String[] {"persistent", "p"}, false);
+        this.time = placeholderDoubleHelper.of(mlc.getString(new String[] {"time", "t"}));
+        this.sourceName = placeholderStringHelper.of(mlc.getString(new String[] {"sourceName", "s"}));
     }
 
     @NativeObfuscation
@@ -62,10 +61,13 @@ public class AttributePlusSourceAdapter {
         List<String> attr =
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
-        String source = sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null ? "APSource" + UUID.randomUUID() : sourceName.get(skillMetadata, abstractEntity);
+        String source = sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
+                ? "APSource" + UUID.randomUUID()
+                : sourceName.get(skillMetadata, abstractEntity);
         AttributeAPI.addSourceAttribute(data, source, attr);
         if (persistent) {
-            attributeSourceManager.addAttributeSourceInstance(entity, source, (int) time.get(skillMetadata, abstractEntity));
+            attributeSourceManager.addAttributeSourceInstance(
+                    entity, source, (int) time.get(skillMetadata, abstractEntity));
         }
         if (entity instanceof Player) {
             AttributeAPI.updateAttribute(entity);
