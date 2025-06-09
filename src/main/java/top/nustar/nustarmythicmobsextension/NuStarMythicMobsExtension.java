@@ -21,8 +21,6 @@ package top.nustar.nustarmythicmobsextension;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import team.idealstate.minecraft.next.spigot.api.SpigotPlugin;
-import team.idealstate.sugar.banner.Banner;
-import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.boot.jackson.annotation.EnableJacksonYaml;
 import team.idealstate.sugar.next.context.Context;
 import team.idealstate.sugar.next.context.annotation.feature.EnableSugar;
@@ -39,7 +37,9 @@ public class NuStarMythicMobsExtension extends SpigotPlugin {
     public void onInitialized(@NotNull Context context) {}
 
     @Override
-    public void onLoad(@NotNull Context context) {}
+    public void onLoad(@NotNull Context context) {
+        UpdateUtil.checkUpdate();
+    }
 
     @Override
     public void onLoaded(@NotNull Context context) {}
@@ -49,8 +49,6 @@ public class NuStarMythicMobsExtension extends SpigotPlugin {
 
     @Override
     public void onEnabled(@NotNull Context context) {
-        Banner.lines(getClass()).forEach(Log::info);
-        UpdateUtil.checkUpdate();
         Metrics metrics = new Metrics(this, 21687);
         if (this.getServer().getPluginManager().isPluginEnabled("AttributePlus")) {
             metrics.addCustomChart(new SimplePie("attributeplugin", () -> "AttributePlus3"));

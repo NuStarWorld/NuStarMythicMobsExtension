@@ -31,15 +31,15 @@ public class UpdateUtil {
         JSONArray verList = updateResultData.getJSONArray("list");
         if (updateResultData.get("haveNew").toString().equals("1")) {
             JSONObject newVerData = verList.getJSONObject(0);
-            Log.info(() -> "检测到新版本,您使用的版本:" + updateResultData.get("ver").toString());
-            Log.info("=============================");
-            Log.info(() -> "最新版本: " + newVerData.get("ver").toString() + " 更新内容如下");
+            Log.info(String.format("Version checker: '%s'", "检测到新版本,您使用的版本:" + updateResultData.get("ver").toString()));
+            Log.info(String.format("Version checker: '%s'", "============================="));
+            Log.info(String.format("Version checker: '%s'", "最新版本: " + newVerData.get("ver").toString() + " 更新内容如下"));
             for (String log : update.getUpdateLog(newVerData)) {
-                Log.info(log);
+                Log.info(String.format("Version checker: '%s'", log));
             }
-            Log.info("=============================");
+            Log.info(String.format("Version checker: '%s'", "============================="));
         } else {
-            Log.info("当前版本为最新版本");
+            Log.info(String.format("Version checker: '%s'", "当前版本为最新版本"));
         }
     }
 }
