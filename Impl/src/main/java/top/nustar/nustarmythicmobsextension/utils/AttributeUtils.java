@@ -19,7 +19,10 @@
 package top.nustar.nustarmythicmobsextension.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.serverct.ersha.attribute.data.AttributeData;
 
 public class AttributeUtils {
@@ -30,5 +33,18 @@ public class AttributeUtils {
             whiteAttrList.add(attrName + ":" + attributeData.getAttributeValue(attrName)[0]);
         }
         return whiteAttrList;
+    }
+
+    public static Map<String, Integer> getPercentageAttr(List<String> percentageAttrList) {
+        Map<String, Integer> percentageAttr = new HashMap<>();
+        for (String attr : percentageAttrList) {
+            String[] attrSplit;
+            attrSplit = attr.split(":");
+            if (attrSplit.length != 2) {
+                attrSplit = attr.split("=");
+            }
+            percentageAttr.put(attrSplit[0], Integer.parseInt(attrSplit[1]));
+        }
+        return percentageAttr;
     }
 }

@@ -43,7 +43,7 @@ public class Update {
         this.dataObject.put("timestamp", this.data.getTimestamp());
         this.jsonObject.put("data", dataObject);
         this.jsonObject.put("skey", "ff04bfa8-35d9-4a2c-b1b6-fcfc0d4663d3");
-        this.jsonObject.put("vkey", "75C14A7B-D6D3-48DC-8B58-85F6E8441EF9");
+        this.jsonObject.put("vkey", "C339B7FD-6AD6-41DA-99F5-CF3764053F45");
         this.jsonObject.put("sign", Sign.calculateSign(this.dataObject, "woshinidie666666"));
         result = JSONObject.parseObject(response().getBody(), JSONObject.class);
     }
