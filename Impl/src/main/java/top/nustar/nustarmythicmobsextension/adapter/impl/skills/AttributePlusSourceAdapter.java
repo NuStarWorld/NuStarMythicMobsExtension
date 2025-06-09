@@ -19,7 +19,6 @@
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
 import java.util.*;
-
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.serverct.ersha.AttributePlus;
@@ -69,16 +68,19 @@ public class AttributePlusSourceAdapter {
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
         List<String> percentageAttrList = new ArrayList<>();
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
-        String defaultSource = "APSource" + (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
-                ? UUID.randomUUID().toString()
-                : sourceName.get(skillMetadata, abstractEntity));
+        String defaultSource = "APSource"
+                + (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
+                        ? UUID.randomUUID().toString()
+                        : sourceName.get(skillMetadata, abstractEntity));
         AttributeAPI.addSourceAttribute(data, defaultSource, attr);
         if (percentageAttr != null) {
-            String percentageSource = "APPercentageSource" + (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
-                    ? UUID.randomUUID().toString()
-                    : sourceName.get(skillMetadata, abstractEntity));
+            String percentageSource = "APPercentageSource"
+                    + (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
+                            ? UUID.randomUUID().toString()
+                            : sourceName.get(skillMetadata, abstractEntity));
             for (Map.Entry<String, Integer> entry : this.percentageAttr.entrySet()) {
-                percentageAttrList.add(entry.getKey() + ":" + (data.getRandomValue(entry.getKey()).doubleValue() * entry.getValue() / 100));
+                percentageAttrList.add(entry.getKey() + ":"
+                        + (data.getRandomValue(entry.getKey()).doubleValue() * entry.getValue() / 100));
             }
             AttributeAPI.addSourceAttribute(data, percentageSource, percentageAttrList);
             if (persistent) {
