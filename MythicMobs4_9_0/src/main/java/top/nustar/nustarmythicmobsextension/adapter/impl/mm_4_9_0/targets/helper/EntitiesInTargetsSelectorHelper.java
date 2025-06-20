@@ -16,7 +16,7 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.helper;
+package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.targets.helper;
 
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig;
 import team.idealstate.sugar.next.context.annotation.component.Component;

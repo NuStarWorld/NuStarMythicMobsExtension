@@ -19,7 +19,8 @@
 package top.nustar.nustarmythicmobsextension.service.enums;
 
 public enum TargetSelectorType {
-    ENTITIES_IN_TARGETS("EntitiesInTargets");
+    ENTITIES_IN_TARGETS("EntitiesInTargets"),
+    SUPER_FORWARD_TARGETER("SuperForward");
 
     private final String name;
 
