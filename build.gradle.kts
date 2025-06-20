@@ -111,8 +111,6 @@ allprojects {
 }
 
 dependencies {
-    implementation("com.alibaba:fastjson:2.0.0")
-    implementation("com.konghq:unirest-java:3.14.1")
     internal("org.bstats:bstats-bukkit:3.0.2")
     subprojects {
         shadow(rootProject.project(name))

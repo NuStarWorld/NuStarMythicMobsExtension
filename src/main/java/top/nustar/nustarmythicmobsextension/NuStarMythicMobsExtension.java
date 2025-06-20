@@ -21,11 +21,11 @@ package top.nustar.nustarmythicmobsextension;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import team.idealstate.minecraft.next.spigot.api.SpigotPlugin;
+import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.boot.jackson.annotation.EnableJacksonYaml;
 import team.idealstate.sugar.next.context.Context;
 import team.idealstate.sugar.next.context.annotation.feature.EnableSugar;
 import team.idealstate.sugar.validate.annotation.NotNull;
-import top.nustar.nustarmythicmobsextension.utils.UpdateUtil;
 
 @EnableSugar
 @EnableJacksonYaml
@@ -38,7 +38,7 @@ public class NuStarMythicMobsExtension extends SpigotPlugin {
 
     @Override
     public void onLoad(@NotNull Context context) {
-        UpdateUtil.checkUpdate();
+        Log.info(String.format("Version: '%s'", this.getVersion()));
     }
 
     @Override
