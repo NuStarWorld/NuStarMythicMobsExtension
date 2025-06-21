@@ -24,12 +24,13 @@ import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.AttributePlusSource;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
+import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
 import top.nustar.nustarmythicmobsextension.service.annotations.SupportMechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
-import top.nustar.nustarmythicmobsextension.service.enums.MythicMobsVersion;
 
 @Component
-@SupportMechanicType(type = MechanicType.ATTRIBUTE_PLUS_SOURCE, version = MythicMobsVersion.MM4_9_0)
+@SupportMechanicType(type = MechanicType.ATTRIBUTE_PLUS_SOURCE)
+@MythicMobs4_9_0
 @DependsOn(classes = "io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration")
 @SuppressWarnings({"unused"})
 public class AttributePlusSourceHelper implements MechanicHelperService {

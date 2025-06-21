@@ -18,10 +18,7 @@
 
 package top.nustar.nustarmythicmobsextension;
 
-import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
 import team.idealstate.minecraft.next.spigot.api.SpigotPlugin;
-import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.boot.jackson.annotation.EnableJacksonYaml;
 import team.idealstate.sugar.next.context.Context;
 import team.idealstate.sugar.next.context.annotation.feature.EnableSugar;
@@ -31,42 +28,42 @@ import team.idealstate.sugar.validate.annotation.NotNull;
 @EnableJacksonYaml
 public class NuStarMythicMobsExtension extends SpigotPlugin {
     @Override
-    public void onInitialize(@NotNull Context context) {}
+    public void onInitialize(@NotNull Context context) {
+    }
 
     @Override
-    public void onInitialized(@NotNull Context context) {}
+    public void onInitialized(@NotNull Context context) {
+    }
 
     @Override
     public void onLoad(@NotNull Context context) {
-        Log.info(String.format("Version: '%s'", this.getVersion()));
     }
 
     @Override
-    public void onLoaded(@NotNull Context context) {}
+    public void onLoaded(@NotNull Context context) {
+    }
 
     @Override
-    public void onEnable(@NotNull Context context) {}
+    public void onEnable(@NotNull Context context) {
+    }
 
     @Override
     public void onEnabled(@NotNull Context context) {
-        Metrics metrics = new Metrics(this, 21687);
-        if (this.getServer().getPluginManager().isPluginEnabled("AttributePlus")) {
-            metrics.addCustomChart(new SimplePie("attributeplugin", () -> "AttributePlus3"));
-        }
-        if (this.getServer().getPluginManager().isPluginEnabled("SX-Attribute")) {
-            metrics.addCustomChart(new SimplePie("attributeplugin", () -> "SX-Attribute2"));
-        }
     }
 
     @Override
-    public void onDisable(@NotNull Context context) {}
+    public void onDisable(@NotNull Context context) {
+    }
 
     @Override
-    public void onDisabled(@NotNull Context context) {}
+    public void onDisabled(@NotNull Context context) {
+    }
 
     @Override
-    public void onDestroy(@NotNull Context context) {}
+    public void onDestroy(@NotNull Context context) {
+    }
 
     @Override
-    public void onDestroyed(@NotNull Context context) {}
+    public void onDestroyed(@NotNull Context context) {
+    }
 }

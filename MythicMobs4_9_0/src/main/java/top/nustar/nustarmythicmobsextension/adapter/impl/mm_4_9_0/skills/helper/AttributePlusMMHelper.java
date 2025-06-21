@@ -25,12 +25,13 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.AttributePlusMM;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
+import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
 import top.nustar.nustarmythicmobsextension.service.annotations.SupportMechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
-import top.nustar.nustarmythicmobsextension.service.enums.MythicMobsVersion;
 
 @Component
-@SupportMechanicType(type = MechanicType.ATTRIBUTE_PLUS_MM, version = MythicMobsVersion.MM4_9_0)
+@SupportMechanicType(type = MechanicType.ATTRIBUTE_PLUS_MM)
+@MythicMobs4_9_0
 @DependsOn(classes = "io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration")
 @SuppressWarnings({"unused"})
 public class AttributePlusMMHelper implements MechanicHelperService {

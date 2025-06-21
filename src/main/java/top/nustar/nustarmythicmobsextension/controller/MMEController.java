@@ -18,6 +18,8 @@
 
 package top.nustar.nustarmythicmobsextension.controller;
 
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.command.Command;
 import team.idealstate.sugar.next.command.CommandResult;
@@ -28,15 +30,17 @@ import team.idealstate.sugar.next.context.annotation.component.Controller;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.Named;
 import team.idealstate.sugar.next.context.aware.ContextAware;
+import team.idealstate.sugar.next.context.lifecycle.Initializable;
 import team.idealstate.sugar.validate.Validation;
 import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.nustarmythicmobsextension.NuStarMythicMobsExtension;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 import top.nustar.nustarmythicmobsextension.service.ConfigService;
 
 @Named("nsme")
 @Controller
 @SuppressWarnings({"unused"})
-public class MMEController implements Command, ContextAware {
+public class MMEController implements Command, ContextAware, Initializable {
     private volatile Context context;
     private volatile ConfigService configService;
 
@@ -53,6 +57,17 @@ public class MMEController implements Command, ContextAware {
             return CommandResult.failure("未能完成配置重载，错误信息请查看日志输出。");
         }
         return CommandResult.success("已完成配置重载");
+    }
+
+    @Override
+    public void initialize() {
+        Metrics metrics = new Metrics(((NuStarMythicMobsExtension)context.getHolder()), 21687);
+        if (((NuStarMythicMobsExtension)context.getHolder()).getServer().getPluginManager().isPluginEnabled("AttributePlus")) {
+            metrics.addCustomChart(new SimplePie("attributeplugin", () -> "AttributePlus3"));
+        }
+        if (((NuStarMythicMobsExtension)context.getHolder()).getServer().getPluginManager().isPluginEnabled("SX-Attribute")) {
+            metrics.addCustomChart(new SimplePie("attributeplugin", () -> "SX-Attribute2"));
+        }
     }
 
     @Override

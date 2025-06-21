@@ -23,12 +23,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
-import top.nustar.nustarmythicmobsextension.service.enums.MythicMobsVersion;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SupportMechanicType {
     MechanicType type();
-
-    MythicMobsVersion version();
 }

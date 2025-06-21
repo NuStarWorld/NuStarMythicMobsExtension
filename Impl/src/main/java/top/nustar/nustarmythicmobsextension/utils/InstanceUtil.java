@@ -37,4 +37,6 @@ public class InstanceUtil implements ContextHolderAware {
     public static <T> T getInstance(Class<T> clazz) {
         return clazz.cast(contextHolder);
     }
+
+
 }

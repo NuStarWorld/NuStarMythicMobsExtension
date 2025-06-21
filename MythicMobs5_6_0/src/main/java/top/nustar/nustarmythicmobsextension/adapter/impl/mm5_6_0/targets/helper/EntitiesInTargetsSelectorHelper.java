@@ -25,12 +25,13 @@ import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarTargerSelector;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.targets.EntitiesInTargetsSelector;
 import top.nustar.nustarmythicmobsextension.service.TargetSelectorHelperService;
+import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs5_6_0;
 import top.nustar.nustarmythicmobsextension.service.annotations.SupportTargetSelectorType;
-import top.nustar.nustarmythicmobsextension.service.enums.MythicMobsVersion;
 import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 
 @Component
-@SupportTargetSelectorType(type = TargetSelectorType.ENTITIES_IN_TARGETS, version = MythicMobsVersion.MM5_6_0)
+@SupportTargetSelectorType(type = TargetSelectorType.ENTITIES_IN_TARGETS)
+@MythicMobs5_6_0
 @DependsOn(classes = "io.lumine.mythic.core.config.MythicConfigImpl")
 @SuppressWarnings({"unused"})
 public class EntitiesInTargetsSelectorHelper implements TargetSelectorHelperService {
