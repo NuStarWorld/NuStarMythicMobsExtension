@@ -39,7 +39,6 @@ import top.nustar.nustarmythicmobsextension.service.annotations.SupportTargetSel
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -92,12 +91,12 @@ public class MythicMobsSubscriber implements Listener {
                         mechanicHelperService ->
                                 mechanicHelperService.findMechanicTypeFromService(mechanicHelperService),
                         Function.identity()));
-        List<MechanicType> missingTypes = Arrays.stream(MechanicType.values())
-                .filter(type -> !mechanicHelperServiceMap.containsKey(type))
-                .collect(Collectors.toList());
-        if (!missingTypes.isEmpty()) {
-            throw new IllegalArgumentException("以下技能类型缺少对应的策略: " + missingTypes);
-        }
+//        List<MechanicType> missingTypes = Arrays.stream(MechanicType.values())
+//                .filter(type -> !mechanicHelperServiceMap.containsKey(type))
+//                .collect(Collectors.toList());
+//        if (!missingTypes.isEmpty()) {
+//            throw new IllegalArgumentException("以下技能类型缺少对应的策略: " + missingTypes);
+//        }
     }
 
     @Autowired
@@ -111,11 +110,11 @@ public class MythicMobsSubscriber implements Listener {
                         targetSelectorHelperService ->
                                 targetSelectorHelperService.findSelectorTypeFromService(targetSelectorHelperService),
                         Function.identity()));
-        List<TargetSelectorType> missingTypes = Arrays.stream(TargetSelectorType.values())
-                .filter(type -> !targetSelectorHelperServiceMap.containsKey(type))
-                .collect(Collectors.toList());
-        if (!missingTypes.isEmpty()) {
-            throw new IllegalArgumentException("以下选择器类型缺少对应的策略: " + missingTypes);
-        }
+//        List<TargetSelectorType> missingTypes = Arrays.stream(TargetSelectorType.values())
+//                .filter(type -> !targetSelectorHelperServiceMap.containsKey(type))
+//                .collect(Collectors.toList());
+//        if (!missingTypes.isEmpty()) {
+//            throw new IllegalArgumentException("以下选择器类型缺少对应的策略: " + missingTypes);
+//        }
     }
 }
