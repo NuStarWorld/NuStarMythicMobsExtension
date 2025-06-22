@@ -41,4 +41,14 @@ public class AbstractEntityAdapterImpl extends AbstractEntityAdapter<AbstractEnt
     public void removeMetadata(String key) {
         getActualObject().removeMetadata(key);
     }
+
+    @Override
+    public double getHealth() {
+        return getActualObject().getHealth();
+    }
+
+    @Override
+    public double getMaxHealth() {
+        return getActualObject().getMaxHealth();
+    }
 }

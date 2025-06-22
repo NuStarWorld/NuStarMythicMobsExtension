@@ -19,11 +19,14 @@
 package top.nustar.nustarmythicmobsextension.adapter;
 
 import lombok.Data;
-import org.jetbrains.annotations.Nullable;
+import team.idealstate.sugar.validate.annotation.NotNull;
 
 @Data
 public abstract class AbstractAdapter<T> implements Adapter<T> {
-
-    @Nullable
     private final T actualObject;
+
+    @NotNull
+    public T getActualObject() {
+        return actualObject;
+    }
 }

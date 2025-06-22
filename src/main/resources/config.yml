@@ -1,6 +1,20 @@
+debug: false
 #插件自带的威胁度系统 默认关闭
 threat: false
 #clear属性白名单
 white-attr-list:
   - "暴击几率"
   - "暴击倍率"
+# 表达式可用变量表（将字面量或 PAPI 变量转换成四则表达式变量）
+# 变量值必须为数值类型
+# 内置变量:
+# caster_level —— 施法者等级
+# caster_hp —— 施法者当前血量
+# caster_mhp —— 施法者最大血量
+# target_hp —— 目标的当前血量
+# target_mhp —— 目标的最大血量
+variables:
+  # 示例：使用常量定义
+  factor: 1.68
+  # 示例：使用 PAPI 定义
+  player_level: '%player_level%'

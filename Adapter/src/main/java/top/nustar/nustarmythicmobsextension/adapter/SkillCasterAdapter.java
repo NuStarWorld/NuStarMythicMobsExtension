@@ -27,4 +27,6 @@ public abstract class SkillCasterAdapter<T> extends AbstractAdapter<T> {
     public abstract AbstractEntityAdapter<?> getEntity();
 
     public abstract void setUsingDamageSkill(boolean b);
+
+    public abstract double getLevel();
 }

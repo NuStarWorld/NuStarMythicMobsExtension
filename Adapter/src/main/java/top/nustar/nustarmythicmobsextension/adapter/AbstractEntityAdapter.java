@@ -18,11 +18,10 @@
 
 package top.nustar.nustarmythicmobsextension.adapter;
 
-import lombok.NonNull;
 import org.bukkit.entity.Entity;
 
 public abstract class AbstractEntityAdapter<T> extends AbstractAdapter<T> {
-    public AbstractEntityAdapter(@NonNull T actualObject) {
+    public AbstractEntityAdapter(T actualObject) {
         super(actualObject);
     }
 
@@ -31,4 +30,8 @@ public abstract class AbstractEntityAdapter<T> extends AbstractAdapter<T> {
     public abstract void setMetadata(String key, Object value);
 
     public abstract void removeMetadata(String key);
+
+    public abstract double getHealth();
+
+    public abstract double getMaxHealth();
 }

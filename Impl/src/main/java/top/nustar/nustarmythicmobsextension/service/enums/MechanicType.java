@@ -21,6 +21,7 @@ package top.nustar.nustarmythicmobsextension.service.enums;
 public enum MechanicType {
     ATTRIBUTE_PLUS_MM("apmm"),
     ATTRIBUTE_PLUS_SOURCE("apsource"),
+    FAST_AP("fastap"),
     SX_ATTRIBUTE_MM("sxmm");
 
     private final String type;

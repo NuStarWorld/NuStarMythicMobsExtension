@@ -37,4 +37,9 @@ public class SkillCasterAdapterImpl extends SkillCasterAdapter<SkillCaster> {
     public void setUsingDamageSkill(boolean b) {
         getActualObject().setUsingDamageSkill(b);
     }
+
+    @Override
+    public double getLevel() {
+        return getActualObject().getLevel();
+    }
 }
