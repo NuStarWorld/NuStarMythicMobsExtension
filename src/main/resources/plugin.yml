@@ -2,7 +2,6 @@
 name: NuStarMythicMobsExtension
 version: '${version}'
 main: top.nustar.nustarmythicmobsextension.NuStarMythicMobsExtension
-load: STARTUP
 authors:
 - NuStar
 - ketikai

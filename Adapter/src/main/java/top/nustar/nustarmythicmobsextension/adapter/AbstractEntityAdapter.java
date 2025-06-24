@@ -18,7 +18,9 @@
 
 package top.nustar.nustarmythicmobsextension.adapter;
 
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 public abstract class AbstractEntityAdapter<T> extends AbstractAdapter<T> {
     public AbstractEntityAdapter(T actualObject) {
@@ -34,4 +36,8 @@ public abstract class AbstractEntityAdapter<T> extends AbstractAdapter<T> {
     public abstract double getHealth();
 
     public abstract double getMaxHealth();
+
+    public void setTarget(LivingEntity target) {
+        ((Creature)target).setTarget(target);
+    }
 }

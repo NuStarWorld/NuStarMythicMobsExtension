@@ -18,9 +18,7 @@
 
 package top.nustar.nustarmythicmobsextension.adapter;
 
-import org.jetbrains.annotations.Nullable;
 
 public interface Adapter<T> {
-    @Nullable
     T getActualObject();
 }
