@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import team.idealstate.sugar.next.context.annotation.component.Component;
@@ -15,6 +16,7 @@ import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import top.nustar.nustarmythicmobsextension.adapter.ActiveMobAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
 import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
+import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
 
 import java.util.UUID;
 
@@ -38,6 +40,16 @@ public class MobDamageListener implements Listener {
     @Autowired
     public void setMobThreatManager(MobThreatManager mobThreatManager) {
         this.mobThreatManager = mobThreatManager;
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onSummoned(EntityDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+        EntityDamageEvent lastDamageCause = entity.getLastDamageCause();
+        if (!(lastDamageCause instanceof EntityDamageByEntityEvent)) return;
+        if (entity.getKiller() != null) {
+            entity.setLastDamageCause(DamageUtil.buildDamageEvent(entity.getKiller(), entity));
+        }
     }
 
     @EventHandler

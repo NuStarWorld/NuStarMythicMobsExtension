@@ -1,7 +1,10 @@
 package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0;
 
 import io.lumine.mythic.core.mobs.ActiveMob;
+import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.ActiveMobAdapter;
+
+import java.util.UUID;
 
 /**
  * @author : NuStar
@@ -18,5 +21,20 @@ public class ActiveMobAdapterImpl extends ActiveMobAdapter<ActiveMob> {
     @Override
     public String getMobType() {
         return getActualObject().getMobType();
+    }
+
+    @Override
+    public AbstractEntityAdapter<?> getParent() {
+        return new AbstractEntityAdapterImpl(getActualObject().getParent().get());
+    }
+
+    @Override
+    public UUID getOwner() {
+        return getActualObject().getOwner().orElse(null);
+    }
+
+    @Override
+    public void setLastDamageSkillAmount(double damage) {
+        getActualObject().setLastDamageSkillAmount(damage);
     }
 }

@@ -18,6 +18,7 @@
 
 package top.nustar.nustarmythicmobsextension.utils;
 
+import org.bukkit.plugin.Plugin;
 import team.idealstate.sugar.next.context.ContextHolder;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
@@ -38,5 +39,8 @@ public class InstanceUtil implements ContextHolderAware {
         return clazz.cast(contextHolder);
     }
 
+    public static String getVersion() {
+        return ((Plugin)contextHolder).getServer().getVersion();
+    }
 
 }

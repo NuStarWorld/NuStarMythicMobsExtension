@@ -22,15 +22,31 @@ import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import java.util.EnumMap;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import team.idealstate.sugar.next.context.annotation.component.Component;
+import team.idealstate.sugar.next.context.annotation.feature.Autowired;
+import team.idealstate.sugar.next.context.annotation.feature.Scope;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.ActiveMobAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 
+@Component
+@Scope(Scope.SINGLETON)
+@SuppressWarnings("unused")
 @NativeObfuscation
 public class DamageUtil {
+    private static volatile MythicInstance mythicInstance;
+
+    @Autowired
+    public void setMythicInstance(MythicInstance mythicInstance) {
+        DamageUtil.mythicInstance = mythicInstance;
+    }
 
     @NativeObfuscation
     public static void damage(
@@ -44,18 +60,20 @@ public class DamageUtil {
         skillMetadata.getCaster().setUsingDamageSkill(true);
         skillMetadata.getCaster().getEntity().setMetadata("doing-skill-damage", true);
         try {
+            EntityDamageByEntityEvent damageByEntityEvent= buildDamageEvent(source, target);
             if (preventsKnockback) {
                 target.damage(0.01);
-                EntityDamageByEntityEvent damageByEntityEvent = new EntityDamageByEntityEvent(
-                        source,
-                        target,
-                        EntityDamageByEntityEvent.DamageCause.ENTITY_ATTACK,
-                        new EnumMap<>(ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, 0.01)),
-                        new EnumMap<>(
-                                ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, Functions.constant(-0.0))));
                 Bukkit.getPluginManager().callEvent(damageByEntityEvent);
             } else {
                 target.damage(0.01, source);
+            }
+            ActiveMobAdapter<?> activeMobAdapter = mythicInstance.getMobManager().getMythicMobInstance(source);
+            if (activeMobAdapter.getActualObject() != null && activeMobAdapter.getOwner() != null) {
+                Entity parent = Bukkit.getEntity(activeMobAdapter.getOwner());
+                if (!InstanceUtil.getVersion().contains("Spigot") && parent instanceof Player) {
+                    target.setKiller((Player) parent);
+                }
+                target.setLastDamageCause(buildDamageEvent(parent, target));
             }
         } finally {
             skillMetadata.getCaster().getEntity().removeMetadata("doing-skill-damage");
@@ -64,5 +82,15 @@ public class DamageUtil {
         if (preventImmunity) {
             target.setNoDamageTicks(0);
         }
+    }
+
+    public static EntityDamageByEntityEvent buildDamageEvent(Entity source, Entity target) {
+        return new EntityDamageByEntityEvent(
+                source,
+                target,
+                EntityDamageByEntityEvent.DamageCause.ENTITY_ATTACK,
+                new EnumMap<>(ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, 0.01)),
+                new EnumMap<>(
+                        ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, Functions.constant(-0.0))));
     }
 }

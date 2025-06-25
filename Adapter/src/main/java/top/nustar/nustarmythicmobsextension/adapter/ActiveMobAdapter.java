@@ -1,5 +1,7 @@
 package top.nustar.nustarmythicmobsextension.adapter;
 
+import java.util.UUID;
+
 /**
  * @author : NuStar
  * Date : 2025/6/24 20:08
@@ -13,4 +15,10 @@ public abstract class ActiveMobAdapter<T> extends AbstractAdapter<T> {
     }
 
     public abstract String getMobType();
+
+    public abstract AbstractEntityAdapter<?> getParent();
+
+    public abstract UUID getOwner();
+
+    public abstract void setLastDamageSkillAmount(double damage);
 }
