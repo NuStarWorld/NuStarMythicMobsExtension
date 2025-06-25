@@ -22,6 +22,7 @@ public enum MechanicType {
     ATTRIBUTE_PLUS_MM("apmm"),
     ATTRIBUTE_PLUS_SOURCE("apsource"),
     FAST_AP("fastap"),
+    NUSTAR_THREAT("nustarthreat"),
     SX_ATTRIBUTE_MM("sxmm");
 
     private final String type;

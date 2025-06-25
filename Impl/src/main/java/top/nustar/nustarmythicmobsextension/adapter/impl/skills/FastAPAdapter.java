@@ -1,7 +1,6 @@
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.serverct.ersha.AttributePlus;
 import org.serverct.ersha.api.AttributeAPI;
 import org.serverct.ersha.attribute.data.AttributeData;
@@ -25,7 +24,7 @@ import java.util.*;
  * QQ : 3318029085
  */
 @NativeObfuscation
-public class FastAPAdapter implements NuStarSkill {
+public class FastAPAdapter implements NuStarSkill, GlobalVariable {
     private final MainConfiguration mainConfiguration;
     private final Map<String, Expression> attrExpressionMap = new HashMap<>();
     protected final boolean clear;
@@ -54,7 +53,7 @@ public class FastAPAdapter implements NuStarSkill {
         LivingEntity caster = (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
         List<String> attrList = new ArrayList<>(attrExpressionMap.size());
         for (Map.Entry<String, Expression> entry : attrExpressionMap.entrySet()) {
-            attrList.add(entry.getKey() + ":" + entry.getValue().calculate(parseExpressionContext(skillMetadata, abstractEntity)));
+            attrList.add(entry.getKey() + ":" + entry.getValue().calculate(parseExpressionContext(skillMetadata, abstractEntity, mainConfiguration.getVariables())));
         }
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(caster);
         AttributeAPI.addSourceAttribute(data, "APMM_XULI", Collections.singletonList("蓄力加成:100"));
@@ -76,23 +75,5 @@ public class FastAPAdapter implements NuStarSkill {
         }
         AttributeAPI.takeSourceAttribute(data, "APMM_XULI");
         return true;
-    }
-
-    private Map<String, Number> parseExpressionContext(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
-        LivingEntity caster = (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
-        List<MainConfiguration.Variable> variables = mainConfiguration.getVariables();
-        Map<String, Number> context = new HashMap<>(variables.size());
-        if (caster instanceof Player) {
-            for (MainConfiguration.Variable variable : variables) {
-                Player player = (Player) caster;
-                context.put(variable.getName(), variable.asBigDecimal(player));
-            }
-        }
-        context.put("caster_level", skillMetadata.getCaster().getLevel());
-        context.put("caster_hp", skillMetadata.getCaster().getEntity().getHealth());
-        context.put("caster_mhp", skillMetadata.getCaster().getEntity().getMaxHealth());
-        context.put("target_hp", abstractEntity.getHealth());
-        context.put("target_mhp", abstractEntity.getMaxHealth());
-        return context;
     }
 }

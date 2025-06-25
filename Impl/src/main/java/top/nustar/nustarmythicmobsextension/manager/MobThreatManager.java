@@ -1,8 +1,11 @@
 package top.nustar.nustarmythicmobsextension.manager;
 
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.LivingEntity;
 import team.idealstate.sugar.next.context.annotation.component.Component;
+import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
+import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
 import top.nustar.nustarmythicmobsextension.entity.MobThreat;
 
 import java.util.Map;
@@ -19,9 +22,15 @@ import java.util.function.Consumer;
  */
 @Component
 @Scope(Scope.SINGLETON)
-
+@SuppressWarnings({"unused"})
 public class MobThreatManager {
+    private volatile MythicInstance mythicInstance;
     private final Map<UUID, MobThreat> mobThreatMap = new ConcurrentHashMap<>();
+
+    @Autowired
+    public void setMythicInstance(MythicInstance mythicInstance) {
+        this.mythicInstance = mythicInstance;
+    }
 
     public MobThreat getMobThreat(Creature mob) {
         return mobThreatMap.computeIfAbsent(mob.getUniqueId(), uuid -> new MobThreat(mob));
@@ -34,5 +43,10 @@ public class MobThreatManager {
 
     public void removeMobThreat(Creature mob) {
         mobThreatMap.remove(mob.getUniqueId());
+    }
+
+    public void transferMobThreat(UUID from, LivingEntity target) {
+        if (mythicInstance.getMobManager().getMythicMobInstance(target).getActualObject() != null) return;
+        mobThreatMap.values().forEach(mobThreat -> mobThreat.transferThreat(from, target.getUniqueId()));
     }
 }

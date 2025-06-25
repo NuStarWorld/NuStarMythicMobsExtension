@@ -11,29 +11,30 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.AbstractEntityAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.MythicLineConfigAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.SkillMetadataAdapterImpl;
-import top.nustar.nustarmythicmobsextension.adapter.impl.skills.FastAPAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.placeholder.helper.PlaceholderDoubleHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarThreatAdapter;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
+import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
 
 /**
  * @author : NuStar
- * Date : 2025/6/22 21:48
+ * Date : 2025/6/25 23:12
  * Website : <a href="https://www.nustar.top">nustar's web</a>
  * Github : <a href="https://github.com/nustarworld">nustar's github</a>
  * QQ : 3318029085
  */
-public class FastAP extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
-    private final NuStarSkill fastAPSkill;
+public class NuStarThreat extends SkillMechanic implements NuStarMechanic, ITargetedEntitySkill {
+    private final NuStarSkill nuStarThreatSkill;
 
-    public FastAP(String line, SkillExecutor executor, MythicLineConfig mlc, MainConfiguration mainConfiguration) {
-        super(executor, line, mlc);
-        this.fastAPSkill = new FastAPAdapter(new MythicLineConfigAdapterImpl(mlc), mainConfiguration);
+    public NuStarThreat(String skill, SkillExecutor executor, MythicLineConfig mlc, MainConfiguration mainConfiguration, MobThreatManager mobThreatManager) {
+        super(executor, skill, mlc);
+        this.nuStarThreatSkill = new NuStarThreatAdapter(new PlaceholderDoubleHelperImpl(), new MythicLineConfigAdapterImpl(mlc), mainConfiguration, mobThreatManager);
     }
 
     @Override
     public SkillResult castAtEntity(SkillMetadata skillMetadata, AbstractEntity abstractEntity) {
-        boolean result =  fastAPSkill.castAtEntity(
-                new SkillMetadataAdapterImpl(skillMetadata), new AbstractEntityAdapterImpl(abstractEntity));
+        boolean result =  nuStarThreatSkill.castAtEntity(new SkillMetadataAdapterImpl(skillMetadata), new AbstractEntityAdapterImpl(abstractEntity));
         return result ? SkillResult.SUCCESS : SkillResult.ERROR;
     }
 }

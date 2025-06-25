@@ -4,6 +4,7 @@ import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
+import top.nustar.nustarmythicmobsextension.utils.DebugUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,10 +39,22 @@ public class MobThreat {
             }
             return value + thread;
         });
+        DebugUtil.debug(this.toString());
+    }
+
+    /**
+     * 设置实体威胁度
+     * @param uuid 实体UUID
+     * @param thread 威胁值
+     */
+    public void setEntityThreat(UUID uuid, long thread) {
+        entityThreatMap.put(uuid, thread);
+        DebugUtil.debug(this.toString());
     }
 
     public void removeEntityThreat(UUID uuid) {
         entityThreatMap.remove(uuid);
+        DebugUtil.debug(this.toString());
     }
 
     /**
@@ -65,6 +78,7 @@ public class MobThreat {
                 .map(Map.Entry::getValue)
                 .orElse(0L);
         entityThreatMap.put(uuid, topThreat + 1);
+        DebugUtil.debug(this.toString());
     }
 
     /**
@@ -76,6 +90,7 @@ public class MobThreat {
         long threat = entityThreatMap.getOrDefault(from, 0L) + entityThreatMap.getOrDefault(to, 0L);
         entityThreatMap.put(from, 0L);
         entityThreatMap.put(to, threat);
+        DebugUtil.debug(this.toString());
     }
 
     public void setTarget() {
