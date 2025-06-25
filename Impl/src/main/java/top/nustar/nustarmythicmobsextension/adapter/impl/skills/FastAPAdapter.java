@@ -25,7 +25,7 @@ import java.util.*;
  * QQ : 3318029085
  */
 @NativeObfuscation
-public class FastAPAdapter {
+public class FastAPAdapter implements NuStarSkill {
     private final MainConfiguration mainConfiguration;
     private final Map<String, Expression> attrExpressionMap = new HashMap<>();
     protected final boolean clear;
@@ -48,6 +48,7 @@ public class FastAPAdapter {
         this.preventKnockback = mlc.getBoolean(new String[] {"preventKnockback", "pk"}, false);
     }
 
+    @Override
     @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
         LivingEntity caster = (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();

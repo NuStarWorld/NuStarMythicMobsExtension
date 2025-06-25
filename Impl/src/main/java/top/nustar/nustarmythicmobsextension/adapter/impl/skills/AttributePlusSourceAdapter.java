@@ -36,7 +36,7 @@ import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 
 @NativeObfuscation
-public class AttributePlusSourceAdapter {
+public class AttributePlusSourceAdapter implements NuStarSkill {
     protected final PlaceholderStringAdapter<?> attrName;
     protected final Map<String, Integer> percentageAttr;
     protected final boolean persistent;
@@ -60,6 +60,7 @@ public class AttributePlusSourceAdapter {
         this.sourceName = placeholderStringHelper.of(mlc.getString(new String[] {"sourceName", "s"}));
     }
 
+    @Override
     @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
         LivingEntity entity =

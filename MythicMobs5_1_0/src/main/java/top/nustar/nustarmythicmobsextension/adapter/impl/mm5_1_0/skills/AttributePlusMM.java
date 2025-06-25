@@ -31,21 +31,22 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.MythicLineConfi
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.SkillMetadataAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.placeholder.helper.PlaceholderStringHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.AttributePlusMMAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 
 public class AttributePlusMM extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
-    private final AttributePlusMMAdapter attributePlusMMAdapter;
+    private final NuStarSkill attributePlusMMSkill;
 
     public AttributePlusMM(
             String line, SkillExecutor manager, MythicLineConfig mlc, MainConfiguration mainConfiguration) {
         super(manager, line, mlc);
-        this.attributePlusMMAdapter = new AttributePlusMMAdapter(
+        this.attributePlusMMSkill = new AttributePlusMMAdapter(
                 new PlaceholderStringHelperImpl(), new MythicLineConfigAdapterImpl(mlc), mainConfiguration);
     }
 
     @Override
     public SkillResult castAtEntity(SkillMetadata skillMetadata, AbstractEntity abstractEntity) {
-        boolean result = attributePlusMMAdapter.castAtEntity(
+        boolean result = attributePlusMMSkill.castAtEntity(
                 new SkillMetadataAdapterImpl(skillMetadata), new AbstractEntityAdapterImpl(abstractEntity));
         return result ? SkillResult.SUCCESS : SkillResult.ERROR;
     }

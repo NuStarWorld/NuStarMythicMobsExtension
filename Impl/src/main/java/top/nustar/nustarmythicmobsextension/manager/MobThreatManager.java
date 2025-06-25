@@ -33,7 +33,6 @@ public class MobThreatManager {
     }
 
     public void removeMobThreat(Creature mob) {
-        System.out.println(mob.getName() + "死亡，清除威胁度表");
         mobThreatMap.remove(mob.getUniqueId());
     }
 }

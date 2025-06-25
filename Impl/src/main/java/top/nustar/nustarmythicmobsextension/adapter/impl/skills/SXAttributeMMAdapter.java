@@ -31,7 +31,7 @@ import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.Placehold
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
 
 @NativeObfuscation
-public class SXAttributeMMAdapter {
+public class SXAttributeMMAdapter implements NuStarSkill {
     protected final PlaceholderStringAdapter<?> attrName;
     protected final boolean preventImmunity;
     protected final boolean preventKnockback;
@@ -42,6 +42,7 @@ public class SXAttributeMMAdapter {
         this.preventKnockback = mlc.getBoolean(new String[] {"preventKnockback", "pk"}, false);
     }
 
+    @Override
     @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
         try {

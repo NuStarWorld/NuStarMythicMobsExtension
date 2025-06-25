@@ -12,6 +12,7 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.AbstractEntityA
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.MythicLineConfigAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.SkillMetadataAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.FastAPAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 
 /**
@@ -22,16 +23,16 @@ import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
  * QQ : 3318029085
  */
 public class FastAP extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
-    private final FastAPAdapter fastAPAdapter;
+    private final NuStarSkill fastAPSkill;
 
     public FastAP(String line, SkillExecutor manager, MythicLineConfig mlc, MainConfiguration mainConfiguration) {
         super(manager, line, mlc);
-        this.fastAPAdapter = new FastAPAdapter(new MythicLineConfigAdapterImpl(mlc), mainConfiguration);
+        this.fastAPSkill = new FastAPAdapter(new MythicLineConfigAdapterImpl(mlc), mainConfiguration);
     }
 
     @Override
     public SkillResult castAtEntity(SkillMetadata skillMetadata, AbstractEntity abstractEntity) {
-        boolean result =  fastAPAdapter.castAtEntity(
+        boolean result =  fastAPSkill.castAtEntity(
                 new SkillMetadataAdapterImpl(skillMetadata), new AbstractEntityAdapterImpl(abstractEntity));
         return result ? SkillResult.SUCCESS : SkillResult.ERROR;
     }

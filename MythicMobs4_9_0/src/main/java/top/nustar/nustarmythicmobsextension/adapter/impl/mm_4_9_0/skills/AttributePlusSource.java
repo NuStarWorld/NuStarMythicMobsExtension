@@ -30,13 +30,14 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.SkillMetadataA
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.helper.PlaceholderDoubleHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.helper.PlaceholderStringHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.AttributePlusSourceAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
 
 public class AttributePlusSource extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
-    private final AttributePlusSourceAdapter attributePlusSourceAdapter;
+    private final NuStarSkill attributePlusSourceSkill;
 
     public AttributePlusSource(String skill, MythicLineConfig mlc) {
         super(skill, mlc);
-        this.attributePlusSourceAdapter = new AttributePlusSourceAdapter(
+        this.attributePlusSourceSkill = new AttributePlusSourceAdapter(
                 new PlaceholderStringHelperImpl(),
                 new PlaceholderDoubleHelperImpl(),
                 new MythicLineConfigAdapterImpl(mlc));
@@ -44,7 +45,7 @@ public class AttributePlusSource extends SkillMechanic implements ITargetedEntit
 
     @Override
     public boolean castAtEntity(SkillMetadata skillMetadata, AbstractEntity abstractEntity) {
-        return attributePlusSourceAdapter.castAtEntity(
+        return attributePlusSourceSkill.castAtEntity(
                 new SkillMetadataAdapterImpl(skillMetadata), new AbstractEntityAdapterImpl(abstractEntity));
     }
 }

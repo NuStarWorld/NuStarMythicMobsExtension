@@ -35,7 +35,7 @@ import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
 
 @NativeObfuscation
-public class AttributePlusMMAdapter {
+public class AttributePlusMMAdapter implements NuStarSkill {
     private final MainConfiguration mainConfiguration;
     protected final PlaceholderStringAdapter<?> attrName;
     protected final boolean clear;
@@ -53,6 +53,7 @@ public class AttributePlusMMAdapter {
         this.mainConfiguration = mainConfiguration;
     }
 
+    @Override
     @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
         try {
