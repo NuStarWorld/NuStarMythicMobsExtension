@@ -1,6 +1,4 @@
 debug: false
-#插件自带的威胁度系统 默认关闭
-threat: false
 #clear属性白名单
 white-attr-list:
   - "暴击几率"

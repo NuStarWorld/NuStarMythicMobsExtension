@@ -1,5 +1,7 @@
 package top.nustar.nustarmythicmobsextension.service.annotations;
 
+import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,5 +16,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
+@DependsOn(classes = "io.lumine.mythic.core.config.MythicConfigImpl")
 public @interface MythicMobs5_6_0 {
 }

@@ -3,7 +3,6 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.skills.helper;
 import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.core.skills.SkillExecutor;
 import team.idealstate.sugar.next.context.annotation.component.Component;
-import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.skills.FastAP;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
@@ -22,7 +21,6 @@ import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 @Component
 @SupportMechanicType(type = MechanicType.FAST_AP)
 @MythicMobs5_1_0
-@DependsOn(classes = "io.lumine.mythic.bukkit.utils.config.file.YamlConfiguration")
 @SuppressWarnings({"unused"})
 public class FastAPHelper implements MechanicHelperService {
     @Override

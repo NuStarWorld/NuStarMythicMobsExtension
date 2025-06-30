@@ -42,7 +42,6 @@ import java.util.*;
 @Data
 public class MainConfiguration {
     private final boolean debug;
-    private final boolean threat;
     @NonNull
     @JsonDeserialize(using = VariablesDeserializer.class)
     private final List<Variable> variables;

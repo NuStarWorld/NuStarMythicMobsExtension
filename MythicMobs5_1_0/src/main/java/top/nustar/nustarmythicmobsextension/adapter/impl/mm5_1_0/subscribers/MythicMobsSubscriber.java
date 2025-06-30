@@ -29,7 +29,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
-import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.service.ConfigService;
@@ -47,7 +46,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Subscriber
-@DependsOn(classes = "io.lumine.mythic.bukkit.utils.config.file.YamlConfiguration")
+@MythicMobs5_1_0
 @SuppressWarnings({"unused"})
 public class MythicMobsSubscriber implements Listener {
     private volatile ConfigService configService;

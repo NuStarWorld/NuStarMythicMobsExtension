@@ -20,7 +20,6 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.targets.helpe
 
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig;
 import team.idealstate.sugar.next.context.annotation.component.Component;
-import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarTargerSelector;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.targets.SuperForwardTargeter;
 import top.nustar.nustarmythicmobsextension.service.TargetSelectorHelperService;
@@ -35,7 +34,6 @@ import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 @Component
 @SupportTargetSelectorType(type = TargetSelectorType.SUPER_FORWARD_TARGETER)
 @MythicMobs4_9_0
-@DependsOn(classes = "io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration")
 @SuppressWarnings({"unused"})
 public class SuperForwardTargeterHelper implements TargetSelectorHelperService {
     @Override

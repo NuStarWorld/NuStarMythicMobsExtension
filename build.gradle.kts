@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarmythicmobsextension"
-version = "2.0.7"
+version = "2.0.8-SNAPSHOT"
 
 allprojects {
     if (!project.buildFile.exists()) {
@@ -66,6 +66,10 @@ allprojects {
             name = "placeholder-api"
             url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
         }
+        maven {
+            name = "paper"
+            url = uri("https://repo.papermc.io/repository/maven-public/")
+        }
         mavenCentral()
     }
 
@@ -77,6 +81,7 @@ allprojects {
         if (project.name.startsWith("NuStarMythicMobsExtension-Impl")) {
             implementation(rootProject.project(":${rootProject.name}-Adapter"))
         }
+        compileOnly("com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT")
         @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
         compileOnly(rootProject.libs.spigot.api)
         compileOnly(rootProject.libs.placeholderapi)

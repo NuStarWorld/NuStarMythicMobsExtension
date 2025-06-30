@@ -2,9 +2,9 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import team.idealstate.sugar.next.context.annotation.component.Component;
-import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarmythicmobsextension.adapter.MobManagerAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
+import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
 
 /**
  * @author : NuStar
@@ -15,7 +15,7 @@ import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
  */
 @Component
 @SuppressWarnings("unused")
-@DependsOn(classes = "io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration")
+@MythicMobs4_9_0
 public class MythicInstanceImpl implements MythicInstance {
     private final MythicMobs instance;
 

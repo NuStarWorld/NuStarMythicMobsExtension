@@ -4,9 +4,9 @@ import io.lumine.mythic.api.MythicPlugin;
 import io.lumine.mythic.api.MythicProvider;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import team.idealstate.sugar.next.context.annotation.component.Component;
-import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarmythicmobsextension.adapter.MobManagerAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
+import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs5_1_0;
 
 /**
  * @author : NuStar
@@ -17,7 +17,7 @@ import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
  */
 @Component
 @SuppressWarnings("unused")
-@DependsOn(classes = "io.lumine.mythic.bukkit.utils.config.file.YamlConfiguration")
+@MythicMobs5_1_0
 public class MythicInstanceImpl implements MythicInstance {
     private final MythicPlugin instance;
 

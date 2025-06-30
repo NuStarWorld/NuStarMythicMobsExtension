@@ -21,7 +21,6 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.targets.helper
 import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.core.skills.SkillExecutor;
 import team.idealstate.sugar.next.context.annotation.component.Component;
-import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarTargerSelector;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.targets.EntitiesInTargetsSelector;
 import top.nustar.nustarmythicmobsextension.service.TargetSelectorHelperService;
@@ -32,7 +31,6 @@ import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 @Component
 @SupportTargetSelectorType(type = TargetSelectorType.ENTITIES_IN_TARGETS)
 @MythicMobs5_6_0
-@DependsOn(classes = "io.lumine.mythic.core.config.MythicConfigImpl")
 @SuppressWarnings({"unused"})
 public class EntitiesInTargetsSelectorHelper implements TargetSelectorHelperService {
 

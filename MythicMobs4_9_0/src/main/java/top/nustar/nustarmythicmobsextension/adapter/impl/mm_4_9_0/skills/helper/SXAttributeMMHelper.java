@@ -20,7 +20,6 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.helper
 
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig;
 import team.idealstate.sugar.next.context.annotation.component.Component;
-import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.SXAttributeMM;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
@@ -31,7 +30,6 @@ import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 @Component
 @SupportMechanicType(type = MechanicType.SX_ATTRIBUTE_MM)
 @MythicMobs4_9_0
-@DependsOn(classes = "io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration")
 @SuppressWarnings({"unused"})
 public class SXAttributeMMHelper implements MechanicHelperService {
     @Override
