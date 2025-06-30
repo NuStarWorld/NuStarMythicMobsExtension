@@ -39,7 +39,6 @@ import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 public class AttributePlusSourceAdapter implements NuStarSkill {
     protected final PlaceholderStringAdapter<?> attrName;
     protected final Map<String, Integer> percentageAttr;
-    protected final boolean persistent;
     protected final PlaceholderStringAdapter<?> sourceName;
     protected final PlaceholderDoubleAdapter<?> time;
     private final AttributeSourceManager attributeSourceManager = AttributeSourceManager.getAttributeSourceManager();
@@ -55,8 +54,7 @@ public class AttributePlusSourceAdapter implements NuStarSkill {
         } else {
             this.percentageAttr = null;
         }
-        this.persistent = mlc.getBoolean(new String[] {"persistent", "p"}, false);
-        this.time = placeholderDoubleHelper.of(mlc.getString(new String[] {"time", "t"}));
+        this.time = placeholderDoubleHelper.of(mlc.getString(new String[] {"time", "t"}, "-1"));
         this.sourceName = placeholderStringHelper.of(mlc.getString(new String[] {"sourceName", "s"}));
     }
 
@@ -64,7 +62,7 @@ public class AttributePlusSourceAdapter implements NuStarSkill {
     @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
         LivingEntity entity =
-                (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
+                (LivingEntity) abstractEntity.getBukkitEntity();
         List<String> attr =
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
         List<String> percentageAttrList = new ArrayList<>();
@@ -74,6 +72,7 @@ public class AttributePlusSourceAdapter implements NuStarSkill {
                         ? UUID.randomUUID().toString()
                         : sourceName.get(skillMetadata, abstractEntity));
         AttributeAPI.addSourceAttribute(data, defaultSource, attr);
+        int sourceTime = (int) time.get(skillMetadata, abstractEntity);
         if (percentageAttr != null) {
             String percentageSource = "APPercentageSource"
                     + (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
@@ -84,14 +83,14 @@ public class AttributePlusSourceAdapter implements NuStarSkill {
                         + (data.getRandomValue(entry.getKey()).doubleValue() * entry.getValue() / 100));
             }
             AttributeAPI.addSourceAttribute(data, percentageSource, percentageAttrList);
-            if (persistent) {
+            if (sourceTime > 0) {
                 attributeSourceManager.addAttributeSourceInstance(
-                        entity, percentageSource, (int) time.get(skillMetadata, abstractEntity));
+                        entity, percentageSource, sourceTime);
             }
         }
-        if (persistent) {
+        if (sourceTime > 0) {
             attributeSourceManager.addAttributeSourceInstance(
-                    entity, defaultSource, (int) time.get(skillMetadata, abstractEntity));
+                    entity, defaultSource, sourceTime);
         }
         if (entity instanceof Player) {
             AttributeAPI.updateAttribute(entity);
