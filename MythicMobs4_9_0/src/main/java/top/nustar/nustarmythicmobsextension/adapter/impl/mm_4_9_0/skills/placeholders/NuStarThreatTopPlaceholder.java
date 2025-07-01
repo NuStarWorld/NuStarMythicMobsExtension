@@ -10,7 +10,6 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.PlaceholderMet
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.placeholders.NuStarThreatTopAdapter;
 import top.nustar.nustarmythicmobsextension.service.PlaceholderService;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
-import top.nustar.nustarmythicmobsextension.service.annotations.SupportPlaceholderType;
 import top.nustar.nustarmythicmobsextension.service.enums.PlaceholderType;
 
 import java.util.function.BiFunction;
@@ -24,7 +23,6 @@ import java.util.function.BiFunction;
  */
 @Component
 @MythicMobs4_9_0
-@SupportPlaceholderType(type = PlaceholderType.NUSTAR_THREAT_TOP)
 @SuppressWarnings({"unused"})
 public class NuStarThreatTopPlaceholder implements PlaceholderService {
     private final BiFunction<PlaceholderMeta, String, String> transformer = (meta, string) -> nuStarThreatTopAdapter.getTransformer().apply(new PlaceholderMetaAdapterImpl(meta), string);
@@ -38,5 +36,10 @@ public class NuStarThreatTopPlaceholder implements PlaceholderService {
     @Override
     public PlaceholderAdapter<?> getPlaceholderAdapter() {
         return new MetaPlaceholderAdapterImpl(Placeholder.meta(transformer));
+    }
+
+    @Override
+    public PlaceholderType getType() {
+        return PlaceholderType.NUSTAR_THREAT_TOP;
     }
 }

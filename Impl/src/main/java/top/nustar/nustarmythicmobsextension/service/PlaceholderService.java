@@ -1,7 +1,6 @@
 package top.nustar.nustarmythicmobsextension.service;
 
 import top.nustar.nustarmythicmobsextension.adapter.PlaceholderAdapter;
-import top.nustar.nustarmythicmobsextension.service.annotations.SupportPlaceholderType;
 import top.nustar.nustarmythicmobsextension.service.enums.PlaceholderType;
 
 /**
@@ -11,10 +10,6 @@ import top.nustar.nustarmythicmobsextension.service.enums.PlaceholderType;
  * Github : <a href="https://github.com/nustarworld">nustar's github</a>
  * QQ : 3318029085
  */
-public interface PlaceholderService {
+public interface PlaceholderService extends TypeService<PlaceholderType> {
     PlaceholderAdapter<?> getPlaceholderAdapter();
-    default PlaceholderType findPlaceholderTypeFromService(PlaceholderService placeholderService) {
-        SupportPlaceholderType supportPlaceholderType = placeholderService.getClass().getAnnotation(SupportPlaceholderType.class);
-        return supportPlaceholderType.type();
-    }
 }

@@ -10,7 +10,6 @@ import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs5_1_0;
-import top.nustar.nustarmythicmobsextension.service.annotations.SupportMechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 
 /**
@@ -21,7 +20,6 @@ import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
  * QQ : 3318029085
  */
 @Component
-@SupportMechanicType(type = MechanicType.NUSTAR_THREAT)
 @MythicMobs5_1_0
 @SuppressWarnings({"unused"})
 public class NuStarThreatHelper implements MechanicHelperService {
@@ -35,5 +33,10 @@ public class NuStarThreatHelper implements MechanicHelperService {
     @Override
     public NuStarMechanic findMechanic(Object... objects) {
         return new NuStarThreat("nustarthreat",(SkillExecutor) objects[0], (MythicLineConfig) objects[1], (MainConfiguration) objects[2], mobThreatManager);
+    }
+
+    @Override
+    public MechanicType getType() {
+        return MechanicType.NUSTAR_THREAT;
     }
 }

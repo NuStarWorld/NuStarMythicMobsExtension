@@ -24,16 +24,19 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechanics.AttributePlusSource;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
-import top.nustar.nustarmythicmobsextension.service.annotations.SupportMechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 
 @Component
-@SupportMechanicType(type = MechanicType.ATTRIBUTE_PLUS_SOURCE)
 @MythicMobs4_9_0
 @SuppressWarnings({"unused"})
 public class AttributePlusSourceHelper implements MechanicHelperService {
     @Override
     public NuStarMechanic findMechanic(Object... objects) {
         return new AttributePlusSource("apsource", (MythicLineConfig) objects[0]);
+    }
+
+    @Override
+    public MechanicType getType() {
+        return MechanicType.ATTRIBUTE_PLUS_SOURCE;
     }
 }

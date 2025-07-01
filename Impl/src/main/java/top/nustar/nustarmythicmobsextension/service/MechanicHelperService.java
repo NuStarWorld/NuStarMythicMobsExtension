@@ -19,15 +19,8 @@
 package top.nustar.nustarmythicmobsextension.service;
 
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
-import top.nustar.nustarmythicmobsextension.service.annotations.SupportMechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 
-public interface MechanicHelperService {
+public interface MechanicHelperService extends TypeService<MechanicType>{
     NuStarMechanic findMechanic(Object... objects);
-
-    default MechanicType findMechanicTypeFromService(MechanicHelperService mechanicHelperService) {
-        SupportMechanicType supportMechanicType =
-                mechanicHelperService.getClass().getAnnotation(SupportMechanicType.class);
-        return supportMechanicType.type();
-    }
 }

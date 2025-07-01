@@ -32,10 +32,7 @@ import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
 import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
-import top.nustar.nustarmythicmobsextension.service.ConfigService;
-import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
-import top.nustar.nustarmythicmobsextension.service.PlaceholderService;
-import top.nustar.nustarmythicmobsextension.service.TargetSelectorHelperService;
+import top.nustar.nustarmythicmobsextension.service.*;
 import top.nustar.nustarmythicmobsextension.service.annotations.*;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.PlaceholderType;
@@ -43,8 +40,6 @@ import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Subscriber
 @MythicMobs5_6_0
@@ -91,41 +86,17 @@ public class MythicMobsSubscriber implements Listener {
 
     @Autowired
     public void setMechanicHelperServiceMap(List<MechanicHelperService> mechanicHelperServices) {
-        this.mechanicHelperServiceMap = mechanicHelperServices.stream()
-                .filter(mechanicHelperService ->
-                        mechanicHelperService.getClass().isAnnotationPresent(SupportMechanicType.class)
-                        && mechanicHelperService.getClass().isAnnotationPresent(MythicMobs5_6_0.class)
-                )
-                .collect(Collectors.toMap(
-                        mechanicHelperService ->
-                                mechanicHelperService.findMechanicTypeFromService(mechanicHelperService),
-                        Function.identity()));
+        this.mechanicHelperServiceMap = TypeService.buildServiceMap(mechanicHelperServices);
     }
 
     @Autowired
     public void setTargetSelectorHelperServiceMap(List<TargetSelectorHelperService> targetSelectorHelperServices) {
-        this.targetSelectorHelperServiceMap = targetSelectorHelperServices.stream()
-                .filter(targetSelectorHelperService ->
-                        targetSelectorHelperService.getClass().isAnnotationPresent(SupportTargetSelectorType.class)
-                        && targetSelectorHelperService.getClass().isAnnotationPresent(MythicMobs5_6_0.class)
-                )
-                .collect(Collectors.toMap(
-                        targetSelectorHelperService ->
-                                targetSelectorHelperService.findSelectorTypeFromService(targetSelectorHelperService),
-                        Function.identity()));
+        this.targetSelectorHelperServiceMap = TypeService.buildServiceMap(targetSelectorHelperServices);
     }
 
     @Autowired
     public void setPlaceholderServiceMap(List<PlaceholderService> placeholderServices) {
-        this.placeholderServiceMap = placeholderServices.stream()
-                .filter(placeholderService ->
-                        placeholderService.getClass().isAnnotationPresent(SupportPlaceholderType.class)
-                                && placeholderService.getClass().isAnnotationPresent(MythicMobs5_6_0.class)
-                )
-                .collect(Collectors.toMap(
-                        placeholderService ->
-                                placeholderService.findPlaceholderTypeFromService(placeholderService),
-                        Function.identity()));
+        this.placeholderServiceMap = TypeService.buildServiceMap(placeholderServices);
     }
 
     @Autowired

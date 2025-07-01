@@ -24,7 +24,6 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarTargerSelector;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.targets.SuperForwardTargeter;
 import top.nustar.nustarmythicmobsextension.service.TargetSelectorHelperService;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
-import top.nustar.nustarmythicmobsextension.service.annotations.SupportTargetSelectorType;
 import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 
 /**
@@ -32,12 +31,16 @@ import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
  *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 @Component
-@SupportTargetSelectorType(type = TargetSelectorType.SUPER_FORWARD_TARGETER)
 @MythicMobs4_9_0
 @SuppressWarnings({"unused"})
 public class SuperForwardTargeterHelper implements TargetSelectorHelperService {
     @Override
     public NuStarTargerSelector findSelector(Object... objects) {
         return new SuperForwardTargeter((MythicLineConfig) objects[0]);
+    }
+
+    @Override
+    public TargetSelectorType getType() {
+        return TargetSelectorType.SUPER_FORWARD_TARGETER;
     }
 }

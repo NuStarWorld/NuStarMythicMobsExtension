@@ -7,7 +7,6 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechani
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
-import top.nustar.nustarmythicmobsextension.service.annotations.SupportMechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 
 /**
@@ -18,12 +17,16 @@ import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
  * QQ : 3318029085
  */
 @Component
-@SupportMechanicType(type = MechanicType.FAST_AP)
 @MythicMobs4_9_0
 @SuppressWarnings({"unused"})
 public class FastAPHelper implements MechanicHelperService {
     @Override
     public NuStarMechanic findMechanic(Object... objects) {
         return new FastAP("fastap", (MythicLineConfig) objects[0], (MainConfiguration) objects[1]);
+    }
+
+    @Override
+    public MechanicType getType() {
+        return MechanicType.FAST_AP;
     }
 }
