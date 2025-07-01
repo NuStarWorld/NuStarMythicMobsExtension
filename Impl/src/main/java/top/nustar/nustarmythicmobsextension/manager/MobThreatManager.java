@@ -49,4 +49,7 @@ public class MobThreatManager {
         if (mythicInstance.getMobManager().getMythicMobInstance(target).getActualObject() != null) return;
         mobThreatMap.values().forEach(mobThreat -> mobThreat.transferThreat(from, target.getUniqueId()));
     }
+    public void clearThreat(UUID uuid) {
+        mobThreatMap.values().forEach(mobThreat -> mobThreat.removeEntityThreat(uuid));
+    }
 }

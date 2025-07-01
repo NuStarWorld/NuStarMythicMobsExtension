@@ -7,10 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.*;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import top.nustar.nustarmythicmobsextension.adapter.ActiveMobAdapter;
@@ -28,6 +25,7 @@ import java.util.UUID;
  * QQ : 3318029085
  */
 @Component
+@SuppressWarnings("unused")
 public class MobDamageListener implements Listener {
     private volatile MythicInstance mythicInstance;
     private volatile MobThreatManager mobThreatManager;
@@ -50,6 +48,16 @@ public class MobDamageListener implements Listener {
         if (entity.getKiller() != null) {
             entity.setLastDamageCause(DamageUtil.buildDamageEvent(entity.getKiller(), entity));
         }
+    }
+
+    @EventHandler
+    public void on(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        Player killer = event.getEntity().getKiller();
+        if (killer != null) {
+            mobThreatManager.transferMobThreat(player.getUniqueId(), killer);
+        }
+        mobThreatManager.clearThreat(player.getUniqueId());
     }
 
     @EventHandler
