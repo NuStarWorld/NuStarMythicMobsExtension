@@ -1,6 +1,7 @@
 # noinspection YAMLSchemaValidation
 name: NuStarMythicMobsExtension
 version: '${version}'
+api-version: 1.13
 main: top.nustar.nustarmythicmobsextension.NuStarMythicMobsExtension
 authors:
 - NuStar
