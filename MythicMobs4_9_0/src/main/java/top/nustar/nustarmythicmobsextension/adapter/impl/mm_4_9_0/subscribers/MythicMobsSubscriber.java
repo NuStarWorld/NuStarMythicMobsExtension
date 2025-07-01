@@ -18,18 +18,17 @@
 
 package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.subscribers;
 
-import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMobDeathEvent;
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicTargeterLoadEvent;
 import io.lumine.xikage.mythicmobs.skills.SkillMechanic;
 import io.lumine.xikage.mythicmobs.skills.SkillTargeter;
-import io.lumine.xikage.mythicmobs.skills.placeholders.Placeholder;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
 import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.service.ConfigService;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
@@ -54,6 +53,7 @@ import java.util.stream.Collectors;
 public class MythicMobsSubscriber implements Listener {
 
     private volatile ConfigService configService;
+    private volatile MythicInstance mythicInstance;
     private volatile Map<MechanicType, MechanicHelperService> mechanicHelperServiceMap;
     private volatile Map<TargetSelectorType, TargetSelectorHelperService> targetSelectorHelperServiceMap;
     private volatile Map<PlaceholderType, PlaceholderService> placeholderServiceMap;
@@ -75,7 +75,7 @@ public class MythicMobsSubscriber implements Listener {
     @EventHandler
     public void on(MythicMechanicLoadEvent event) {
         for (Map.Entry<PlaceholderType, PlaceholderService> entry : placeholderServiceMap.entrySet()) {
-            MythicMobs.inst().getPlaceholderManager().register(entry.getKey().getName(), (Placeholder) entry.getValue().getPlaceholderAdapter().getActualObject());
+            mythicInstance.getPlaceholderManager().register(entry.getKey().getName(), entry.getValue().getPlaceholderAdapter());
         }
         MechanicType mechanicType = MechanicType.of(event.getMechanicName());
         if (mechanicType == null) return;
@@ -125,5 +125,10 @@ public class MythicMobsSubscriber implements Listener {
                         placeholderService ->
                                 placeholderService.findPlaceholderTypeFromService(placeholderService),
                         Function.identity()));
+    }
+
+    @Autowired
+    public void setMythicInstance(MythicInstance mythicInstance) {
+        this.mythicInstance = mythicInstance;
     }
 }

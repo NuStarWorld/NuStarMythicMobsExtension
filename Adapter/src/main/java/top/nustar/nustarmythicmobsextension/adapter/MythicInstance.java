@@ -9,4 +9,5 @@ package top.nustar.nustarmythicmobsextension.adapter;
  */
 public interface MythicInstance {
     MobManagerAdapter<?> getMobManager();
+    PlaceholderManagerAdapter<?> getPlaceholderManager();
 }

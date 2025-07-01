@@ -4,8 +4,10 @@ import io.lumine.mythic.api.MythicPlugin;
 import io.lumine.mythic.api.MythicProvider;
 import io.lumine.mythic.core.mobs.MobExecutor;
 import team.idealstate.sugar.next.context.annotation.component.Component;
+import team.idealstate.sugar.next.context.annotation.feature.Scope;
 import top.nustar.nustarmythicmobsextension.adapter.MobManagerAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
+import top.nustar.nustarmythicmobsextension.adapter.PlaceholderManagerAdapter;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs5_1_0;
 
 /**
@@ -16,8 +18,9 @@ import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs5_1_0;
  * QQ : 3318029085
  */
 @Component
-@SuppressWarnings("unused")
+@Scope(Scope.SINGLETON)
 @MythicMobs5_1_0
+@SuppressWarnings("unused")
 public class MythicInstanceImpl implements MythicInstance {
     private final MythicPlugin instance;
 
@@ -28,5 +31,10 @@ public class MythicInstanceImpl implements MythicInstance {
     @Override
     public MobManagerAdapter<?> getMobManager() {
         return new MobManagerAdapterImpl((MobExecutor) instance.getMobManager());
+    }
+
+    @Override
+    public PlaceholderManagerAdapter<?> getPlaceholderManager() {
+        return new PlaceholderManagerAdapterImpl(instance.getPlaceholderManager());
     }
 }

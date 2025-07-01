@@ -26,6 +26,7 @@ import java.util.function.BiFunction;
  */
 @Component
 @Scope(Scope.SINGLETON)
+@SuppressWarnings("unused")
 public class NuStarThreatTopAdapter {
     @Getter
     private final BiFunction<PlaceholderMetaAdapter<?>, String, String> transformer;
