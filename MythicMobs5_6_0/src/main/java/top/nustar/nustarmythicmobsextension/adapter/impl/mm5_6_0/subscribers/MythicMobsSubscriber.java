@@ -58,12 +58,12 @@ public class MythicMobsSubscriber implements Listener {
     private final AttributeSourceManager attributeSourceManager = AttributeSourceManager.getAttributeSourceManager();
 
     @EventHandler
-    public void onMobDeath(MythicMobDeathEvent event) {
+    public void on(MythicMobDeathEvent event) {
         attributeSourceManager.removeAttributeSourceInstance(event.getEntity().getUniqueId());
     }
 
     @EventHandler
-    public void onTargetLoad(MythicTargeterLoadEvent event) {
+    public void on(MythicTargeterLoadEvent event) {
         TargetSelectorType targetSelectorType = TargetSelectorType.of(event.getTargeterName());
         if (targetSelectorType == null) return;
         SkillExecutor executor = MythicBukkit.inst().getSkillManager();
@@ -72,7 +72,7 @@ public class MythicMobsSubscriber implements Listener {
     }
 
     @EventHandler
-    public void onMythicMechanicLoad(MythicMechanicLoadEvent event) {
+    public void on(MythicMechanicLoadEvent event) {
         for (Map.Entry<PlaceholderType, PlaceholderService> entry : placeholderServiceMap.entrySet()) {
             MythicProvider.get().getPlaceholderManager().register(entry.getKey().getName(), (Placeholder) entry.getValue().getPlaceholderAdapter().getActualObject());
         }
