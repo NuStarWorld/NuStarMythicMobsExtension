@@ -18,13 +18,13 @@
 
 package top.nustar.nustarmythicmobsextension;
 
+import org.bukkit.Bukkit;
 import team.idealstate.minecraft.next.spigot.api.SpigotPlugin;
 import team.idealstate.sugar.next.boot.jackson.annotation.EnableJacksonYaml;
 import team.idealstate.sugar.next.context.Context;
-import team.idealstate.sugar.next.context.annotation.feature.EnableSugar;
 import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.nustarmythicmobsextension.api.ReloadedEvent;
 
-@EnableSugar
 @EnableJacksonYaml
 public class NuStarMythicMobsExtension extends SpigotPlugin {
     @Override
@@ -49,6 +49,7 @@ public class NuStarMythicMobsExtension extends SpigotPlugin {
 
     @Override
     public void onEnabled(@NotNull Context context) {
+        Bukkit.getPluginManager().callEvent(new ReloadedEvent());
     }
 
     @Override

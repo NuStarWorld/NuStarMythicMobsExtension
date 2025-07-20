@@ -29,6 +29,7 @@ import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
+import top.nustar.nustarmythicmobsextension.api.ReloadedEvent;
 import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.service.*;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
@@ -66,14 +67,18 @@ public class MythicMobsSubscriber implements Listener {
 
     @EventHandler
     public void on(MythicMechanicLoadEvent event) {
-        for (Map.Entry<PlaceholderType, PlaceholderService> entry : placeholderServiceMap.entrySet()) {
-            mythicInstance.getPlaceholderManager().register(entry.getKey().getName(), entry.getValue().getPlaceholderAdapter());
-        }
         MechanicType mechanicType = MechanicType.of(event.getMechanicName());
         if (mechanicType == null) return;
         event.register((SkillMechanic) mechanicHelperServiceMap
                 .get(mechanicType)
                 .findMechanic(event.getConfig(), configService.getMainConfiguration()));
+    }
+
+    @EventHandler
+    public void on(ReloadedEvent event) {
+        for (Map.Entry<PlaceholderType, PlaceholderService> entry : placeholderServiceMap.entrySet()) {
+            mythicInstance.getPlaceholderManager().register(entry.getKey().getName(), entry.getValue().getPlaceholderAdapter());
+        }
     }
 
     @Autowired

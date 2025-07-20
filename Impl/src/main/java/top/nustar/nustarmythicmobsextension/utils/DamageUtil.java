@@ -54,9 +54,10 @@ public class DamageUtil {
             AbstractEntityAdapter<?> abstractEntity,
             boolean preventImmunity,
             boolean preventsKnockback) {
-        LivingEntity source =
-                (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
-        LivingEntity target = (LivingEntity) abstractEntity.getBukkitEntity();
+        Entity source = skillMetadata.getCaster().getEntity().getBukkitEntity();
+        Entity bukkitEntity = abstractEntity.getBukkitEntity();
+        if (!(bukkitEntity instanceof LivingEntity)) return;
+        LivingEntity target = (LivingEntity) bukkitEntity;
         skillMetadata.getCaster().setUsingDamageSkill(true);
         skillMetadata.getCaster().getEntity().setMetadata("doing-skill-damage", true);
         try {

@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
+import team.idealstate.sugar.next.context.Context;
 import team.idealstate.sugar.next.context.annotation.component.Configuration;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
 import team.idealstate.sugar.string.StringUtils;
@@ -37,7 +38,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
-@Configuration(uri = "/config.yml", release = "bundled:/config.yml")
+@Configuration(uri = "/config.yml", release = Context.RESOURCE_EMBEDDED + "config.yml")
 @Scope(Scope.PROTOTYPE)
 @Data
 public class MainConfiguration {
