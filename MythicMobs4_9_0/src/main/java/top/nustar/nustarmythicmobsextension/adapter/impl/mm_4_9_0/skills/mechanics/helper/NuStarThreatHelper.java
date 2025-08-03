@@ -6,8 +6,8 @@ import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechanics.NuStarThreat;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
-import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
+import top.nustar.nustarmythicmobsextension.api.service.MobThreatService;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 
@@ -22,16 +22,16 @@ import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 @MythicMobs4_9_0
 @SuppressWarnings({"unused"})
 public class NuStarThreatHelper implements MechanicHelperService {
-    private volatile MobThreatManager mobThreatManager;
+    private volatile MobThreatService mobThreatService;
 
     @Autowired
-    public void setMobThreatManager(MobThreatManager mobThreatManager) {
-        this.mobThreatManager = mobThreatManager;
+    public void setMobThreatService(MobThreatService mobThreatService) {
+        this.mobThreatService = mobThreatService;
     }
 
     @Override
     public NuStarMechanic findMechanic(Object... objects) {
-        return new NuStarThreat("nustarthreat", (MythicLineConfig) objects[0], (MainConfiguration) objects[1], mobThreatManager);
+        return new NuStarThreat("nustarthreat", (MythicLineConfig) objects[0], (MainConfiguration) objects[1], mobThreatService);
     }
 
     @Override

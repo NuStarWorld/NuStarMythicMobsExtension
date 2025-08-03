@@ -13,7 +13,7 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.he
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.NuStarThreatAdapter;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
-import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
+import top.nustar.nustarmythicmobsextension.api.service.MobThreatService;
 
 /**
  * @author : NuStar
@@ -25,9 +25,9 @@ import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
 public class NuStarThreat extends SkillMechanic implements NuStarMechanic, ITargetedEntitySkill {
     private final NuStarSkill nuStarThreatSkill;
 
-    public NuStarThreat(String skill, MythicLineConfig mlc, MainConfiguration mainConfiguration, MobThreatManager mobThreatManager) {
+    public NuStarThreat(String skill, MythicLineConfig mlc, MainConfiguration mainConfiguration, MobThreatService mobThreatService) {
         super(skill, mlc);
-        this.nuStarThreatSkill = new NuStarThreatAdapter(new PlaceholderDoubleHelperImpl(), new MythicLineConfigAdapterImpl(mlc), mainConfiguration, mobThreatManager);
+        this.nuStarThreatSkill = new NuStarThreatAdapter(new PlaceholderDoubleHelperImpl(), new MythicLineConfigAdapterImpl(mlc), mainConfiguration, mobThreatService);
     }
 
     @Override

@@ -13,7 +13,6 @@ import top.nustar.nustarmythicmobsextension.adapter.PlaceholderMetaAdapter;
 import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
 import top.nustar.nustarmythicmobsextension.utils.InstanceUtil;
 
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 
@@ -42,21 +41,21 @@ public class NuStarThreatTopAdapter {
             LivingEntity trigger = (LivingEntity) placeholderMetaAdapter.getTrigger().getBukkitEntity();
             if (!(trigger instanceof Creature)) return "该怪物不具备威胁度功能";
             Creature mob = (Creature) trigger;
-            UUID top = mobThreatManager.getMobThreat(mob).getTopThreat();
-            if (top != null) {
+            return mobThreatManager.getMobThreat(mob).getTopThreat().map(uuid -> {
                 Entity topEntity;
                 try {
-                    topEntity = Bukkit.getScheduler().callSyncMethod(InstanceUtil.getInstance(Plugin.class), () -> Bukkit.getEntity(top)).get();
+                    topEntity = Bukkit.getScheduler().callSyncMethod(InstanceUtil.getInstance(Plugin.class), () -> Bukkit.getEntity(uuid)).get();
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
                 if (topEntity == null) return "无目标";
                 return topEntity.getName();
-            }
-            if (mob.getTarget() != null) {
-                return mob.getTarget().getName();
-            }
-            return "无目标";
+            }).orElseGet(() -> {
+                if (mob.getTarget() != null) {
+                    return mob.getTarget().getName();
+                }
+                return "无目标";
+            });
         });
     }
 }

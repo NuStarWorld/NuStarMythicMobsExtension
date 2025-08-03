@@ -9,6 +9,7 @@ import top.nustar.nustarmythicmobsextension.utils.DebugUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -35,10 +36,11 @@ public class MobThreat {
      */
     public void addEntityThreat(UUID uuid, long thread) {
         entityThreatMap.compute(uuid, (key, value) -> {
+            long newValue = Math.max(0, thread);
             if (value == null) {
-                return thread;
+                return newValue;
             }
-            return value + thread;
+            return value + newValue;
         });
         DebugUtil.debug(this.toString());
     }
@@ -49,7 +51,8 @@ public class MobThreat {
      * @param thread 威胁值
      */
     public void setEntityThreat(UUID uuid, long thread) {
-        entityThreatMap.put(uuid, thread);
+        long newValue = Math.max(0, thread);
+        entityThreatMap.put(uuid, newValue);
         DebugUtil.debug(this.toString());
     }
 
@@ -62,11 +65,10 @@ public class MobThreat {
      * 获取当前最高威胁度的UUID
      * @return UUID
      */
-    public UUID getTopThreat() {
+    public Optional<UUID> getTopThreat() {
         return entityThreatMap.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .orElse(null);
+                .map(Map.Entry::getKey);
     }
 
     /**
@@ -95,8 +97,10 @@ public class MobThreat {
     }
 
     public void setTarget() {
-        Entity entity = Bukkit.getEntity(getTopThreat());
-        if (!(entity instanceof LivingEntity)) return;
-        mob.setTarget((LivingEntity) entity);
+        getTopThreat().ifPresent(topThreat -> {
+            Entity entity = Bukkit.getEntity(topThreat);
+            if (!(entity instanceof LivingEntity)) return;
+            mob.setTarget((LivingEntity) entity);
+        });
     }
 }

@@ -11,7 +11,7 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderDoubleAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderDoubleHelper;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
-import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
+import top.nustar.nustarmythicmobsextension.api.service.MobThreatService;
 
 /**
  * @author : NuStar
@@ -24,17 +24,17 @@ public class NuStarThreatAdapter implements NuStarSkill, GlobalVariable {
     protected final String mode;
     protected final Expression amount;
     protected final PlaceholderDoubleAdapter<?> multiple;
-    protected final MobThreatManager mobThreatManager;
+    protected final MobThreatService mobThreatService;
     protected final MainConfiguration mainConfiguration;
 
     public NuStarThreatAdapter(PlaceholderDoubleHelper<?> placeholderDoubleHelper,
                                MythicLineConfigAdapter<?> mlc,
                                MainConfiguration mainConfiguration,
-                               MobThreatManager mobThreatManager) {
+                               MobThreatService mobThreatService) {
         this.mode = mlc.getString(new String[]{"mode", "m"}, "add");
         this.amount = new Expression(mlc.getString(new String[]{"amount", "a"}, "0")).compile();
         this.multiple = placeholderDoubleHelper.of(mlc.getString(new String[]{"multiple", "m"}, "1"));
-        this.mobThreatManager = mobThreatManager;
+        this.mobThreatService = mobThreatService;
         this.mainConfiguration = mainConfiguration;
     }
 
@@ -46,19 +46,19 @@ public class NuStarThreatAdapter implements NuStarSkill, GlobalVariable {
         if (!mode.equals("transfer") && !(entity instanceof Creature)) return false;
         switch (mode) {
             case "add":
-                mobThreatManager.updateMobThreat((Creature) entity, mobThreat -> mobThreat.addEntityThreat(caster.getUniqueId(), amount));
+                mobThreatService.addThreat((Creature) entity, caster.getUniqueId(), amount);
                 break;
             case "set":
-                mobThreatManager.updateMobThreat((Creature) entity, mobThreat -> mobThreat.setEntityThreat(caster.getUniqueId(), amount));
+                mobThreatService.setThreat((Creature) entity, caster.getUniqueId(), amount);
                 break;
             case "delete":
-                mobThreatManager.updateMobThreat((Creature) entity, mobThreat -> mobThreat.removeEntityThreat(caster.getUniqueId()));
+                mobThreatService.deleteThreat((Creature) entity, caster.getUniqueId());
                 break;
             case "top":
-                mobThreatManager.updateMobThreat((Creature) entity, mobThreat -> mobThreat.setTopThreat(caster.getUniqueId()));
+                mobThreatService.topThreat((Creature) entity, caster.getUniqueId());
                 break;
             case "transfer":
-                mobThreatManager.transferMobThreat(caster.getUniqueId(), entity);
+                mobThreatService.transferMobThreat(caster.getUniqueId(), entity);
                 break;
         }
         return true;

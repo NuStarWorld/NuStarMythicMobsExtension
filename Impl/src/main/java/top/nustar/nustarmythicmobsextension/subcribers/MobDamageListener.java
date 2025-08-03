@@ -12,10 +12,8 @@ import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import top.nustar.nustarmythicmobsextension.adapter.ActiveMobAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
-import top.nustar.nustarmythicmobsextension.manager.MobThreatManager;
+import top.nustar.nustarmythicmobsextension.api.service.MobThreatService;
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
-
-import java.util.UUID;
 
 /**
  * @author : NuStar
@@ -28,7 +26,7 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class MobDamageListener implements Listener {
     private volatile MythicInstance mythicInstance;
-    private volatile MobThreatManager mobThreatManager;
+    private volatile MobThreatService mobThreatService;
 
     @Autowired
     public void setMythicInstance(MythicInstance mythicInstance) {
@@ -36,8 +34,8 @@ public class MobDamageListener implements Listener {
     }
 
     @Autowired
-    public void setMobThreatManager(MobThreatManager mobThreatManager) {
-        this.mobThreatManager = mobThreatManager;
+    public void setMobThreatService(MobThreatService mobThreatService) {
+        this.mobThreatService = mobThreatService;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -55,16 +53,16 @@ public class MobDamageListener implements Listener {
         Player player = event.getEntity();
         Player killer = event.getEntity().getKiller();
         if (killer != null) {
-            mobThreatManager.transferMobThreat(player.getUniqueId(), killer);
+            mobThreatService.transferMobThreat(player.getUniqueId(), killer);
         }
-        mobThreatManager.clearThreat(player.getUniqueId());
+        mobThreatService.clearThreat(player.getUniqueId());
     }
 
     @EventHandler
     public void onMobDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
         if (!(entity instanceof Creature)) return;
-        mobThreatManager.removeMobThreat((Creature) entity);
+        mobThreatService.removeMobThreat(entity.getUniqueId());
     }
 
     @EventHandler
@@ -73,12 +71,11 @@ public class MobDamageListener implements Listener {
         if (target == null) return;
         Entity entity = event.getEntity();
         if (!validateMM(entity)) return;
-        UUID topThreat = mobThreatManager.getMobThreat((Creature) entity).getTopThreat();
-        if (topThreat != null) {
+        mobThreatService.getTopThreat((Creature) entity).ifPresent(topThreat -> {
             if (topThreat.equals(target.getUniqueId())) {
                 event.setCancelled(true);
             }
-        }
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -88,10 +85,9 @@ public class MobDamageListener implements Listener {
         if (entity instanceof Player) return;
         if (!validateMM(entity)) return;
         long damage = (long) event.getFinalDamage();
-        mobThreatManager.updateMobThreat((Creature) entity, mobThreat -> {
-            mobThreat.addEntityThreat(damager.getUniqueId(), damage);
-            mobThreat.setTarget();
-        });
+        Creature creature = (Creature) entity;
+        mobThreatService.addThreat(creature, damager.getUniqueId(), damage);
+        mobThreatService.setTarget(creature);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
