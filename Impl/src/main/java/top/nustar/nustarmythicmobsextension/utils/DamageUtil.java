@@ -61,13 +61,7 @@ public class DamageUtil {
         skillMetadata.getCaster().setUsingDamageSkill(true);
         skillMetadata.getCaster().getEntity().setMetadata("doing-skill-damage", true);
         try {
-            EntityDamageByEntityEvent damageByEntityEvent= buildDamageEvent(source, target);
-            if (preventsKnockback) {
-                target.damage(0.01);
-                Bukkit.getPluginManager().callEvent(damageByEntityEvent);
-            } else {
-                target.damage(0.01, source);
-            }
+            target.damage(0.01, source);
             ActiveMobAdapter<?> activeMobAdapter = mythicInstance.getMobManager().getMythicMobInstance(source);
             if (activeMobAdapter.getActualObject() != null && activeMobAdapter.getOwner() != null) {
                 Entity parent = Bukkit.getEntity(activeMobAdapter.getOwner());
