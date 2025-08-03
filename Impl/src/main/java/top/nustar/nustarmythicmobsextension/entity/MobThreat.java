@@ -3,6 +3,7 @@ package top.nustar.nustarmythicmobsextension.entity;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import top.nustar.nustarmythicmobsextension.utils.DebugUtil;
 
@@ -94,6 +95,8 @@ public class MobThreat {
     }
 
     public void setTarget() {
-        mob.setTarget((LivingEntity) Bukkit.getEntity(getTopThreat()));
+        Entity entity = Bukkit.getEntity(getTopThreat());
+        if (!(entity instanceof LivingEntity)) return;
+        mob.setTarget((LivingEntity) entity);
     }
 }
