@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarmythicmobsextension"
-version = "2.0.9"
+version = "2.0.10"
 
 allprojects {
     if (!project.buildFile.exists()) {
@@ -77,9 +77,7 @@ allprojects {
         if (project.name.startsWith("NuStarMythicMobsExtension-MythicMobs")) {
             implementation(rootProject.project(":${rootProject.name}-Impl"))
             implementation(rootProject.project(":${rootProject.name}-Adapter"))
-        }
-        if (project.name.startsWith("NuStarMythicMobsExtension-Impl")) {
-            implementation(rootProject.project(":${rootProject.name}-Adapter"))
+            implementation(rootProject.project(":${rootProject.name}-api"))
         }
         compileOnly("com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT")
         @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
