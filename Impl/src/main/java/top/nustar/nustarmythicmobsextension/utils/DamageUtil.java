@@ -21,6 +21,7 @@ package top.nustar.nustarmythicmobsextension.utils;
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import java.util.EnumMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -62,7 +63,8 @@ public class DamageUtil {
         skillMetadata.getCaster().getEntity().setMetadata("doing-skill-damage", true);
         try {
             target.damage(0.01, source);
-            ActiveMobAdapter<?> activeMobAdapter = mythicInstance.getMobManager().getMythicMobInstance(source);
+            ActiveMobAdapter<?> activeMobAdapter =
+                    mythicInstance.getMobManager().getMythicMobInstance(source);
             if (activeMobAdapter.getActualObject() != null && activeMobAdapter.getOwner() != null) {
                 Entity parent = Bukkit.getEntity(activeMobAdapter.getOwner());
                 if (!InstanceUtil.getVersion().contains("Spigot") && parent instanceof Player) {
@@ -85,7 +87,6 @@ public class DamageUtil {
                 target,
                 EntityDamageByEntityEvent.DamageCause.ENTITY_ATTACK,
                 new EnumMap<>(ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, 0.01)),
-                new EnumMap<>(
-                        ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, Functions.constant(-0.0))));
+                new EnumMap<>(ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, Functions.constant(-0.0))));
     }
 }

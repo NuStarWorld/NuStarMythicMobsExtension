@@ -18,7 +18,6 @@
 
 package top.nustar.nustarmythicmobsextension.adapter;
 
-
 public interface Adapter<T> {
     T getActualObject();
 }

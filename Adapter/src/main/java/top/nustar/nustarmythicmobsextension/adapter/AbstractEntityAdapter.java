@@ -38,6 +38,6 @@ public abstract class AbstractEntityAdapter<T> extends AbstractAdapter<T> {
     public abstract double getMaxHealth();
 
     public void setTarget(LivingEntity target) {
-        ((Creature)target).setTarget(target);
+        ((Creature) target).setTarget(target);
     }
 }

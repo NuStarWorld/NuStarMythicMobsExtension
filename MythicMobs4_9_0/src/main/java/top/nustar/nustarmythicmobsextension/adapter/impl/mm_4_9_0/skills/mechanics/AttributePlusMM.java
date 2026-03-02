@@ -28,8 +28,8 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.AbstractEntity
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.MythicLineConfigAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.SkillMetadataAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.helper.PlaceholderStringHelperImpl;
-import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.AttributePlusMMAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.AttributePlusMMAdapter;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 
 public class AttributePlusMM extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {

@@ -21,6 +21,6 @@ package top.nustar.nustarmythicmobsextension.service;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarTargerSelector;
 import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
 
-public interface TargetSelectorHelperService extends TypeService<TargetSelectorType>{
+public interface TargetSelectorHelperService extends TypeService<TargetSelectorType> {
     NuStarTargerSelector findSelector(Object... objects);
 }

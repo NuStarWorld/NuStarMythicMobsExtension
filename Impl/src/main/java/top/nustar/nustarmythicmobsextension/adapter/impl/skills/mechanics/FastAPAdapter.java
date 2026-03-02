@@ -1,5 +1,24 @@
+/*
+ *    NuStarMythicMobsExtension
+ *    Copyright (C) 2025  NuStar
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics;
 
+import java.util.*;
 import org.bukkit.entity.LivingEntity;
 import org.serverct.ersha.AttributePlus;
 import org.serverct.ersha.api.AttributeAPI;
@@ -16,14 +35,9 @@ import top.nustar.nustarmythicmobsextension.exception.NSMMEException;
 import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
 
-import java.util.*;
-
 /**
- * @author : NuStar
- * Date : 2025/6/22 15:48
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/6/22 15:48 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 @NativeObfuscation
 public class FastAPAdapter implements NuStarSkill, GlobalVariable {
@@ -35,7 +49,7 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
 
     public FastAPAdapter(MythicLineConfigAdapter<?> mlc, MainConfiguration mainConfiguration) {
         this.mainConfiguration = mainConfiguration;
-        String attrString = mlc.getString(new String[]{"attr", "a"});
+        String attrString = mlc.getString(new String[] {"attr", "a"});
         String[] attrSplit = attrString.split(",");
         for (String attr : attrSplit) {
             String[] attrLine = attr.split(":");
@@ -52,10 +66,14 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
     @Override
     @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
-        LivingEntity caster = (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
+        LivingEntity caster =
+                (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
         List<String> attrList = new ArrayList<>(attrExpressionMap.size());
         for (Map.Entry<String, Expression> entry : attrExpressionMap.entrySet()) {
-            attrList.add(entry.getKey() + ":" + entry.getValue().calculate(parseExpressionContext(skillMetadata, abstractEntity, mainConfiguration.getVariables())));
+            attrList.add(entry.getKey() + ":"
+                    + entry.getValue()
+                            .calculate(parseExpressionContext(
+                                    skillMetadata, abstractEntity, mainConfiguration.getVariables())));
         }
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(caster);
         AttributeAPI.addSourceAttribute(data, "APMM_XULI", Collections.singletonList("蓄力加成:100"));

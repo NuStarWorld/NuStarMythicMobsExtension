@@ -40,7 +40,6 @@ public class InstanceUtil implements ContextHolderAware {
     }
 
     public static String getVersion() {
-        return ((Plugin)contextHolder).getServer().getVersion();
+        return ((Plugin) contextHolder).getServer().getVersion();
     }
-
 }

@@ -25,6 +25,8 @@ import io.lumine.mythic.bukkit.events.MythicMobDeathEvent;
 import io.lumine.mythic.bukkit.events.MythicTargeterLoadEvent;
 import io.lumine.mythic.core.skills.SkillExecutor;
 import io.lumine.mythic.core.skills.SkillMechanic;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
@@ -38,9 +40,6 @@ import top.nustar.nustarmythicmobsextension.service.annotations.*;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 import top.nustar.nustarmythicmobsextension.service.enums.PlaceholderType;
 import top.nustar.nustarmythicmobsextension.service.enums.TargetSelectorType;
-
-import java.util.List;
-import java.util.Map;
 
 @Subscriber
 @MythicMobs5_6_0
@@ -80,7 +79,9 @@ public class MythicMobsSubscriber implements Listener {
     @EventHandler
     public void on(ReloadedEvent event) {
         for (Map.Entry<PlaceholderType, PlaceholderService> entry : placeholderServiceMap.entrySet()) {
-            mythicInstance.getPlaceholderManager().register(entry.getKey().getName(), entry.getValue().getPlaceholderAdapter());
+            mythicInstance
+                    .getPlaceholderManager()
+                    .register(entry.getKey().getName(), entry.getValue().getPlaceholderAdapter());
         }
     }
 

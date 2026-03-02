@@ -62,11 +62,17 @@ public class MMEController implements Command, ContextAware, Initializable {
 
     @Override
     public void initialize() {
-        Metrics metrics = new Metrics(((NuStarMythicMobsExtension)context.getHolder()), 21687);
-        if (((NuStarMythicMobsExtension)context.getHolder()).getServer().getPluginManager().isPluginEnabled("AttributePlus")) {
+        Metrics metrics = new Metrics(((NuStarMythicMobsExtension) context.getHolder()), 21687);
+        if (((NuStarMythicMobsExtension) context.getHolder())
+                .getServer()
+                .getPluginManager()
+                .isPluginEnabled("AttributePlus")) {
             metrics.addCustomChart(new SimplePie("attributeplugin", () -> "AttributePlus3"));
         }
-        if (((NuStarMythicMobsExtension)context.getHolder()).getServer().getPluginManager().isPluginEnabled("SX-Attribute")) {
+        if (((NuStarMythicMobsExtension) context.getHolder())
+                .getServer()
+                .getPluginManager()
+                .isPluginEnabled("SX-Attribute")) {
             metrics.addCustomChart(new SimplePie("attributeplugin", () -> "SX-Attribute2"));
         }
         Bukkit.getPluginManager().callEvent(new ReloadedEvent());

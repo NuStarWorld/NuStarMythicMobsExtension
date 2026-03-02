@@ -1,5 +1,27 @@
+/*
+ *    NuStarMythicMobsExtension
+ *    Copyright (C) 2025  NuStar
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.nustar.nustarmythicmobsextension.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
@@ -7,17 +29,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import top.nustar.nustarmythicmobsextension.utils.DebugUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
 /**
- * @author : NuStar
- * Date : 2025/6/23 22:27
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/6/23 22:27 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 @Data
 public class MobThreat {
@@ -31,6 +45,7 @@ public class MobThreat {
 
     /**
      * 添加实体威胁度
+     *
      * @param uuid 实体UUID
      * @param thread 威胁值
      */
@@ -47,6 +62,7 @@ public class MobThreat {
 
     /**
      * 设置实体威胁度
+     *
      * @param uuid 实体UUID
      * @param thread 威胁值
      */
@@ -63,6 +79,7 @@ public class MobThreat {
 
     /**
      * 获取当前最高威胁度的UUID
+     *
      * @return UUID
      */
     public Optional<UUID> getTopThreat() {
@@ -73,6 +90,7 @@ public class MobThreat {
 
     /**
      * 设置当前最高威胁度的UUID
+     *
      * @param uuid UUID
      */
     public void setTopThreat(UUID uuid) {
@@ -86,6 +104,7 @@ public class MobThreat {
 
     /**
      * 将一个实体的威胁度转移给另一个实体
+     *
      * @param from 实体
      * @param to 目标实体
      */

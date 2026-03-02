@@ -31,8 +31,8 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.MythicLineConfi
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.SkillMetadataAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.placeholder.helper.PlaceholderDoubleHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.placeholder.helper.PlaceholderStringHelperImpl;
-import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.AttributePlusSourceAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.AttributePlusSourceAdapter;
 
 public class AttributePlusSource extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
     private final NuStarSkill attributePlusSourceSkill;

@@ -62,8 +62,7 @@ public class AttributePlusSourceAdapter implements NuStarSkill {
     @Override
     @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
-        LivingEntity entity =
-                (LivingEntity) abstractEntity.getBukkitEntity();
+        LivingEntity entity = (LivingEntity) abstractEntity.getBukkitEntity();
         List<String> attr =
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
         List<String> percentageAttrList = new ArrayList<>();
@@ -85,13 +84,11 @@ public class AttributePlusSourceAdapter implements NuStarSkill {
             }
             AttributeAPI.addSourceAttribute(data, percentageSource, percentageAttrList);
             if (sourceTime > 0) {
-                attributeSourceManager.addAttributeSourceInstance(
-                        entity, percentageSource, sourceTime);
+                attributeSourceManager.addAttributeSourceInstance(entity, percentageSource, sourceTime);
             }
         }
         if (sourceTime > 0) {
-            attributeSourceManager.addAttributeSourceInstance(
-                    entity, defaultSource, sourceTime);
+            attributeSourceManager.addAttributeSourceInstance(entity, defaultSource, sourceTime);
         }
         if (entity instanceof Player) {
             AttributeAPI.updateAttribute(entity);
