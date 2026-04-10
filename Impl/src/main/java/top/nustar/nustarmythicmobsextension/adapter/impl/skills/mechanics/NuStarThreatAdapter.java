@@ -60,7 +60,8 @@ public class NuStarThreatAdapter implements NuStarSkill, GlobalVariable {
                 (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
         LivingEntity entity = (LivingEntity) abstractEntity.getBukkitEntity();
         long amount = this.amount
-                .calculate(parseExpressionContext(skillMetadata, abstractEntity, mainConfiguration.getVariables()))
+                .calculate(parseExpressionContext(
+                        skillMetadata, abstractEntity, mainConfiguration.getVariables().values()))
                 .longValue();
         if (!mode.equals("transfer") && !(entity instanceof Creature)) return false;
         switch (mode) {

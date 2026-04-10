@@ -18,13 +18,8 @@
 
 package top.nustar.nustarmythicmobsextension.configuration;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import lombok.*;
@@ -44,17 +39,43 @@ public class MainConfiguration {
     private final boolean debug;
 
     @NonNull
-    @JsonDeserialize(using = VariablesDeserializer.class)
-    private final List<Variable> variables;
+    private final Map<String, Variable> variables;
 
     @NonNull
-    @JsonDeserialize(contentAs = String.class)
     @JsonProperty("white-attr-list")
     private final List<String> whiteAttrList;
 
+    @JsonCreator
+    public MainConfiguration(
+            @JsonProperty("debug") boolean debug,
+            @JsonProperty("variables") Map<String, Object> variables,
+            @JsonProperty("white-attr-list") List<String> whiteAttrList) {
+        this.debug = debug;
+        this.variables = toVariableMap(variables);
+        this.whiteAttrList = whiteAttrList == null ? Collections.emptyList() : new ArrayList<>(whiteAttrList);
+    }
+
+    @NotNull
+    private static Map<String, Variable> toVariableMap(Map<String, Object> source) {
+        if (source == null || source.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        Map<String, Variable> result = new LinkedHashMap<>(source.size());
+        for (Map.Entry<String, Object> entry : source.entrySet()) {
+            Variable variable = new Variable(entry.getValue()).validate();
+            variable.setName(entry.getKey());
+            result.put(entry.getKey(), variable);
+        }
+        return Collections.unmodifiableMap(result);
+    }
+
+    @NotNull
+    public List<Variable> getVariableList() {
+        return new ArrayList<>(variables.values());
+    }
+
     @Data
     @SuppressWarnings("unused")
-    @JsonDeserialize(using = VariableDeserializer.class)
     public static class Variable {
         private static final Set<Class<?>> NUMBER_CLASSES = Collections.unmodifiableSet(new HashSet<>(
                 Arrays.asList(byte.class, short.class, int.class, long.class, float.class, double.class)));
@@ -88,6 +109,11 @@ public class MainConfiguration {
         @NotNull
         private Number doParseAndCache(OfflinePlayer offlinePlayer) {
             validate();
+            if (value instanceof Number) {
+                Number number = (Number) value;
+                this.cache = number;
+                return number;
+            }
             String text = (String) value;
             Number number = null;
             try {
@@ -136,26 +162,6 @@ public class MainConfiguration {
                 return (BigDecimal) number;
             }
             return new BigDecimal(number.toString());
-        }
-    }
-
-    public static class VariableDeserializer extends JsonDeserializer<Variable> {
-        @Override
-        public Variable deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-                throws IOException {
-            return new Variable(jsonParser.getValueAsString()).validate();
-        }
-    }
-
-    public static class VariablesDeserializer extends JsonDeserializer<List<Variable>> {
-        @Override
-        public List<Variable> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-                throws IOException {
-            Map<String, Variable> result = jsonParser.readValueAs(new TypeReference<Map<String, Variable>>() {});
-            for (Map.Entry<String, Variable> entry : result.entrySet()) {
-                entry.getValue().setName(entry.getKey());
-            }
-            return new ArrayList<>(result.values());
         }
     }
 }

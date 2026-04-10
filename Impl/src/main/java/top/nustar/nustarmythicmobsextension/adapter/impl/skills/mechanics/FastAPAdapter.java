@@ -73,7 +73,9 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
             attrList.add(entry.getKey() + ":"
                     + entry.getValue()
                             .calculate(parseExpressionContext(
-                                    skillMetadata, abstractEntity, mainConfiguration.getVariables())));
+                                    skillMetadata,
+                                    abstractEntity,
+                                    mainConfiguration.getVariables().values())));
         }
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(caster);
         AttributeAPI.addSourceAttribute(data, "APMM_XULI", Collections.singletonList("蓄力加成:100"));

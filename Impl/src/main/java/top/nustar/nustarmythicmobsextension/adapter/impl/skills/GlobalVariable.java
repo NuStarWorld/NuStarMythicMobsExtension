@@ -19,7 +19,7 @@
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -33,7 +33,9 @@ import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration.Vari
  */
 public interface GlobalVariable {
     default Map<String, Number> parseExpressionContext(
-            SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity, List<Variable> variables) {
+            SkillMetadataAdapter<?> skillMetadata,
+            AbstractEntityAdapter<?> abstractEntity,
+            Collection<Variable> variables) {
         LivingEntity caster =
                 (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
         Map<String, Number> context = new HashMap<>(variables.size());
