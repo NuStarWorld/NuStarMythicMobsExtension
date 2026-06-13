@@ -18,13 +18,19 @@
 
 package top.nustar.nustarmythicmobsextension;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import team.idealstate.minecraft.next.spigot.api.SpigotPlugin;
 import team.idealstate.sugar.next.boot.jackson.annotation.EnableJacksonYaml;
 import team.idealstate.sugar.next.context.Context;
 import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.minecraft.next.spigot.nms.api.annotation.EnableNms;
+
 
 @EnableJacksonYaml
+@EnableNms
 public class NuStarMythicMobsExtension extends SpigotPlugin {
+
     @Override
     public void onInitialize(@NotNull Context context) {}
 
@@ -32,7 +38,12 @@ public class NuStarMythicMobsExtension extends SpigotPlugin {
     public void onInitialized(@NotNull Context context) {}
 
     @Override
-    public void onLoad(@NotNull Context context) {}
+    public void onLoad(@NotNull Context context) {
+        Plugin attributePlus = Bukkit.getPluginManager().getPlugin("AttributePlus");
+        String version = attributePlus.getDescription().getVersion();
+        context.registerProperty("plugin-version:attribute-plus", version);
+        context.registerProperty("server-version:bukkit", Bukkit.getBukkitVersion());
+    }
 
     @Override
     public void onLoaded(@NotNull Context context) {}
