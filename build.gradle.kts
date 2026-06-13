@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarmythicmobsextension"
-version = "2.0.10"
+version = "2.0.11"
 
 allprojects {
     if (!project.buildFile.exists()) {
@@ -70,10 +70,19 @@ allprojects {
             name = "paper"
             url = uri("https://repo.papermc.io/repository/maven-public/")
         }
+        maven {
+            name = "nustar-repo"
+            url = uri("https://maven.nustar.top/repository/nustar-public/")
+        }
         mavenCentral()
     }
 
     dependencies {
+        if (project.name == rootProject.name) {
+            implementation(rootProject.libs.nms)
+        } else {
+            compileOnly(rootProject.libs.nms)
+        }
         if (project.name.startsWith("NuStarMythicMobsExtension-MythicMobs")) {
             implementation(rootProject.project(":${rootProject.name}-Impl"))
             implementation(rootProject.project(":${rootProject.name}-Adapter"))
@@ -83,6 +92,7 @@ allprojects {
         @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
         compileOnly(rootProject.libs.spigot.api)
         compileOnly(rootProject.libs.placeholderapi)
+        compileOnly(rootProject.libs.attributeplus)
         compileOnly(rootProject.libs.minecraft.next.spigot)
         compileOnly(fileTree(File(projectDir, "libraries")))
 

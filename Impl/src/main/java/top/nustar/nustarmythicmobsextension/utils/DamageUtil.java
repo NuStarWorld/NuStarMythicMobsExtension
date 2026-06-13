@@ -28,10 +28,15 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
+import team.idealstate.sugar.validate.Validation;
 import tech.skidonion.obfuscator.annotations.NativeObfuscation;
+import top.nustar.minecraft.next.spigot.nms.api.NmsDamageAdapter;
+import top.nustar.minecraft.next.spigot.nms.common.adapter.DamageSourceProvider;
+import top.nustar.minecraft.next.spigot.nms.common.adapter.NextDamageSource;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.ActiveMobAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
@@ -43,10 +48,56 @@ import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 @NativeObfuscation
 public class DamageUtil {
     private static volatile MythicInstance mythicInstance;
+    private static volatile NmsDamageAdapter nmsDamageAdapter;
+    private static volatile DamageSourceProvider damageSourceProvider;
 
-    @Autowired
-    public void setMythicInstance(MythicInstance mythicInstance) {
-        DamageUtil.mythicInstance = mythicInstance;
+    @NativeObfuscation
+    public static void nmsDamage(
+            SkillMetadataAdapter<?> skillMetadata,
+            AbstractEntityAdapter<?> abstractEntity,
+            double finalDamage,
+            NextDamageSource nextDamageSource,
+            ThreadLocal<Boolean> lock) {
+        Entity bukkitEntity = abstractEntity.getBukkitEntity();
+        if (!(bukkitEntity instanceof LivingEntity)) return;
+        LivingEntity victim = (LivingEntity) bukkitEntity;
+        if (!(skillMetadata.getCaster().getEntity().getBukkitEntity() instanceof LivingEntity)) {
+            return;
+        }
+        LivingEntity source = (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
+
+        ActiveMobAdapter<?> activeMobAdapter =
+                mythicInstance.getMobManager().getMythicMobInstance(source);
+        // MythicMobs 标识，防止再次触发 ATTACK / OnAttack 触发器
+        // usingDamageSkill 为 true 时 mm 会在监听 EntityDamageByEntityEvent 事件将伤害设置为 lastDamageSkillAmount
+        skillMetadata.getCaster().setUsingDamageSkill(true);
+        skillMetadata.getCaster().getEntity().setMetadata("doing-skill-damage", true);
+        try {
+            lock.set(true);
+            // 这里如果不设置 lastDamageSkillAmount 默认会为 0，导致伤害变为 0
+            if (activeMobAdapter.getActualObject() != null) {
+                activeMobAdapter.setLastDamageSkillAmount(finalDamage);
+            }
+            EntityDamageByEntityEvent fakeEvent = new EntityDamageByEntityEvent(source, victim, damageSourceProvider.convertBukkitDamageSource(nextDamageSource, EntityDamageEvent.DamageCause.class), finalDamage);
+            Bukkit.getPluginManager().callEvent(fakeEvent);
+            if (fakeEvent.isCancelled()) {
+                return;
+            }
+            finalDamage = fakeEvent.getFinalDamage();
+            nmsDamageAdapter.damageWithSource(victim, source, nextDamageSource, finalDamage);
+            Log.info("造成伤害 " + finalDamage + " 点");
+            if (activeMobAdapter.getActualObject() != null && activeMobAdapter.getOwner() != null) {
+                Entity parent = Bukkit.getEntity(activeMobAdapter.getOwner());
+                if (!InstanceUtil.getVersion().contains("Spigot") && parent instanceof Player) {
+                    victim.setKiller((Player) parent);
+                }
+                victim.setLastDamageCause(fakeEvent);
+            }
+        } finally {
+            lock.set(false);
+            skillMetadata.getCaster().getEntity().removeMetadata("doing-skill-damage");
+            skillMetadata.getCaster().setUsingDamageSkill(false);
+        }
     }
 
     @NativeObfuscation
@@ -88,5 +139,22 @@ public class DamageUtil {
                 EntityDamageByEntityEvent.DamageCause.ENTITY_ATTACK,
                 new EnumMap<>(ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, 0.01)),
                 new EnumMap<>(ImmutableMap.of(EntityDamageEvent.DamageModifier.BASE, Functions.constant(-0.0))));
+    }
+
+    @Autowired
+    public void setMythicInstance(MythicInstance mythicInstance) {
+        DamageUtil.mythicInstance = mythicInstance;
+    }
+
+    @Autowired
+    public void setNmsDamageAdapter(NmsDamageAdapter nmsDamageAdapter) {
+        Validation.notNull(nmsDamageAdapter, "nmsDamageAdapter can not be null");
+        DamageUtil.nmsDamageAdapter = nmsDamageAdapter;
+    }
+
+    @Autowired
+    public void setDamageSourceProvider(DamageSourceProvider damageSourceProvider) {
+        Validation.notNull(damageSourceProvider, "damageSourceProvider can not be null");
+        DamageUtil.damageSourceProvider = damageSourceProvider;
     }
 }

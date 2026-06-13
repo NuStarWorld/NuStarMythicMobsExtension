@@ -3,6 +3,8 @@ lombok = "1.18.38"
 minecraft-next-spigot = "0.1.0-SNAPSHOT"
 spigot-api = "1.12.2-R0.1-SNAPSHOT"
 placeholderapi = "2.11.6"
+attributeplus = "3.3.3.0"
+nms = "1.0.0-SNAPSHOT"
 
 [plugins]
 
@@ -11,3 +13,5 @@ lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" 
 minecraft-next-spigot = { group = "team.idealstate.minecraft", name = "minecraft-next-spigot", version.ref = "minecraft-next-spigot" }
 spigot-api = { group = "org.spigotmc", name = "spigot-api", version.ref = "spigot-api" }
 placeholderapi = { group = "me.clip", name = "placeholderapi", version.ref = "placeholderapi" }
+attributeplus = { group = "org.serverct.ersha", name = "AttributePlus", version.ref = "attributeplus" }
+nms = { group = "top.nustar.minecraft.next.spigot.nms", name = "MinecraftNextNMS", version.ref = "nms" }
