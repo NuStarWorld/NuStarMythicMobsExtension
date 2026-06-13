@@ -42,6 +42,8 @@ public class AttributePlusMM extends SkillMechanic implements ITargetedEntitySki
         super(manager, line, mlc);
         this.attributePlusMMSkill = new AttributePlusMMAdapter(
                 new PlaceholderStringHelperImpl(), new MythicLineConfigAdapterImpl(mlc), mainConfiguration);
+        this.forceSync = true;
+        setAsyncSafe(false);
     }
 
     @Override

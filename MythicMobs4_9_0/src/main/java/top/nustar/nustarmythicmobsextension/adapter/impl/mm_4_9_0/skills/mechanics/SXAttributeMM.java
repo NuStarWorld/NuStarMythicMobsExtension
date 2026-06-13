@@ -38,6 +38,8 @@ public class SXAttributeMM extends SkillMechanic implements ITargetedEntitySkill
         super(skill, mlc);
         this.sxAttributeMMSkill =
                 new SXAttributeMMAdapter(new PlaceholderStringHelperImpl(), new MythicLineConfigAdapterImpl(mlc));
+        this.forceSync = true;
+        setAsyncSafe(false);
     }
 
     @Override

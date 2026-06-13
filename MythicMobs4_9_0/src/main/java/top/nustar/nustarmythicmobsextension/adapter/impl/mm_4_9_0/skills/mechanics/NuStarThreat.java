@@ -51,6 +51,8 @@ public class NuStarThreat extends SkillMechanic implements NuStarMechanic, ITarg
                 new MythicLineConfigAdapterImpl(mlc),
                 mainConfiguration,
                 mobThreatService);
+        this.forceSync = true;
+        setAsyncSafe(false);
     }
 
     @Override

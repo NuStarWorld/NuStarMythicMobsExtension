@@ -43,6 +43,8 @@ public class AttributePlusSource extends SkillMechanic implements ITargetedEntit
                 new PlaceholderStringHelperImpl(),
                 new PlaceholderDoubleHelperImpl(),
                 new MythicLineConfigAdapterImpl(mlc));
+        this.forceSync = true;
+        setAsyncSafe(false);
     }
 
     @Override

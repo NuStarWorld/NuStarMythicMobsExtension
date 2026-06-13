@@ -42,6 +42,8 @@ public class FastAP extends SkillMechanic implements ITargetedEntitySkill, NuSta
 
     public FastAP(String line, SkillExecutor executor, MythicLineConfig mlc, MainConfiguration mainConfiguration) {
         super(executor, line, mlc);
+        this.forceSync = true;
+        setAsyncSafe(false);
         this.fastAPSkill = new FastAPAdapter(new MythicLineConfigAdapterImpl(mlc), mainConfiguration);
     }
 
