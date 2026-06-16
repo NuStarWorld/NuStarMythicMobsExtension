@@ -19,14 +19,11 @@
 package top.nustar.nustarmythicmobsextension.adapter.impl.targets;
 
 import java.util.HashSet;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 
-@NativeObfuscation
 public class EntitiesInTargetsSelectorAdapter {
 
-    @NativeObfuscation
     public HashSet<AbstractEntityAdapter<?>> getEntities(SkillMetadataAdapter<?> skillMetadataAdapter) {
         return new HashSet<>(skillMetadataAdapter.getEntityTargets());
     }

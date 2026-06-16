@@ -83,9 +83,10 @@ allprojects {
         } else {
             compileOnly(rootProject.libs.nms)
         }
-        if (project.name.startsWith("NuStarMythicMobsExtension-MythicMobs")) {
-            implementation(rootProject.project(":${rootProject.name}-Impl"))
-            implementation(rootProject.project(":${rootProject.name}-Adapter"))
+        if (project.name.startsWith("${rootProject.name}-mythicmobs-adapter-")) {
+            implementation(rootProject.project(":${rootProject.name}-plugin"))
+            implementation(rootProject.project(":${rootProject.name}-adapter-common"))
+            implementation(rootProject.project(":${rootProject.name}-adapter-api"))
             implementation(rootProject.project(":${rootProject.name}-api"))
         }
         compileOnly("com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT")
@@ -126,6 +127,6 @@ allprojects {
 dependencies {
     internal("org.bstats:bstats-bukkit:3.0.2")
     subprojects {
-        shadow(rootProject.project(name))
+        shadow(rootProject.project(path))
     }
 }

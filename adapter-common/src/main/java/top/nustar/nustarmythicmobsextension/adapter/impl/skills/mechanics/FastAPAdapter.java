@@ -25,7 +25,6 @@ import org.serverct.ersha.api.AttributeAPI;
 import org.serverct.ersha.attribute.AttributeHandle;
 import org.serverct.ersha.attribute.data.AttributeData;
 import team.idealstate.sugar.next.calculate.Expression;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.minecraft.next.spigot.nms.common.adapter.NextDamageSource;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicLineConfigAdapter;
@@ -36,11 +35,6 @@ import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 import top.nustar.nustarmythicmobsextension.exception.NSMMEException;
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
 
-/**
- * @author : NuStar Date : 2025/6/22 15:48 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
- *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
- */
-@NativeObfuscation
 public class FastAPAdapter implements NuStarSkill, GlobalVariable {
     private static final ThreadLocal<Boolean> IN_FASTAP_DAMAGE = ThreadLocal.withInitial(() -> false);
     private final MainConfiguration mainConfiguration;

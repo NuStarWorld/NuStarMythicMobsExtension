@@ -33,7 +33,6 @@ import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
 import team.idealstate.sugar.validate.Validation;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.minecraft.next.spigot.nms.api.NmsDamageAdapter;
 import top.nustar.minecraft.next.spigot.nms.common.adapter.DamageSourceProvider;
 import top.nustar.minecraft.next.spigot.nms.common.adapter.NextDamageSource;
@@ -45,13 +44,11 @@ import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 @Component
 @Scope(Scope.SINGLETON)
 @SuppressWarnings("unused")
-@NativeObfuscation
 public class DamageUtil {
     private static volatile MythicInstance mythicInstance;
     private static volatile NmsDamageAdapter nmsDamageAdapter;
     private static volatile DamageSourceProvider damageSourceProvider;
 
-    @NativeObfuscation
     public static void nmsDamage(
             SkillMetadataAdapter<?> skillMetadata,
             AbstractEntityAdapter<?> abstractEntity,
@@ -100,7 +97,6 @@ public class DamageUtil {
         }
     }
 
-    @NativeObfuscation
     public static void damage(
             SkillMetadataAdapter<?> skillMetadata,
             AbstractEntityAdapter<?> abstractEntity,

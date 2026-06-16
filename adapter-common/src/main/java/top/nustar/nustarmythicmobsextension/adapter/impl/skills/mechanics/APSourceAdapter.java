@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.serverct.ersha.AttributePlus;
 import org.serverct.ersha.api.AttributeAPI;
 import org.serverct.ersha.attribute.data.AttributeData;
-import tech.skidonion.obfuscator.annotations.NativeObfuscation;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.MythicLineConfigAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
@@ -36,7 +35,6 @@ import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.Placehold
 import top.nustar.nustarmythicmobsextension.manager.TemporaryAttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 
-@NativeObfuscation
 public class APSourceAdapter implements NuStarSkill {
     protected final PlaceholderStringAdapter<?> attrName;
     protected final Map<String, Integer> percentageAttr;
@@ -60,7 +58,6 @@ public class APSourceAdapter implements NuStarSkill {
     }
 
     @Override
-    @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
         LivingEntity entity = (LivingEntity) abstractEntity.getBukkitEntity();
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
