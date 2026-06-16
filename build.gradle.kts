@@ -94,6 +94,7 @@ allprojects {
         compileOnly(rootProject.libs.spigot.api)
         compileOnly(rootProject.libs.placeholderapi)
         compileOnly(rootProject.libs.attributeplus)
+        compileOnly(rootProject.libs.sxattribute)
         compileOnly(rootProject.libs.minecraft.next.spigot)
         compileOnly(fileTree(File(projectDir, "libraries")))
 
