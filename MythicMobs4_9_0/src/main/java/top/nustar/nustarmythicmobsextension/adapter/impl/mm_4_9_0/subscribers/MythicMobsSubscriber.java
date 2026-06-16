@@ -32,7 +32,7 @@ import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
 import top.nustar.nustarmythicmobsextension.api.ReloadedEvent;
-import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
+import top.nustar.nustarmythicmobsextension.manager.TemporaryAttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.service.*;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
@@ -49,11 +49,11 @@ public class MythicMobsSubscriber implements Listener {
     private volatile Map<MechanicType, MechanicHelperService> mechanicHelperServiceMap;
     private volatile Map<TargetSelectorType, TargetSelectorHelperService> targetSelectorHelperServiceMap;
     private volatile Map<PlaceholderType, PlaceholderService> placeholderServiceMap;
-    private final AttributeSourceManager attributeSourceManager = AttributeSourceManager.getAttributeSourceManager();
+    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager = TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
 
     @EventHandler
     public void on(MythicMobDeathEvent event) {
-        attributeSourceManager.removeAttributeSourceInstance(event.getMob().getUniqueId());
+        temporaryAttributeSourceManager.removeAttributeSourceInstance(event.getMob().getUniqueId());
     }
 
     @EventHandler
@@ -75,7 +75,7 @@ public class MythicMobsSubscriber implements Listener {
 
     @EventHandler
     public void on(ReloadedEvent event) {
-        for (Map.Entry<PlaceholderType, PlaceholderService> entry : placeholderServiceMap.entrySet()) {
+        for (Map.Entry<PlaceholderType, PlaceholderService> entry : placeholderServiceMap.entrySet() ) {
             mythicInstance
                     .getPlaceholderManager()
                     .register(entry.getKey().getName(), entry.getValue().getPlaceholderAdapter());

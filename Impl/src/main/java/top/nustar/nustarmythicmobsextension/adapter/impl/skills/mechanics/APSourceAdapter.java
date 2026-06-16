@@ -33,18 +33,18 @@ import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderDoubl
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStringAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderDoubleHelper;
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
-import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
+import top.nustar.nustarmythicmobsextension.manager.TemporaryAttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 
 @NativeObfuscation
-public class AttributePlusSourceAdapter implements NuStarSkill {
+public class APSourceAdapter implements NuStarSkill {
     protected final PlaceholderStringAdapter<?> attrName;
     protected final Map<String, Integer> percentageAttr;
     protected final PlaceholderStringAdapter<?> sourceName;
     protected final PlaceholderDoubleAdapter<?> time;
-    private final AttributeSourceManager attributeSourceManager = AttributeSourceManager.getAttributeSourceManager();
+    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager = TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
 
-    public AttributePlusSourceAdapter(
+    public APSourceAdapter(
             PlaceholderStringHelper<?> placeholderStringHelper,
             PlaceholderDoubleHelper<?> placeholderDoubleHelper,
             MythicLineConfigAdapter<?> mlc) {
@@ -63,32 +63,26 @@ public class AttributePlusSourceAdapter implements NuStarSkill {
     @NativeObfuscation
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
         LivingEntity entity = (LivingEntity) abstractEntity.getBukkitEntity();
+        AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
         List<String> attr =
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
-        List<String> percentageAttrList = new ArrayList<>();
-        AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
-        String defaultSource = "APSource"
-                + (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
-                        ? UUID.randomUUID().toString()
+        String defaultSource = (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
+                        ? "NSMME-APSource-" + UUID.randomUUID()
                         : sourceName.get(skillMetadata, abstractEntity));
-        AttributeAPI.addSourceAttribute(data, defaultSource, attr);
         int sourceTime = (int) time.get(skillMetadata, abstractEntity);
+
+        // 百分比属性
         if (percentageAttr != null) {
-            String percentageSource = "APPercentageSource"
-                    + (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
-                            ? UUID.randomUUID().toString()
-                            : sourceName.get(skillMetadata, abstractEntity));
+            List<String> percentageAttrList = new ArrayList<>();
             for (Map.Entry<String, Integer> entry : this.percentageAttr.entrySet()) {
                 percentageAttrList.add(entry.getKey() + ":"
                         + (data.getRandomValue(entry.getKey()).doubleValue() * entry.getValue() / 100));
             }
-            AttributeAPI.addSourceAttribute(data, percentageSource, percentageAttrList);
-            if (sourceTime > 0) {
-                attributeSourceManager.addAttributeSourceInstance(entity, percentageSource, sourceTime);
-            }
+            attr.addAll(percentageAttrList);
         }
+        AttributeAPI.addSourceAttribute(data, defaultSource, attr);
         if (sourceTime > 0) {
-            attributeSourceManager.addAttributeSourceInstance(entity, defaultSource, sourceTime);
+            temporaryAttributeSourceManager.addAttributeSourceInstance(entity, defaultSource, sourceTime);
         }
         if (entity instanceof Player) {
             AttributeAPI.updateAttribute(entity);

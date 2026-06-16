@@ -30,14 +30,14 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.SkillMetadataA
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.helper.PlaceholderDoubleHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.placeholder.helper.PlaceholderStringHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
-import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.AttributePlusSourceAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.APSourceAdapter;
 
-public class AttributePlusSource extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
+public class APSource extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
     private final NuStarSkill attributePlusSourceSkill;
 
-    public AttributePlusSource(String skill, MythicLineConfig mlc) {
+    public APSource(String skill, MythicLineConfig mlc) {
         super(skill, mlc);
-        this.attributePlusSourceSkill = new AttributePlusSourceAdapter(
+        this.attributePlusSourceSkill = new APSourceAdapter(
                 new PlaceholderStringHelperImpl(),
                 new PlaceholderDoubleHelperImpl(),
                 new MythicLineConfigAdapterImpl(mlc));

@@ -1,0 +1,43 @@
+/*
+ *    NuStarMythicMobsExtension
+ *    Copyright (C) 2025  NuStar
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechanics.helper;
+
+import io.lumine.xikage.mythicmobs.io.MythicLineConfig;
+import team.idealstate.sugar.next.context.annotation.component.Component;
+import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechanics.APSource;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechanics.RemoveAPSource;
+import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
+import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;
+import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
+
+@Component
+@MythicMobs4_9_0
+@SuppressWarnings({"unused"})
+public class RemoveAPSourceHelper implements MechanicHelperService {
+    @Override
+    public NuStarMechanic findMechanic(Object... objects) {
+        return new RemoveAPSource(getType().getType(), (MythicLineConfig) objects[0]);
+    }
+
+    @Override
+    public MechanicType getType() {
+        return MechanicType.REMOVE_AP_SOURCE;
+    }
+}

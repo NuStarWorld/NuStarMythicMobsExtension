@@ -29,22 +29,42 @@ import top.nustar.nustarmythicmobsextension.entity.AttributeSourceInstance;
 
 @Component
 @Scope(Scope.SINGLETON)
-public class AttributeSourceManager {
+public class TemporaryAttributeSourceManager {
     private final Map<UUID, AttributeSourceInstance> attributeSourceInstanceMap = new ConcurrentHashMap<>();
 
-    public AttributeSourceManager() {
-        setAttributeSourceManager(this);
+    public TemporaryAttributeSourceManager() {
+        setTemporaryAttributeSourceManager(this);
     }
 
+    /**
+     * 给实体新增一个新的临时属性源
+     * @param entity 实体
+     * @param sourceName 属性源名称
+     * @param time 持续时间
+     */
     public void addAttributeSourceInstance(LivingEntity entity, String sourceName, int time) {
-        attributeSourceInstanceMap.computeIfPresent(entity.getUniqueId(), (key, value) -> {
-            value.addSource(sourceName, time);
-            return value;
+        attributeSourceInstanceMap.compute(entity.getUniqueId(), (key, value) -> {
+            if (value == null) {
+                AttributeSourceInstance attributeSourceInstance = new AttributeSourceInstance(entity);
+                attributeSourceInstance.addSource(sourceName, time);
+                return attributeSourceInstance;
+            } else {
+                value.addSource(sourceName, time);
+                return value;
+            }
         });
-        attributeSourceInstanceMap.computeIfAbsent(entity.getUniqueId(), key -> {
-            AttributeSourceInstance attributeSourceInstance = new AttributeSourceInstance(entity);
-            attributeSourceInstance.addSource(sourceName, time);
-            return attributeSourceInstance;
+    }
+
+    /**
+     * 移除一个临时属性源
+     * @param entityId 实体 UUID
+     * @param sourceName 属性源名称
+     * @param isStartWith 是否以...开头匹配
+     */
+    public void removeAttributeSourceInstance(UUID entityId, String sourceName, boolean isStartWith) {
+        attributeSourceInstanceMap.computeIfPresent(entityId, (key, value) -> {
+            value.removeDetail(sourceName, isStartWith);
+            return value;
         });
     }
 
@@ -57,9 +77,9 @@ public class AttributeSourceManager {
     }
 
     @Getter
-    private static volatile AttributeSourceManager attributeSourceManager;
+    private static volatile TemporaryAttributeSourceManager temporaryAttributeSourceManager;
 
-    public void setAttributeSourceManager(AttributeSourceManager attributeSourceManager) {
-        AttributeSourceManager.attributeSourceManager = attributeSourceManager;
+    public void setTemporaryAttributeSourceManager(TemporaryAttributeSourceManager temporaryAttributeSourceManager) {
+        TemporaryAttributeSourceManager.temporaryAttributeSourceManager = temporaryAttributeSourceManager;
     }
 }

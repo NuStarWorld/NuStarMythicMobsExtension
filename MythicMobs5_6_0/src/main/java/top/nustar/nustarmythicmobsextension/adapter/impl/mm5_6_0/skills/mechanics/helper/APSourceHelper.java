@@ -22,7 +22,7 @@ import io.lumine.mythic.api.config.MythicLineConfig;
 import io.lumine.mythic.core.skills.SkillExecutor;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
-import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.skills.mechanics.AttributePlusSource;
+import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.skills.mechanics.APSource;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs5_6_0;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
@@ -30,10 +30,10 @@ import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
 @Component
 @MythicMobs5_6_0
 @SuppressWarnings({"unused"})
-public class AttributePlusSourceHelper implements MechanicHelperService {
+public class APSourceHelper implements MechanicHelperService {
     @Override
     public NuStarMechanic findMechanic(Object... objects) {
-        return new AttributePlusSource("apsource", (SkillExecutor) objects[0], (MythicLineConfig) objects[1]);
+        return new APSource("apsource", (SkillExecutor) objects[0], (MythicLineConfig) objects[1]);
     }
 
     @Override

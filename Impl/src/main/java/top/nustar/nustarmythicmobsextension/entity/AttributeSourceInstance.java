@@ -18,7 +18,9 @@
 
 package top.nustar.nustarmythicmobsextension.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.Data;
 import org.bukkit.entity.LivingEntity;
@@ -36,15 +38,16 @@ public class AttributeSourceInstance {
     }
 
     public void addSource(String sourceName, int time) {
-        detailMap.computeIfPresent(sourceName, (key, value) -> {
+        detailMap.compute(sourceName, (key, value) -> {
+            if (value == null) {
+                return new Detail(entity, sourceName, System.currentTimeMillis() + time * 1000L);
+            }
             if (value.isDied) {
                 return new Detail(entity, sourceName, time);
             }
             value.setEndTime(System.currentTimeMillis() + time * 1000L);
             return value;
         });
-        detailMap.computeIfAbsent(
-                sourceName, key -> new Detail(entity, sourceName, System.currentTimeMillis() + time * 1000L));
     }
 
     public void removeDetails() {
@@ -54,6 +57,26 @@ public class AttributeSourceInstance {
             }
         });
         detailMap.clear();
+    }
+
+    public void removeDetail(String sourceName, boolean isStartWith) {
+        List<String> stopDetail = new ArrayList<>();
+        if (isStartWith) {
+            for (Map.Entry<String, Detail> detailEntry : detailMap.entrySet()) {
+                String sourceNameKey = detailEntry.getKey();
+                if (sourceNameKey.startsWith(sourceName)) {
+                    stopDetail.add(sourceNameKey);
+                }
+            }
+        } else {
+            stopDetail.add(sourceName);
+        }
+        for (String sourceNameKey : stopDetail) {
+            detailMap.computeIfPresent(sourceNameKey, (s, detail) -> {
+                detail.stop();
+                return null;
+            });
+        }
     }
 
     @Data
@@ -81,7 +104,17 @@ public class AttributeSourceInstance {
                     }
                 }
             };
-            task.runTaskTimerAsynchronously(InstanceUtil.getInstance(Plugin.class), 0L, 20L);
+            task.runTaskTimer(InstanceUtil.getInstance(Plugin.class), 0L, 20L);
+        }
+
+        public void stop() {
+            if (task.isCancelled()) {
+                return;
+            }
+
+            AttributeAPI.takeSourceAttribute(AttributeAPI.getAttrData(entity), sourceName);
+
+            task.cancel();
         }
     }
 }

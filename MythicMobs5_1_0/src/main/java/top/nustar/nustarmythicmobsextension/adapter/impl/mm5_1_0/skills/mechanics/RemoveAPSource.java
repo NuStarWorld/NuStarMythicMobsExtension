@@ -32,16 +32,16 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.SkillMetadataAd
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.placeholder.helper.PlaceholderDoubleHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_1_0.placeholder.helper.PlaceholderStringHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
-import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.AttributePlusSourceAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.APSourceAdapter;
+import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.RemoveAPSourceAdapter;
 
-public class AttributePlusSource extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
-    private final NuStarSkill attributePlusSourceSkill;
+public class RemoveAPSource extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
+    private final NuStarSkill removeAPSourceSkill;
 
-    public AttributePlusSource(String skill, SkillExecutor executor, MythicLineConfig mlc) {
+    public RemoveAPSource(String skill, SkillExecutor executor, MythicLineConfig mlc) {
         super(executor, skill, mlc);
-        this.attributePlusSourceSkill = new AttributePlusSourceAdapter(
+        this.removeAPSourceSkill = new RemoveAPSourceAdapter(
                 new PlaceholderStringHelperImpl(),
-                new PlaceholderDoubleHelperImpl(),
                 new MythicLineConfigAdapterImpl(mlc));
         this.forceSync = true;
         setAsyncSafe(false);
@@ -49,7 +49,7 @@ public class AttributePlusSource extends SkillMechanic implements ITargetedEntit
 
     @Override
     public SkillResult castAtEntity(SkillMetadata skillMetadata, AbstractEntity abstractEntity) {
-        boolean result = attributePlusSourceSkill.castAtEntity(
+        boolean result = removeAPSourceSkill.castAtEntity(
                 new SkillMetadataAdapterImpl(skillMetadata), new AbstractEntityAdapterImpl(abstractEntity));
         return result ? SkillResult.SUCCESS : SkillResult.ERROR;
     }

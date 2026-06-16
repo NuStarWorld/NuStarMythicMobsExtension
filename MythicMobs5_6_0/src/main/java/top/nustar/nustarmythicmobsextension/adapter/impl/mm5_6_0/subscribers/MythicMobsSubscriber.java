@@ -34,7 +34,7 @@ import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarmythicmobsextension.adapter.MythicInstance;
 import top.nustar.nustarmythicmobsextension.api.ReloadedEvent;
-import top.nustar.nustarmythicmobsextension.manager.AttributeSourceManager;
+import top.nustar.nustarmythicmobsextension.manager.TemporaryAttributeSourceManager;
 import top.nustar.nustarmythicmobsextension.service.*;
 import top.nustar.nustarmythicmobsextension.service.annotations.*;
 import top.nustar.nustarmythicmobsextension.service.enums.MechanicType;
@@ -50,11 +50,11 @@ public class MythicMobsSubscriber implements Listener {
     private volatile Map<MechanicType, MechanicHelperService> mechanicHelperServiceMap;
     private volatile Map<TargetSelectorType, TargetSelectorHelperService> targetSelectorHelperServiceMap;
     private volatile Map<PlaceholderType, PlaceholderService> placeholderServiceMap;
-    private final AttributeSourceManager attributeSourceManager = AttributeSourceManager.getAttributeSourceManager();
+    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager = TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
 
     @EventHandler
     public void on(MythicMobDeathEvent event) {
-        attributeSourceManager.removeAttributeSourceInstance(event.getEntity().getUniqueId());
+        temporaryAttributeSourceManager.removeAttributeSourceInstance(event.getEntity().getUniqueId());
     }
 
     @EventHandler

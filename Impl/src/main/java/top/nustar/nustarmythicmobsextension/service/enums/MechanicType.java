@@ -18,13 +18,18 @@
 
 package top.nustar.nustarmythicmobsextension.service.enums;
 
+import lombok.Getter;
+
 public enum MechanicType {
     ATTRIBUTE_PLUS_MM("apmm"),
     ATTRIBUTE_PLUS_SOURCE("apsource"),
     FAST_AP("fastap"),
     NUSTAR_THREAT("nustarthreat"),
-    SX_ATTRIBUTE_MM("sxmm");
+    SX_ATTRIBUTE_MM("sxmm"),
+    REMOVE_AP_SOURCE("removeapsource")
+    ;
 
+    @Getter
     private final String type;
 
     MechanicType(String type) {
