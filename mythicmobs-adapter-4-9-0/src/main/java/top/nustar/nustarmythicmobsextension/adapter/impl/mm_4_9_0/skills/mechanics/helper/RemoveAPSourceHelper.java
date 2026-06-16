@@ -21,7 +21,6 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechan
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
-import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechanics.APSource;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm_4_9_0.skills.mechanics.RemoveAPSource;
 import top.nustar.nustarmythicmobsextension.service.MechanicHelperService;
 import top.nustar.nustarmythicmobsextension.service.annotations.MythicMobs4_9_0;

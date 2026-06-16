@@ -19,7 +19,6 @@
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics;
 
 import java.util.*;
-
 import org.bukkit.entity.LivingEntity;
 import org.serverct.ersha.api.AttributeAPI;
 import org.serverct.ersha.attribute.AttributeHandle;
@@ -60,7 +59,8 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
         this.sendMessage = mlc.getBoolean(new String[] {"sendMessage", "sm"}, true);
         this.preventImmunity = mlc.getBoolean(new String[] {"preventImmunity", "pi"}, false);
         this.preventKnockback = mlc.getBoolean(new String[] {"preventKnockback", "pk"}, false);
-        this.nextDamageSource = NextDamageSource.valueOf(mlc.getString(new String[] {"damagecause", "cause", "dc"}, "GENERIC"));
+        this.nextDamageSource =
+                NextDamageSource.valueOf(mlc.getString(new String[] {"damagecause", "cause", "dc"}, "GENERIC"));
     }
 
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
@@ -78,8 +78,7 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
             Number calculate = value.calculate(parseExpressionContext(
                     skillMetadata,
                     abstractEntity,
-                    mainConfiguration.getVariables().values()
-            ));
+                    mainConfiguration.getVariables().values()));
             String defaultAttributeName = AttributeAPI.getDefaultAttributeName(key);
             if (defaultAttributeName == null) {
                 defaultAttributeName = key;

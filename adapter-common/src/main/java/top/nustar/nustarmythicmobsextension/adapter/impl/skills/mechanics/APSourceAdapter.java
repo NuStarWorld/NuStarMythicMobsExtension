@@ -40,7 +40,8 @@ public class APSourceAdapter implements NuStarSkill {
     protected final Map<String, Integer> percentageAttr;
     protected final PlaceholderStringAdapter<?> sourceName;
     protected final PlaceholderDoubleAdapter<?> time;
-    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager = TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
+    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager =
+            TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
 
     public APSourceAdapter(
             PlaceholderStringHelper<?> placeholderStringHelper,
@@ -64,8 +65,8 @@ public class APSourceAdapter implements NuStarSkill {
         List<String> attr =
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
         String defaultSource = (sourceName == null || sourceName.get(skillMetadata, abstractEntity) == null
-                        ? "NSMME-APSource-" + UUID.randomUUID()
-                        : sourceName.get(skillMetadata, abstractEntity));
+                ? "NSMME-APSource-" + UUID.randomUUID()
+                : sourceName.get(skillMetadata, abstractEntity));
         int sourceTime = (int) time.get(skillMetadata, abstractEntity);
 
         // 百分比属性

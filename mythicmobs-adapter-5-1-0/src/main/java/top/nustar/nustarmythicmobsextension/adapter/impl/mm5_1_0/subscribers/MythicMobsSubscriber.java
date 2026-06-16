@@ -50,11 +50,13 @@ public class MythicMobsSubscriber implements Listener {
     private volatile Map<MechanicType, MechanicHelperService> mechanicHelperServiceMap;
     private volatile Map<TargetSelectorType, TargetSelectorHelperService> targetSelectorHelperServiceMap;
     private volatile Map<PlaceholderType, PlaceholderService> placeholderServiceMap;
-    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager = TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
+    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager =
+            TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
 
     @EventHandler
     public void on(MythicMobDeathEvent event) {
-        temporaryAttributeSourceManager.removeAttributeSourceInstance(event.getEntity().getUniqueId());
+        temporaryAttributeSourceManager.removeAttributeSourceInstance(
+                event.getEntity().getUniqueId());
     }
 
     @EventHandler

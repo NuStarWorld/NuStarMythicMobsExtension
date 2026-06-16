@@ -26,8 +26,7 @@ public enum MechanicType {
     FAST_AP("fastap"),
     NUSTAR_THREAT("nustarthreat"),
     SX_ATTRIBUTE_MM("sxmm"),
-    REMOVE_AP_SOURCE("removeapsource")
-    ;
+    REMOVE_AP_SOURCE("removeapsource");
 
     @Getter
     private final String type;

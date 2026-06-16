@@ -1,5 +1,26 @@
+/*
+ *    NuStarMythicMobsExtension
+ *    Copyright (C) 2025  NuStar
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.serverct.ersha.api.AttributeAPI;
@@ -12,22 +33,16 @@ import top.nustar.nustarmythicmobsextension.adapter.placeholder.PlaceholderStrin
 import top.nustar.nustarmythicmobsextension.adapter.placeholder.helper.PlaceholderStringHelper;
 import top.nustar.nustarmythicmobsextension.manager.TemporaryAttributeSourceManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 public class RemoveAPSourceAdapter implements NuStarSkill {
 
     private final PlaceholderStringAdapter<?> sourceName;
     private final boolean isStartWith;
-    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager = TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
+    private final TemporaryAttributeSourceManager temporaryAttributeSourceManager =
+            TemporaryAttributeSourceManager.getTemporaryAttributeSourceManager();
 
-    public RemoveAPSourceAdapter(
-            PlaceholderStringHelper<?> placeholderStringHelper,
-            MythicLineConfigAdapter<?> mlc
-    ) {
-        this.sourceName = placeholderStringHelper.of(mlc.getString(new String[]{"sourceName", "s"}));
-        this.isStartWith = mlc.getBoolean(new String[]{"isStartWith", "i"}, false);
+    public RemoveAPSourceAdapter(PlaceholderStringHelper<?> placeholderStringHelper, MythicLineConfigAdapter<?> mlc) {
+        this.sourceName = placeholderStringHelper.of(mlc.getString(new String[] {"sourceName", "s"}));
+        this.isStartWith = mlc.getBoolean(new String[] {"isStartWith", "i"}, false);
     }
 
     @Override
@@ -57,7 +72,8 @@ public class RemoveAPSourceAdapter implements NuStarSkill {
             AttributeAPI.takeSourceAttribute(attrData, removeSource);
         }
 
-        temporaryAttributeSourceManager.removeAttributeSourceInstance(bukkitEntity.getUniqueId(), sourceName, isStartWith);
+        temporaryAttributeSourceManager.removeAttributeSourceInstance(
+                bukkitEntity.getUniqueId(), sourceName, isStartWith);
 
         return true;
     }

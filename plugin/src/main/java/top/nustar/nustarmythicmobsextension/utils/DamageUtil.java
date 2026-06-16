@@ -21,7 +21,6 @@ package top.nustar.nustarmythicmobsextension.utils;
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import java.util.EnumMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -61,10 +60,10 @@ public class DamageUtil {
         if (!(skillMetadata.getCaster().getEntity().getBukkitEntity() instanceof LivingEntity)) {
             return;
         }
-        LivingEntity source = (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
+        LivingEntity source =
+                (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
 
-        ActiveMobAdapter<?> activeMobAdapter =
-                mythicInstance.getMobManager().getMythicMobInstance(source);
+        ActiveMobAdapter<?> activeMobAdapter = mythicInstance.getMobManager().getMythicMobInstance(source);
         // MythicMobs 标识，防止再次触发 ATTACK / OnAttack 触发器
         // usingDamageSkill 为 true 时 mm 会在监听 EntityDamageByEntityEvent 事件将伤害设置为 lastDamageSkillAmount
         skillMetadata.getCaster().setUsingDamageSkill(true);
@@ -75,7 +74,12 @@ public class DamageUtil {
             if (activeMobAdapter.getActualObject() != null) {
                 activeMobAdapter.setLastDamageSkillAmount(finalDamage);
             }
-            EntityDamageByEntityEvent fakeEvent = new EntityDamageByEntityEvent(source, victim, damageSourceProvider.convertBukkitDamageSource(nextDamageSource, EntityDamageEvent.DamageCause.class), finalDamage);
+            EntityDamageByEntityEvent fakeEvent = new EntityDamageByEntityEvent(
+                    source,
+                    victim,
+                    damageSourceProvider.convertBukkitDamageSource(
+                            nextDamageSource, EntityDamageEvent.DamageCause.class),
+                    finalDamage);
             Bukkit.getPluginManager().callEvent(fakeEvent);
             if (fakeEvent.isCancelled()) {
                 return;

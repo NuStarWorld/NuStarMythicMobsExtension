@@ -29,10 +29,8 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.NuStarMechanic;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.AbstractEntityAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.MythicLineConfigAdapterImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.SkillMetadataAdapterImpl;
-import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.placeholder.helper.PlaceholderDoubleHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.mm5_6_0.placeholder.helper.PlaceholderStringHelperImpl;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
-import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.APSourceAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics.RemoveAPSourceAdapter;
 
 public class RemoveAPSource extends SkillMechanic implements ITargetedEntitySkill, NuStarMechanic {
@@ -40,9 +38,8 @@ public class RemoveAPSource extends SkillMechanic implements ITargetedEntitySkil
 
     public RemoveAPSource(String skill, SkillExecutor executor, MythicLineConfig mlc) {
         super(executor, skill, mlc);
-        this.removeAPSourceSkill = new RemoveAPSourceAdapter(
-                new PlaceholderStringHelperImpl(),
-                new MythicLineConfigAdapterImpl(mlc));
+        this.removeAPSourceSkill =
+                new RemoveAPSourceAdapter(new PlaceholderStringHelperImpl(), new MythicLineConfigAdapterImpl(mlc));
         this.forceSync = true;
         setAsyncSafe(false);
     }

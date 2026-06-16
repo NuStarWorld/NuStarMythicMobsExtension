@@ -18,8 +18,8 @@
 
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
-import java.util.HashMap;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

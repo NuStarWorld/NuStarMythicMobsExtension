@@ -27,7 +27,6 @@ import team.idealstate.sugar.next.context.Context;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.minecraft.next.spigot.nms.api.annotation.EnableNms;
 
-
 @EnableJacksonYaml
 @EnableNms
 public class NuStarMythicMobsExtension extends SpigotPlugin {

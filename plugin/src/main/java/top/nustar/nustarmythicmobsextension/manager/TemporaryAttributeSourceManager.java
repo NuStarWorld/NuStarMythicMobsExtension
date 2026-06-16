@@ -38,6 +38,7 @@ public class TemporaryAttributeSourceManager {
 
     /**
      * 给实体新增一个新的临时属性源
+     *
      * @param entity 实体
      * @param sourceName 属性源名称
      * @param time 持续时间
@@ -57,6 +58,7 @@ public class TemporaryAttributeSourceManager {
 
     /**
      * 移除一个临时属性源
+     *
      * @param entityId 实体 UUID
      * @param sourceName 属性源名称
      * @param isStartWith 是否以...开头匹配
