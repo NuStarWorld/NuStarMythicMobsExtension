@@ -126,7 +126,6 @@ allprojects {
 }
 
 dependencies {
-    internal("org.bstats:bstats-bukkit:3.0.2")
     subprojects {
         shadow(rootProject.project(path))
     }
