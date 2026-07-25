@@ -32,6 +32,7 @@ import top.nustar.nustarmythicmobsextension.adapter.impl.skills.GlobalVariable;
 import top.nustar.nustarmythicmobsextension.adapter.impl.skills.NuStarSkill;
 import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 import top.nustar.nustarmythicmobsextension.exception.NSMMEException;
+import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
 
 public class FastAPAdapter implements NuStarSkill, GlobalVariable {
@@ -70,7 +71,19 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
         LivingEntity caster =
                 (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
         LivingEntity victim = (LivingEntity) abstractEntity.getBukkitEntity();
-        AttributeData attackData = clear ? AttributeData.Companion.create(caster) : AttributeAPI.getAttrData(caster);
+
+        AttributeData casterAttrData = AttributeAPI.getAttrData(caster);
+        AttributeData attackData;
+        if (clear) {
+            attackData = AttributeData.Companion.create(caster);
+            // 给予白名单属性
+            AttributeAPI.addSourceAttribute(
+                    attackData,
+                    "APMM_WhiteList",
+                    AttributeUtils.getWhiteAttributeList(casterAttrData, mainConfiguration.getWhiteAttrList()));
+        } else {
+            attackData = casterAttrData;
+        }
 
         AttributeHandle attributeHandle = new AttributeHandle(attackData, AttributeAPI.getAttrData(victim));
         // 写入属性
