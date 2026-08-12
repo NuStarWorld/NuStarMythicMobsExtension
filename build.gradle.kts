@@ -7,7 +7,47 @@ plugins {
 }
 
 group = "top.nustar.nustarmythicmobsextension"
-version = "2.0.12"
+
+val baseVersion = providers.gradleProperty("baseVersion").get()
+val releaseBuild =
+    providers
+        .gradleProperty("release")
+        .map { it.toBoolean() }
+        .orElse(false)
+        .get()
+val buildNumber =
+    providers
+        .gradleProperty("buildNumber")
+        .orElse(providers.environmentVariable("GITHUB_RUN_NUMBER"))
+        .orElse("local")
+        .get()
+val buildAttempt =
+    providers
+        .gradleProperty("buildAttempt")
+        .orElse(providers.environmentVariable("GITHUB_RUN_ATTEMPT"))
+        .orElse("1")
+        .get()
+val gitCommit =
+    providers
+        .gradleProperty("gitCommit")
+        .orElse(providers.environmentVariable("GITHUB_SHA"))
+        .orElse(
+            providers.provider {
+                providers
+                    .exec {
+                        commandLine("git", "rev-parse", "--short=8", "HEAD")
+                        isIgnoreExitValue = true
+                    }.standardOutput.asText
+                    .get()
+                    .trim()
+            },
+        ).get()
+        .ifBlank { "unknown" }
+        .take(8)
+val buildId = if (buildNumber == "local") "local" else "$buildNumber.$buildAttempt"
+val buildVersion = if (releaseBuild) baseVersion else "$baseVersion-dev.$buildId-$gitCommit"
+
+version = buildVersion
 
 allprojects {
     if (!project.buildFile.exists()) {
@@ -128,5 +168,57 @@ allprojects {
 dependencies {
     subprojects {
         shadow(rootProject.project(path))
+    }
+}
+
+tasks.withType<Jar>().configureEach {
+    manifest {
+        attributes(
+            "Implementation-Version" to buildVersion,
+            "Build-Commit" to gitCommit,
+            "Build-Number" to buildId,
+            "Build-Type" to if (releaseBuild) "release" else "development",
+        )
+    }
+}
+
+val buildMetadataFile = layout.buildDirectory.file("build-metadata.properties")
+
+val writeBuildMetadata by tasks.registering {
+    group = "build"
+    description = "Writes the resolved build identity for CI and diagnostics."
+    outputs.file(buildMetadataFile)
+
+    doLast {
+        val output = buildMetadataFile.get().asFile
+        output.parentFile.mkdirs()
+        output.writeText(
+            """
+            baseVersion=$baseVersion
+            version=$buildVersion
+            commit=$gitCommit
+            buildNumber=$buildId
+            release=$releaseBuild
+            """.trimIndent() + System.lineSeparator(),
+        )
+    }
+}
+
+tasks.named("build") {
+    dependsOn(writeBuildMetadata)
+}
+
+tasks.register("verifyReleaseTag") {
+    group = "verification"
+    description = "Checks that a release build uses a tag matching baseVersion."
+
+    doLast {
+        check(releaseBuild) { "verifyReleaseTag requires -Prelease=true." }
+        val releaseTag =
+            providers.gradleProperty("releaseTag").orNull
+                ?: error("Missing -PreleaseTag (expected v$baseVersion).")
+        check(releaseTag.removePrefix("v") == baseVersion) {
+            "Release tag '$releaseTag' does not match baseVersion '$baseVersion'."
+        }
     }
 }

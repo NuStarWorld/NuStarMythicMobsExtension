@@ -1,0 +1,123 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - "**"
+    tags:
+      - "v*"
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type != 'tag' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build test artifact
+    if: github.ref_type != 'tag'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build root artifact
+        run: |
+          chmod +x gradlew
+          ./gradlew clean build --stacktrace --console=plain
+
+      - name: Locate root artifact
+        id: artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          source <(sed 's/^/export BUILD_/' build/build-metadata.properties)
+          root_jar="build/libs/NuStarMythicMobsExtension-${BUILD_version}.jar"
+          test -f "$root_jar"
+          echo "version=${BUILD_version}" >> "$GITHUB_OUTPUT"
+          echo "path=${root_jar}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload root artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NuStarMythicMobsExtension-${{ steps.artifact.outputs.version }}
+          path: ${{ steps.artifact.outputs.path }}
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Publish GitHub release
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Verify tag and build release artifact
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          chmod +x gradlew
+          ./gradlew clean build verifyReleaseTag \
+            -Prelease=true \
+            -PreleaseTag="$RELEASE_TAG" \
+            --stacktrace \
+            --console=plain
+
+      - name: Locate root artifact
+        id: artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          source <(sed 's/^/export BUILD_/' build/build-metadata.properties)
+          root_jar="build/libs/NuStarMythicMobsExtension-${BUILD_version}.jar"
+          test -f "$root_jar"
+          sha256sum "$root_jar" > "$root_jar.sha256"
+          echo "version=${BUILD_version}" >> "$GITHUB_OUTPUT"
+          echo "path=${root_jar}" >> "$GITHUB_OUTPUT"
+          echo "checksum=${root_jar}.sha256" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          ROOT_JAR: ${{ steps.artifact.outputs.path }}
+          ROOT_JAR_CHECKSUM: ${{ steps.artifact.outputs.checksum }}
+          RELEASE_VERSION: ${{ steps.artifact.outputs.version }}
+        run: |
+          gh release create "$RELEASE_TAG" \
+            "$ROOT_JAR" \
+            "$ROOT_JAR_CHECKSUM" \
+            --verify-tag \
+            --generate-notes \
+            --title "NuStarMythicMobsExtension ${RELEASE_VERSION}"
