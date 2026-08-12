@@ -86,7 +86,6 @@ public class DamageUtil {
             }
             finalDamage = fakeEvent.getFinalDamage();
             nmsDamageAdapter.damageWithSource(victim, source, nextDamageSource, finalDamage);
-            Log.info("造成伤害 " + finalDamage + " 点");
             if (activeMobAdapter.getActualObject() != null && activeMobAdapter.getOwner() != null) {
                 Entity parent = Bukkit.getEntity(activeMobAdapter.getOwner());
                 if (!InstanceUtil.getVersion().contains("Spigot") && parent instanceof Player) {
