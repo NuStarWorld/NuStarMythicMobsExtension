@@ -16,4 +16,18 @@ plugins {
     id("team.idealstate.glass") version "0.1.0-SNAPSHOT"
 }
 
-multiModule()
+val modules =
+    listOf(
+        "adapter-api",
+        "adapter-common",
+        "api",
+        "mythicmobs-adapter-4-9-0",
+        "mythicmobs-adapter-5-1-0",
+        "mythicmobs-adapter-5-6-0",
+        "plugin",
+    )
+
+include(*modules.map { ":$it" }.toTypedArray())
+modules.forEach { module ->
+    project(":$module").name = "${rootProject.name}-$module"
+}
