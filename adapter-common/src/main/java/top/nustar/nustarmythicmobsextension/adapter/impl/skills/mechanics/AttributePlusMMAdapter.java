@@ -62,7 +62,8 @@ public class AttributePlusMMAdapter implements NuStarSkill {
             AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
             AttributeAPI.addSourceAttribute(data, "APMM_XULI", Collections.singletonList("蓄力加成:100"));
             if (clear) {
-                AttributeData newData = AttributeData.Companion.create(entity);
+                AttributeData newData = new AttributeData();
+                newData.setSourceEntity(entity);
                 AttributeAPI.addSourceAttribute(newData, "APMM_XULI", Collections.singletonList("蓄力加成:100"));
                 AttributeAPI.addSourceAttribute(
                         newData,

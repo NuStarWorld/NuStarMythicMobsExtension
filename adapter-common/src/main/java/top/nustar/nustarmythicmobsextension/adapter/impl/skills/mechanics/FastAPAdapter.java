@@ -75,7 +75,8 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
         AttributeData casterAttrData = AttributeAPI.getAttrData(caster);
         AttributeData attackData;
         if (clear) {
-            attackData = AttributeData.Companion.create(caster);
+            attackData = new AttributeData();
+            attackData.setSourceEntity(caster);
             // 给予白名单属性
             AttributeAPI.addSourceAttribute(
                     attackData,
