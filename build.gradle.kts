@@ -93,6 +93,12 @@ allprojects {
         withJUnitTest()
     }
 
+    // 日常构建不带入全量测试；显式 check/test 仍保留原有完整验证。
+    tasks.named("build") {
+        setDependsOn(dependsOn.filterNot { it == "check" })
+        dependsOn(tasks.named("spotlessCheck"))
+    }
+
     repositories {
         mavenLocal()
         aliyun()
@@ -186,7 +192,16 @@ val buildMetadataFile = layout.buildDirectory.file("build-metadata.properties")
 
 val writeBuildMetadata by tasks.registering {
     group = "build"
-    description = "Writes the resolved build identity for CI and diagnostics."
+    description = "写入当前构建版本，供 CI 和诊断使用。"
+    inputs.properties(
+        mapOf(
+            "baseVersion" to baseVersion,
+            "version" to buildVersion,
+            "commit" to gitCommit,
+            "buildNumber" to buildId,
+            "release" to releaseBuild,
+        ),
+    )
     outputs.file(buildMetadataFile)
 
     doLast {

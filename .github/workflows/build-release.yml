@@ -40,7 +40,7 @@ jobs:
       - name: Build root artifact
         run: |
           chmod +x gradlew
-          ./gradlew clean build --stacktrace --console=plain
+          ./gradlew check build --stacktrace --console=plain
 
       - name: Locate root artifact
         id: artifact
@@ -88,7 +88,7 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
           chmod +x gradlew
-          ./gradlew clean build verifyReleaseTag \
+          ./gradlew check build verifyReleaseTag \
             -Prelease=true \
             -PreleaseTag="$RELEASE_TAG" \
             --stacktrace \
