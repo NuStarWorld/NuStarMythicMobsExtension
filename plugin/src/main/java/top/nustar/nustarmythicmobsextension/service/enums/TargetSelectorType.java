@@ -20,18 +20,21 @@ package top.nustar.nustarmythicmobsextension.service.enums;
 
 public enum TargetSelectorType {
     ENTITIES_IN_TARGETS("EntitiesInTargets"),
-    SUPER_FORWARD_TARGETER("SuperForward");
+    SUPER_FORWARD_TARGETER("SuperForward"),
+    CYLINDER_CONE("NuStarCylinderCone", "NSCylinderCone", "TailedBeastCylinderCone", "PTBCylinderCone");
 
-    private final String name;
+    private final String[] names;
 
-    TargetSelectorType(String name) {
-        this.name = name;
+    TargetSelectorType(String... names) {
+        this.names = names;
     }
 
     public static TargetSelectorType of(String name) {
         for (TargetSelectorType value : values()) {
-            if (value.name.equalsIgnoreCase(name)) {
-                return value;
+            for (String alias : value.names) {
+                if (alias.equalsIgnoreCase(name)) {
+                    return value;
+                }
             }
         }
         return null;
