@@ -37,8 +37,12 @@ import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
 
 public class FastAPAdapter implements NuStarSkill, GlobalVariable {
     private static final ThreadLocal<Boolean> IN_FASTAP_DAMAGE = ThreadLocal.withInitial(() -> false);
+    private static final String SCALED_SELF_ERROR =
+            "FastAP 参数 baseAttributeMultiple(bam) / baseAttributeMultipleList(baml)："
+                    + "非恒等有效倍率不支持施法者与目标 UUID 相同，AP 会覆盖攻击端快照";
     private final MainConfiguration mainConfiguration;
     private final Map<String, Expression> attrExpressionMap = new HashMap<>();
+    private final FastAPBaseMultiplier baseMultiplier;
     protected final boolean clear;
     protected final boolean preventImmunity;
     protected final boolean preventKnockback;
@@ -48,14 +52,23 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
     public FastAPAdapter(MythicLineConfigAdapter<?> mlc, MainConfiguration mainConfiguration) {
         this.mainConfiguration = mainConfiguration;
         String attrString = mlc.getString(new String[] {"attr", "a"});
-        String[] attrSplit = attrString.split(",");
-        for (String attr : attrSplit) {
-            String[] attrLine = attr.split(":");
-            if (attrLine.length != 2) {
-                throw new NSMMEException("Invalid attribute format:" + attr);
+        // 仅增加省略 attr；分段、表达式解析及同名覆盖继续沿用旧行为。
+        if (attrString != null) {
+            for (String attr : attrString.split(",")) {
+                String[] attrLine = attr.split(":");
+                if (attrLine.length != 2) {
+                    throw new NSMMEException("FastAP 参数 attr 格式错误：" + attr);
+                }
+                attrExpressionMap.put(attrLine[0], new Expression(attrLine[1]).compile());
             }
-            attrExpressionMap.put(attrLine[0], new Expression(attrLine[1]).compile());
         }
+        this.baseMultiplier = new FastAPBaseMultiplier(
+                mlc.getString(new String[] {"baseAttributeMultiple", "bam"}),
+                mlc.getString(new String[] {"baseAttributeMultipleList", "baml"}),
+                raw -> {
+                    String defaultName = AttributeAPI.getDefaultAttributeName(raw);
+                    return AttributeAPI.getServerAttributeName(defaultName == null ? raw : defaultName);
+                });
         this.clear = mlc.getBoolean(new String[] {"clear", "c"}, false);
         this.sendMessage = mlc.getBoolean(new String[] {"sendMessage", "sm"}, true);
         this.preventImmunity = mlc.getBoolean(new String[] {"preventImmunity", "pi"}, false);
@@ -72,6 +85,28 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
                 (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
         LivingEntity victim = (LivingEntity) abstractEntity.getBukkitEntity();
 
+        // 常量倍率不提前读取 PAPI；动态倍率首次取变量时才固定本目标上下文。
+        Map<String, Number> multiplierContext = baseMultiplier.isConfigured()
+                ? FastAPBaseMultiplier.lazyContext(() -> parseExpressionContext(
+                        skillMetadata,
+                        abstractEntity,
+                        mainConfiguration.getVariables().values()))
+                : null;
+        FastAPBaseMultiplier.Values multipliers =
+                multiplierContext == null ? null : baseMultiplier.evaluate(multiplierContext);
+        // AP 返回 live values，先复制，且不以基础值为 0 冒充倍率恒等。
+        Set<String> baseAttributeNames = multipliers == null ? null : new LinkedHashSet<>(AttributeAPI.allServerKey());
+        if (multipliers != null && !multipliers.isIdentity(baseAttributeNames)) {
+            if (caster.getUniqueId().equals(victim.getUniqueId())) {
+                // 在 clear 的既有白名单事件之前拒绝注册属性上的非恒等自伤。
+                throw new NSMMEException(SCALED_SELF_ERROR);
+            }
+            if (!attrExpressionMap.isEmpty()) {
+                // 非恒等且有 attr 时，在 clear 事件前固定共享上下文；无 attr 不做多余读取。
+                multiplierContext.entrySet();
+            }
+        }
+
         AttributeData casterAttrData = AttributeAPI.getAttrData(caster);
         AttributeData attackData;
         if (clear) {
@@ -86,13 +121,53 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
             attackData = casterAttrData;
         }
 
+        boolean scaledSnapshot = false;
+        if (multipliers != null) {
+            // 注册名覆盖仅 force 的属性；来源名补上 raw 属性，不改 AP 返回的源集合。
+            baseAttributeNames.addAll(attackData
+                    .getCentral()
+                    .getAttributes(attackData
+                            .getCentral()
+                            .getAttributeSources(null, false)
+                            .values()));
+            if (!multipliers.isIdentity(baseAttributeNames)) {
+                if (caster.getUniqueId().equals(victim.getUniqueId())) {
+                    throw new NSMMEException(SCALED_SELF_ERROR);
+                }
+                if (!attrExpressionMap.isEmpty()) {
+                    // 仅 raw 来源扩名才显露的非恒等在此固定；已固定的 Map 不会再次读变量。
+                    multiplierContext.entrySet();
+                }
+                AttributeData scaledData = new AttributeData();
+                scaledData.setSourceEntity(caster);
+                scaledData.setLastAttackMillis(attackData.getLastAttackMillis());
+                scaledData.setLastDefenseMillis(attackData.getLastDefenseMillis());
+                // 只隔离本次 handle 的有效数值；不复制回指原 data 的变量、持久源或计数器。
+                for (String serverName : baseAttributeNames) {
+                    // 百分比已物化在来源内，按名读取一次；不可再次刷新或应用系数。
+                    Number[] scaled = multipliers.scale(serverName, attackData.getAttributeValue(serverName));
+                    // force 仅写新中心，避免源事件、corrector 和第二次 Central cap。
+                    // AP 后续 SubAttribute cap、概率与防御仍由原 handle 执行。
+                    scaledData
+                            .getCentral()
+                            .setForceAttributeValue(serverName, scaled[0].doubleValue(), scaled[1].doubleValue());
+                }
+                attackData = scaledData;
+                scaledSnapshot = true;
+            }
+        }
+
         AttributeHandle attributeHandle = new AttributeHandle(attackData, AttributeAPI.getAttrData(victim));
-        // 写入属性
+        // 恒等/未配置时仍在 clear 和 handle 构造后逐 attr 读取，保留动态变量时机。
+        Map<String, Number> attrContext = scaledSnapshot ? multiplierContext : null;
         attrExpressionMap.forEach((key, value) -> {
-            Number calculate = value.calculate(parseExpressionContext(
-                    skillMetadata,
-                    abstractEntity,
-                    mainConfiguration.getVariables().values()));
+            Number calculate = value.calculate(
+                    attrContext != null
+                            ? attrContext
+                            : parseExpressionContext(
+                                    skillMetadata,
+                                    abstractEntity,
+                                    mainConfiguration.getVariables().values()));
             String defaultAttributeName = AttributeAPI.getDefaultAttributeName(key);
             if (defaultAttributeName == null) {
                 defaultAttributeName = key;
