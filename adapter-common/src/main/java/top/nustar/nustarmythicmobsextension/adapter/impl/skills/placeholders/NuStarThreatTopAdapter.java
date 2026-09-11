@@ -64,7 +64,7 @@ public class NuStarThreatTopAdapter {
                         try {
                             topEntity = Bukkit.getScheduler()
                                     .callSyncMethod(
-                                            InstanceUtil.getInstance(Plugin.class), () -> Bukkit.getEntity(uuid))
+                                            InstanceUtil.getInstance(), () -> Bukkit.getEntity(uuid))
                                     .get();
                         } catch (InterruptedException | ExecutionException e) {
                             throw new RuntimeException(e);

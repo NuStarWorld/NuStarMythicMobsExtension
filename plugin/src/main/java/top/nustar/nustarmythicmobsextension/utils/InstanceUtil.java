@@ -18,28 +18,26 @@
 
 package top.nustar.nustarmythicmobsextension.utils;
 
-import org.bukkit.plugin.Plugin;
+import lombok.Getter;
 import team.idealstate.sugar.next.context.ContextHolder;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
 import team.idealstate.sugar.next.context.aware.ContextHolderAware;
 import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.nustarmythicmobsextension.NuStarMythicMobsExtension;
 
 @Component
 @Scope(Scope.SINGLETON)
 public class InstanceUtil implements ContextHolderAware {
-    private static volatile ContextHolder contextHolder;
+    @Getter
+    private static volatile NuStarMythicMobsExtension instance;
 
     @Override
     public void setContextHolder(@NotNull ContextHolder contextHolder) {
-        InstanceUtil.contextHolder = contextHolder;
-    }
-
-    public static <T> T getInstance(Class<T> clazz) {
-        return clazz.cast(contextHolder);
+        InstanceUtil.instance = (NuStarMythicMobsExtension) contextHolder;
     }
 
     public static String getVersion() {
-        return ((Plugin) contextHolder).getServer().getVersion();
+        return instance.getServer().getVersion();
     }
 }

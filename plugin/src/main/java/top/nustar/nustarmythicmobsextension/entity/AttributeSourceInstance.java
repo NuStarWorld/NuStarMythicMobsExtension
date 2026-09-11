@@ -104,7 +104,7 @@ public class AttributeSourceInstance {
                     }
                 }
             };
-            task.runTaskTimer(InstanceUtil.getInstance(Plugin.class), 0L, 20L);
+            task.runTaskTimer(InstanceUtil.getInstance(), 0L, 20L);
         }
 
         public void stop() {

@@ -20,6 +20,7 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.skills.mechanics;
 
 import java.util.*;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.serverct.ersha.api.AttributeAPI;
 import org.serverct.ersha.attribute.AttributeHandle;
 import org.serverct.ersha.attribute.data.AttributeData;
@@ -34,8 +35,10 @@ import top.nustar.nustarmythicmobsextension.configuration.MainConfiguration;
 import top.nustar.nustarmythicmobsextension.exception.NSMMEException;
 import top.nustar.nustarmythicmobsextension.utils.AttributeUtils;
 import top.nustar.nustarmythicmobsextension.utils.DamageUtil;
+import top.nustar.nustarmythicmobsextension.utils.InstanceUtil;
 
 public class FastAPAdapter implements NuStarSkill, GlobalVariable {
+    private static final String fastApMetaDataKey = "doing-fast-ap";
     private static final ThreadLocal<Boolean> IN_FASTAP_DAMAGE = ThreadLocal.withInitial(() -> false);
     private static final String SCALED_SELF_ERROR =
             "FastAP 参数 baseAttributeMultiple(bam) / baseAttributeMultipleList(baml)："
@@ -177,33 +180,37 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
             }
             attributeHandle.updateTempAttributeValue(caster, defaultAttributeName, calculate, false);
         });
-        // 运行 handle
-        attributeHandle.handleAttackOrDefenseAttribute();
-        // 被阻止触发
-        if (attributeHandle.isCancelled()) {
-            return false;
+        try {
+            caster.setMetadata(fastApMetaDataKey, new FixedMetadataValue(InstanceUtil.getInstance(), true));
+            // 运行 handle
+            attributeHandle.handleAttackOrDefenseAttribute();
+            // 被阻止触发
+            if (attributeHandle.isCancelled()) {
+                return false;
+            }
+
+            // 无视无敌帧
+            if (preventImmunity) {
+                victim.setNoDamageTicks(0);
+            }
+
+            // 造成伤害
+            double finalDamage = attributeHandle.getDamage(caster);
+
+            DamageUtil.nmsDamage(skillMetadata, abstractEntity, finalDamage, nextDamageSource, IN_FASTAP_DAMAGE);
+
+            // 取消击退
+            if (preventKnockback) {
+                victim.setVelocity(victim.getVelocity().zero());
+            }
+
+            // 发送消息
+            if (sendMessage) {
+                attributeHandle.sendAttributeMessage();
+            }
+        } finally {
+            caster.removeMetadata(fastApMetaDataKey, InstanceUtil.getInstance());
         }
-
-        // 无视无敌帧
-        if (preventImmunity) {
-            victim.setNoDamageTicks(0);
-        }
-
-        // 造成伤害
-        double finalDamage = attributeHandle.getDamage(caster);
-
-        DamageUtil.nmsDamage(skillMetadata, abstractEntity, finalDamage, nextDamageSource, IN_FASTAP_DAMAGE);
-
-        // 取消击退
-        if (preventKnockback) {
-            victim.setVelocity(victim.getVelocity().zero());
-        }
-
-        // 发送消息
-        if (sendMessage) {
-            attributeHandle.sendAttributeMessage();
-        }
-
         return true;
     }
 }
