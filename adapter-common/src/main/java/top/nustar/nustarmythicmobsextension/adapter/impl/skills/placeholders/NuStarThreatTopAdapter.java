@@ -24,7 +24,6 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.plugin.Plugin;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
@@ -63,8 +62,7 @@ public class NuStarThreatTopAdapter {
                         Entity topEntity;
                         try {
                             topEntity = Bukkit.getScheduler()
-                                    .callSyncMethod(
-                                            InstanceUtil.getInstance(), () -> Bukkit.getEntity(uuid))
+                                    .callSyncMethod(InstanceUtil.getInstance(), () -> Bukkit.getEntity(uuid))
                                     .get();
                         } catch (InterruptedException | ExecutionException e) {
                             throw new RuntimeException(e);

@@ -246,7 +246,8 @@ class FastAPAdapterConfigContractTest {
         before(cast, context, evaluate);
         int contextSlot = variable(next(next(noConfiguration.label)), ASTORE);
         assertEquals(contextSlot, variable(previous(evaluate), ALOAD));
-        assertTrue(cast.tryCatchBlocks.isEmpty(), "非法倍率不得降级吞错");
+        // try-finally 仅用于清理施法标记（type 为 null）；不得 catch 具体异常把非法倍率降级吞错。
+        assertTrue(cast.tryCatchBlocks.stream().allMatch(block -> block.type == null), "非法倍率不得降级吞错");
         MethodNode attr = containing(type, HANDLE, "updateTempAttributeValue");
         MethodInsnNode fallback = call(attr, ADAPTER, "parseExpressionContext");
         JumpInsnNode absent = (JumpInsnNode) code(attr).get(2);

@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import lombok.Data;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.serverct.ersha.api.AttributeAPI;
 import top.nustar.nustarmythicmobsextension.utils.InstanceUtil;

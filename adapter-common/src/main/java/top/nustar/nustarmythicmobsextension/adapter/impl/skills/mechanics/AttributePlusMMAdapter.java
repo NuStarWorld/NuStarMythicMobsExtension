@@ -60,6 +60,10 @@ public class AttributePlusMMAdapter implements NuStarSkill {
             if (entity == null) {
                 return false;
             }
+            // AP 会按 UUID 重新取实体，取不到会抛空指针；施法者已死亡或掩线时跳过。
+            if (!NuStarSkill.isResolvable(entity)) {
+                return false;
+            }
             List<String> attr =
                     Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
             AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);

@@ -18,8 +18,10 @@
 
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 
@@ -47,5 +49,24 @@ public interface NuStarSkill {
     /** 读取施法者并要求它是生物；不是生物时返回 null。 */
     static LivingEntity livingCaster(SkillMetadataAdapter<?> skillMetadata) {
         return asLivingEntity(skillMetadata.getCaster().getEntity().getBukkitEntity());
+    }
+
+    /**
+     * 判断该生物此刻能否交给 AttributePlus 处理。
+     *
+     * <p>AttributePlus 不使用传入的实体对象，而是按 UUID 重新查一次：玩家查不到在线玩家会得到 null， 非玩家查不到实体会直接抛 NullPointerException，随后在
+     * AttributeHandle 构造时以非空检查失败。 因此在交给它之前先确认实体此刻仍能按 UUID 取回。
+     *
+     * <p>典型取不到的情形：上一段伤害已把目标打死、玩家掉线或切服、实体被移除或所在区块已卸载。
+     */
+    static boolean isResolvable(LivingEntity entity) {
+        if (entity == null || entity.isDead() || !entity.isValid()) {
+            return false;
+        }
+        if (entity instanceof Player) {
+            // 玩家按 UUID 取在线玩家；离线或切服中取不到。
+            return Bukkit.getPlayer(entity.getUniqueId()) != null;
+        }
+        return Bukkit.getEntity(entity.getUniqueId()) != null;
     }
 }

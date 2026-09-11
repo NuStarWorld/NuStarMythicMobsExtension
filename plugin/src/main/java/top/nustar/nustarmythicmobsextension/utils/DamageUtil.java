@@ -80,7 +80,7 @@ public class DamageUtil {
                             nextDamageSource, EntityDamageEvent.DamageCause.class),
                     finalDamage);
             Bukkit.getPluginManager().callEvent(fakeEvent);
-            if (fakeEvent.isCancelled()) {
+            if (fakeEvent.isCancelled() || fakeEvent.getFinalDamage() == 0) {
                 return;
             }
             finalDamage = fakeEvent.getFinalDamage();

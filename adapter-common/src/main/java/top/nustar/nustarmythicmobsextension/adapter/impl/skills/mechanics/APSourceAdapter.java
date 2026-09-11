@@ -65,6 +65,10 @@ public class APSourceAdapter implements NuStarSkill {
         if (entity == null) {
             return false;
         }
+        // AP 会按 UUID 重新取实体，取不到会抛空指针；目标已死亡或被移除时跳过。
+        if (!NuStarSkill.isResolvable(entity)) {
+            return false;
+        }
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
         List<String> attr =
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));

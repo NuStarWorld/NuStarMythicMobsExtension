@@ -100,6 +100,12 @@ class FastAPAdapterHandleContractTest {
                         < code.indexOf(calls(cast, API, "getAttrData").get(0)),
                 "跳过分支须早于读取 AP 属性");
         assertTrue(code.indexOf(skip) < code.indexOf(call(cast, MULTIPLIER, "isConfigured")), "跳过分支须早于倍率求值");
+        // AP 按 UUID 取不到实体会在 AttributeHandle 构造时抛空指针，因此取属性前先校验双方。
+        List<MethodInsnNode> resolvable = calls(cast, SKILL, "isResolvable");
+        assertEquals(2, resolvable.size(), "施法者与目标都要校验");
+        for (MethodInsnNode check : resolvable) {
+            before(cast, check, calls(cast, API, "getAttrData").get(0));
+        }
     }
 
     @Test
@@ -137,7 +143,13 @@ class FastAPAdapterHandleContractTest {
         MethodInsnNode cancelled = call(cast, HANDLE, "isCancelled");
         assertEquals(IFEQ, next(cancelled).getOpcode());
         assertEquals(ICONST_0, next(next(cancelled)).getOpcode());
-        assertEquals(IRETURN, next(next(next(cancelled))).getOpcode());
+        // 取消时先存 false，经 finally 清理施法标记后才返回，不再直接 IRETURN。
+        AbstractInsnNode cancelledResult = next(next(next(cancelled)));
+        assertEquals(ISTORE, cancelledResult.getOpcode());
+        MethodInsnNode cleanup =
+                calls(cast, "org/bukkit/entity/LivingEntity", "removeMetadata").get(0);
+        before(cast, cancelledResult, cleanup);
+        assertEquals(IRETURN, next(next(cleanup)).getOpcode());
         MethodInsnNode damage = call(cast, HANDLE, "getDamage");
         MethodInsnNode nms = call(cast, ROOT + "utils/DamageUtil", "nmsDamage");
         assertEquals(variable(next(damage), DSTORE), variable(code.get(code.indexOf(nms) - 4), DLOAD));

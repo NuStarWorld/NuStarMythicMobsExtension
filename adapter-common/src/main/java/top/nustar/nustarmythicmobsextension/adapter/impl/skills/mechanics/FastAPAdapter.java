@@ -90,6 +90,11 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
         if (caster == null || victim == null) {
             return false;
         }
+        // AP 会按 UUID 重新取实体，取不到就在 AttributeHandle 构造时抛空指针；
+        // 上一段伤害已把目标打死、玩家掉线或实体被移除时提前跳过。
+        if (!NuStarSkill.isResolvable(caster) || !NuStarSkill.isResolvable(victim)) {
+            return false;
+        }
 
         // 常量倍率不提前读取 PAPI；动态倍率首次取变量时才固定本目标上下文。
         Map<String, Number> multiplierContext = baseMultiplier.isConfigured()
