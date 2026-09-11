@@ -55,8 +55,11 @@ public class AttributePlusMMAdapter implements NuStarSkill {
     @Override
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
         try {
-            LivingEntity entity =
-                    (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
+            // 施法者不是生物时无法读写 AP 属性，直接跳过。
+            LivingEntity entity = NuStarSkill.livingCaster(skillMetadata);
+            if (entity == null) {
+                return false;
+            }
             List<String> attr =
                     Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));
             AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);

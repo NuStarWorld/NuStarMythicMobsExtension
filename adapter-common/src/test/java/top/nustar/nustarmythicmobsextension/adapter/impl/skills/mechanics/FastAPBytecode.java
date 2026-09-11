@@ -37,6 +37,7 @@ final class FastAPBytecode {
     static final String DATA = "org/serverct/ersha/attribute/data/AttributeData";
     static final String CENTRAL = "org/serverct/ersha/attribute/data/AttributeCentral";
     static final String HANDLE = "org/serverct/ersha/attribute/AttributeHandle";
+    static final String SKILL = ROOT + "adapter/impl/skills/NuStarSkill";
 
     private FastAPBytecode() {}
 
@@ -106,5 +107,16 @@ final class FastAPBytecode {
 
     static void before(MethodNode method, AbstractInsnNode first, AbstractInsnNode second) {
         assertTrue(method.instructions.indexOf(first) < method.instructions.indexOf(second), "调用顺序不得颠倒");
+    }
+
+    /** 取该调用之后的第一条跳转指令，避免依赖固定指令偏移。 */
+    static JumpInsnNode jumpAfter(MethodNode method, AbstractInsnNode from) {
+        AbstractInsnNode node = from;
+        while ((node = next(node)) != null) {
+            if (node instanceof JumpInsnNode) {
+                return (JumpInsnNode) node;
+            }
+        }
+        throw new AssertionError("该调用之后缺少跳转指令");
     }
 }

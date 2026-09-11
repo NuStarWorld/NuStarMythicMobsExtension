@@ -60,7 +60,11 @@ public class APSourceAdapter implements NuStarSkill {
 
     @Override
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
-        LivingEntity entity = (LivingEntity) abstractEntity.getBukkitEntity();
+        // 展示实体等非生物目标没有 AP 属性，跳过它们而不中断整个技能。
+        LivingEntity entity = NuStarSkill.livingTarget(abstractEntity);
+        if (entity == null) {
+            return false;
+        }
         AttributeData data = AttributePlus.INSTANCE.getAttributeManager().getAttributeData(entity);
         List<String> attr =
                 Arrays.asList(attrName.get(skillMetadata, abstractEntity).split(","));

@@ -18,6 +18,8 @@
 
 package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
 
@@ -27,4 +29,23 @@ import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
  */
 public interface NuStarSkill {
     boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity);
+
+    /**
+     * 把 Bukkit 实体当作生物读取；不是生物时返回 null。
+     *
+     * <p>MythicMobs 的目标可能包含展示实体等没有血量的对象（如 ItemDisplay）。 直接强转会抛 ClassCastException 并中断整个技能，因此由各机制自行判断并跳过。
+     */
+    static LivingEntity asLivingEntity(Entity entity) {
+        return entity instanceof LivingEntity ? (LivingEntity) entity : null;
+    }
+
+    /** 读取目标实体并要求它是生物；不是生物时返回 null。 */
+    static LivingEntity livingTarget(AbstractEntityAdapter<?> abstractEntity) {
+        return asLivingEntity(abstractEntity.getBukkitEntity());
+    }
+
+    /** 读取施法者并要求它是生物；不是生物时返回 null。 */
+    static LivingEntity livingCaster(SkillMetadataAdapter<?> skillMetadata) {
+        return asLivingEntity(skillMetadata.getCaster().getEntity().getBukkitEntity());
+    }
 }

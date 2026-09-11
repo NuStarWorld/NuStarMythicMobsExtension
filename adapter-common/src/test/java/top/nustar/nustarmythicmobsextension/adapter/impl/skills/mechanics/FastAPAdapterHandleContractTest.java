@@ -64,11 +64,42 @@ class FastAPAdapterHandleContractTest {
         MethodInsnNode victimData = calls(cast, API, "getAttrData").get(1);
         assertSame(victimData, previous(handle));
         int victim = variable(previous(victimData), ALOAD);
-        List<MethodInsnNode> entities = calls(cast, ROOT + "adapter/AbstractEntityAdapter", "getBukkitEntity");
-        assertEquals(victim, variable(next(next(entities.get(1))), ASTORE));
+        // 目标实体经 NuStarSkill.livingTarget 读取，仍须是同一个存入 victim 的生物。
+        MethodInsnNode livingTarget = call(cast, SKILL, "livingTarget");
+        assertEquals(victim, variable(next(livingTarget), ASTORE));
         int basis = variable(previous(previous(call(cast, DATA, "getAttributeValue"))), ALOAD);
         assertEquals(basis, variable(previous(previous(victimData)), ALOAD));
         before(cast, call(cast, CENTRAL, "setForceAttributeValue"), handle);
+    }
+
+    @Test
+    @DisplayName("非生物目标在读取属性前跳过，不抛 ClassCastException")
+    void nonLivingCasterOrTargetIsSkippedBeforeAnyAttributeAccess() throws IOException {
+        MethodNode cast = method(read(ADAPTER), "castAtEntity");
+        MethodInsnNode livingCaster = call(cast, SKILL, "livingCaster");
+        MethodInsnNode livingTarget = call(cast, SKILL, "livingTarget");
+        // 两次读取都不得直接强转实体类型。
+        assertTrue(
+                code(cast).stream()
+                        .filter(node -> node instanceof TypeInsnNode && node.getOpcode() == CHECKCAST)
+                        .noneMatch(node -> "org/bukkit/entity/LivingEntity".equals(((TypeInsnNode) node).desc)),
+                "不得强转 LivingEntity");
+        before(cast, livingCaster, livingTarget);
+        // 两次读取都完成后才判空：任一为 null 就 return false，早于 AP 属性访问与倍率求值。
+        List<AbstractInsnNode> code = code(cast);
+        JumpInsnNode casterNull = jumpAfter(cast, livingTarget);
+        JumpInsnNode targetNull = jumpAfter(cast, casterNull);
+        assertEquals(IFNULL, casterNull.getOpcode(), "施法者为 null 时跳向跳过分支");
+        assertEquals(IFNONNULL, targetNull.getOpcode(), "目标非 null 时越过跳过分支");
+        AbstractInsnNode skip = next(targetNull);
+        assertEquals(ICONST_0, skip.getOpcode());
+        assertEquals(IRETURN, next(skip).getOpcode());
+        assertSame(skip, next(casterNull.label), "施法者为 null 汇合到同一个跳过分支");
+        assertTrue(
+                code.indexOf(skip)
+                        < code.indexOf(calls(cast, API, "getAttrData").get(0)),
+                "跳过分支须早于读取 AP 属性");
+        assertTrue(code.indexOf(skip) < code.indexOf(call(cast, MULTIPLIER, "isConfigured")), "跳过分支须早于倍率求值");
     }
 
     @Test

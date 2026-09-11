@@ -56,9 +56,16 @@ public class NuStarThreatAdapter implements NuStarSkill, GlobalVariable {
 
     @Override
     public boolean castAtEntity(SkillMetadataAdapter<?> skillMetadata, AbstractEntityAdapter<?> abstractEntity) {
-        LivingEntity caster =
-                (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
-        LivingEntity entity = (LivingEntity) abstractEntity.getBukkitEntity();
+        // 威胁记录以施法者为条目，施法者不是生物时无法记分。
+        LivingEntity caster = NuStarSkill.livingCaster(skillMetadata);
+        if (caster == null) {
+            return false;
+        }
+        // 展示实体等非生物目标既不会仇恨也不会被转移，跳过它们而不中断整个技能。
+        LivingEntity entity = NuStarSkill.livingTarget(abstractEntity);
+        if (entity == null) {
+            return false;
+        }
         long amount = this.amount
                 .calculate(parseExpressionContext(
                         skillMetadata,

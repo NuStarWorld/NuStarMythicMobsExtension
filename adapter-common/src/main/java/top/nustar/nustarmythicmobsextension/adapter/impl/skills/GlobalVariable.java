@@ -21,7 +21,7 @@ package top.nustar.nustarmythicmobsextension.adapter.impl.skills;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import top.nustar.nustarmythicmobsextension.adapter.AbstractEntityAdapter;
 import top.nustar.nustarmythicmobsextension.adapter.SkillMetadataAdapter;
@@ -36,12 +36,12 @@ public interface GlobalVariable {
             SkillMetadataAdapter<?> skillMetadata,
             AbstractEntityAdapter<?> abstractEntity,
             Collection<Variable> variables) {
-        LivingEntity caster =
-                (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
+        // 只有玩家施法才读取配置变量；展示实体等非生物施法者不强转，避免抛异常。
+        Entity casterEntity = skillMetadata.getCaster().getEntity().getBukkitEntity();
         Map<String, Number> context = new HashMap<>(variables.size());
-        if (caster instanceof Player) {
+        if (casterEntity instanceof Player) {
+            Player player = (Player) casterEntity;
             for (Variable variable : variables) {
-                Player player = (Player) caster;
                 context.put(variable.getName(), variable.asBigDecimal(player));
             }
         }

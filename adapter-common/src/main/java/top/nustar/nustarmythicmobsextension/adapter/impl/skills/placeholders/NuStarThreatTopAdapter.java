@@ -24,7 +24,6 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
@@ -53,8 +52,8 @@ public class NuStarThreatTopAdapter {
 
     public NuStarThreatTopAdapter() {
         this.transformer = ((placeholderMetaAdapter, string) -> {
-            LivingEntity trigger =
-                    (LivingEntity) placeholderMetaAdapter.getTrigger().getBukkitEntity();
+            // 触发者可能是展示实体等非生物对象，不强转以免抛异常。
+            Entity trigger = placeholderMetaAdapter.getTrigger().getBukkitEntity();
             if (!(trigger instanceof Creature)) return "该怪物不具备威胁度功能";
             Creature mob = (Creature) trigger;
             return mobThreatManager

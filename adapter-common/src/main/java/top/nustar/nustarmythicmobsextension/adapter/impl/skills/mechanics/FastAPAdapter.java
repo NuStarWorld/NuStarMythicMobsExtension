@@ -81,9 +81,12 @@ public class FastAPAdapter implements NuStarSkill, GlobalVariable {
         if (IN_FASTAP_DAMAGE.get()) {
             return true;
         }
-        LivingEntity caster =
-                (LivingEntity) skillMetadata.getCaster().getEntity().getBukkitEntity();
-        LivingEntity victim = (LivingEntity) abstractEntity.getBukkitEntity();
+        // 展示实体等非生物目标没有属性与血量，跳过它们而不中断整个技能。
+        LivingEntity caster = NuStarSkill.livingCaster(skillMetadata);
+        LivingEntity victim = NuStarSkill.livingTarget(abstractEntity);
+        if (caster == null || victim == null) {
+            return false;
+        }
 
         // 常量倍率不提前读取 PAPI；动态倍率首次取变量时才固定本目标上下文。
         Map<String, Number> multiplierContext = baseMultiplier.isConfigured()
